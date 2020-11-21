@@ -4,10 +4,89 @@
 		<meta charset="UTF-8">
 		<title>crux.land</title>
 	</head>
+	<style>
+		body {
+			margin: 0;
+			display: flex;
+			text-align: center;
+			font-family: sans-serif;
+		}
+
+		.grid {
+			margin: 0 auto;
+			max-width: 60%;
+			display: grid;
+			grid-template-columns: 2fr 1fr;
+			grid-gap: 5%;
+		}
+
+		form {
+			display: flex;
+			justify-content: space-evenly;
+			align-items: center;
+			flex-direction: column;
+		}
+
+		form .file {
+			width: 0.1px;
+			height: 0.1px;
+			opacity: 0;
+			overflow: hidden;
+			position: absolute;
+			z-index: -1;
+		}
+
+		.button {
+			border-radius: .375rem;
+			box-shadow: rgba(0, 0, 0, 0.05) 0 1px 2px 0;
+			background-color: rgb(244, 245, 247);
+			border: 1px solid rgb(210, 214, 220);
+
+			padding: 8px 16px;
+			display: inline-block;
+			width: 100%;
+			box-sizing: border-box;
+
+			font-size: 16px;
+			line-height: 24px;
+			font-weight: 500;
+
+			cursor: pointer;
+		}
+
+
+		@media (prefers-color-scheme: dark) {
+			body {
+				background-color: rgb(26, 26, 26);
+				color: rgb(210, 214, 220);
+			}
+
+			.button {
+				background-color: rgb(32, 32, 32);
+				color: rgb(210, 214, 220);
+				border: 1px solid rgb(42, 42, 42);
+			}
+		}
+	</style>
 	<body>
-		<form action="/add" method="post" enctype="multipart/form-data">
-			<input type="file" name="file" accept=".ts,.tsx,.js,.jsx">
-			<input type="submit" value="submit">
-		</form>
+		<div>
+			<h1>crux.land</h1>
+			<div class="grid">
+				<div>
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aspernatur atque deserunt ducimus, id perspiciatis quam qui quo, repellat, rerum sint sit! Ad minima modi nesciunt nihil nulla officiis pariatur.
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aspernatur atque deserunt ducimus, id perspiciatis quam qui quo, repellat, rerum sint sit! Ad minima modi nesciunt nihil nulla officiis pariatur.
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aspernatur atque deserunt ducimus, id perspiciatis quam qui quo, repellat, rerum sint sit! Ad minima modi nesciunt nihil nulla officiis pariatur.
+				</div>
+				<form action="/add" method="post" enctype="multipart/form-data">
+					<input class="file"
+						type="file"
+						name="file"
+						id="file"
+						accept=".ts,.tsx,.js,.jsx">
+					<label class="button" for="file">Choose a script</label>
+					<input class="button" type="submit" value="Upload">
+				</form>
+			</div>
+		</div>
 	</body>
 </html>

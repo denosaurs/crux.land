@@ -39,13 +39,14 @@ router
     const file = form.files?.[0];
 
     if (file) {
+      // TODO: validate to be only js or ts file
+
       const id = fnv1a(file.content!) + Date.now();
 
       if (!scripts.has(id)) {
-        console.log(file.contentType);
         scripts.set(id, file.content!);
 
-        context.response.body = encode(id);
+        context.response.redirect("/" + encode(id));
       } else {
         // TODO: collision
       }
