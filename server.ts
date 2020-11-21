@@ -3,11 +3,15 @@ import { fnv1a } from "./hash.ts";
 import { decode, encode } from "./base58.ts";
 
 const scripts = new Map<number, Uint8Array>();
+const html = await Deno.readTextFile("./index.html");
 
 const app = new Application();
 const router = new Router();
 
 router
+  .get("/", (context) => {
+    context.response.body = html;
+  })
   .get("/:id", (context) => {
     if (context.params?.id) {
       try {
@@ -18,7 +22,7 @@ router
           context.response.body = file;
         }
       } catch (e) {
-        if (e === "base58InvalidDecode") {
+        if (e === "base58InvalidData") {
         }
       }
     }
@@ -53,4 +57,4 @@ router
 
 app.use(router.routes());
 
-await app.listen({port: 8000});
+await app.listen({port: 8080});

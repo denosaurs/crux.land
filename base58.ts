@@ -17,7 +17,7 @@ function validate(data: string): boolean {
 }
 
 export function decode(data: string) {
-  if (!validate(data)) throw "base58InvalidDecode";
+  if (!validate(data)) throw "base58InvalidData";
 
   let output = 0;
 
