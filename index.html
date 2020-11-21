@@ -109,7 +109,7 @@
 			e.preventDefault();
 			console.log(e);
 
-			const res = await fetch("/add", {
+			const res = await fetch("/api/add", {
 				method: "POST",
 				body: new FormData(e.target),
 			});

@@ -12,13 +12,11 @@ export function encode(data: number): string {
   return output;
 }
 
-function validate(data: string): boolean {
+export function validate(data: string): boolean {
   return new RegExp(`^[${alphabet}]*$`).test(data);
 }
 
-export function decode(data: string) {
-  if (!validate(data)) throw "base58InvalidData";
-
+export function decode(data: string): number {
   let output = 0;
 
   while (data) {

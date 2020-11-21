@@ -1,0 +1,13 @@
+# node and vercel
+dist
+node_modules
+.next
+.vercel
+
+# ide
+.idea
+.vscode
+workspace.code-workspace
+
+# macOS files
+.DS_Store
