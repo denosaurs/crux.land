@@ -52,12 +52,14 @@
 			font-weight: 500;
 
 			cursor: pointer;
+			user-select: none;
 		}
 
 		.url {
 			display: none;
 			grid-column: span 2;
 			cursor: initial;
+			user-select: initial;
 		}
 
 		@media (prefers-color-scheme: dark) {
@@ -107,11 +109,10 @@
 
 		form.onsubmit = async (e) => {
 			e.preventDefault();
-			console.log(e);
 
 			const res = await fetch("/api/add", {
 				method: "POST",
-				body: new FormData(e.target),
+				body: new FormData(form),
 			});
 
 			url.style.display = "block";
