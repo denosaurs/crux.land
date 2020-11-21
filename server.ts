@@ -2,7 +2,7 @@ import { Application, Router } from "https://deno.land/x/oak@v6.3.2/mod.ts";
 import { fnv1a } from "./hash.ts";
 import { decode, encode } from "./base58.ts";
 
-const scripts = new Map<number, string>();
+const scripts = new Map<number, Uint8Array>();
 
 const app = new Application();
 const router = new Router();
@@ -25,18 +25,29 @@ router
   })
   .post("/add", async (context) => {
     const body = context.request.body({
-      type: "text",
+      type: "form-data",
     });
 
-    const data = await body.value;
-    const id = fnv1a(data) + Date.now();
+    const form = await body.value.read({
+      maxSize: 10_000,
+      maxFileSize: 10_000,
+    });
+    const file = form.files?.[0];
 
-    if (!scripts.has(id)) {
-      scripts.set(id, data);
+    if (file) {
+      const id = fnv1a(file.content!) + Date.now();
 
-      context.response.body = encode(id);
+      if (!scripts.has(id)) {
+        console.log(file.contentType);
+        scripts.set(id, file.content!);
+
+        context.response.body = encode(id);
+      } else {
+        // TODO: collision
+      }
     } else {
-      // TODO
+      // file missing or too large
+      context.response.status = 400;
     }
   });
 
