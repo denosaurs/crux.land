@@ -9,6 +9,9 @@ export default async (req: ServerRequest) => {
   const splitUrl = req.url.split("/");
   const urlId = splitUrl[splitUrl.length - 1];
 
+  console.log("id", urlId);
+  console.log("validId", validate(urlId));
+
   if (!urlId || !validate(urlId)) {
     return req.respond({ status: status.BAD_REQUEST });
   }
@@ -27,6 +30,7 @@ export default async (req: ServerRequest) => {
   }
 
   return req.respond({
+    status: status.OK,
     headers: new Headers({
       "Content-Type": file.contentType!,
     }),
