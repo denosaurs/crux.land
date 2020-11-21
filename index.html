@@ -54,6 +54,11 @@
 			cursor: pointer;
 		}
 
+		.url {
+			display: none;
+			grid-column: span 2;
+			cursor: initial;
+		}
 
 		@media (prefers-color-scheme: dark) {
 			body {
@@ -77,16 +82,40 @@
 					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aspernatur atque deserunt ducimus, id perspiciatis quam qui quo, repellat, rerum sint sit! Ad minima modi nesciunt nihil nulla officiis pariatur.
 					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aspernatur atque deserunt ducimus, id perspiciatis quam qui quo, repellat, rerum sint sit! Ad minima modi nesciunt nihil nulla officiis pariatur.
 				</div>
-				<form action="/add" method="post" enctype="multipart/form-data">
+				<form method="post" enctype="multipart/form-data" id="form">
 					<input class="file"
 						type="file"
 						name="file"
 						id="file"
 						accept=".ts,.tsx,.js,.jsx">
-					<label class="button" for="file">Choose a script</label>
+					<label class="button"
+						for="file"
+						id="fileLabel">Choose a script</label>
 					<input class="button" type="submit" value="Upload">
 				</form>
+				<div class="button url" id="url"></div>
 			</div>
 		</div>
 	</body>
+	<script>
+		const form = document.getElementById("form");
+		const url = document.getElementById("url");
+		const file = document.getElementById("file");
+		const fileLabel = document.getElementById("fileLabel");
+
+		file.onchange = () => fileLabel.innerText = file.files[0].name;
+
+		form.onsubmit = async (e) => {
+			e.preventDefault();
+			console.log(e);
+
+			const res = await fetch("/add", {
+				method: "POST",
+				body: new FormData(e.target),
+			});
+
+			url.style.display = "block";
+			url.innerText = window.location.href + await res.text();
+		};
+	</script>
 </html>

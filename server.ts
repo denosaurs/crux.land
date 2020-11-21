@@ -46,7 +46,7 @@ router
       if (!scripts.has(id)) {
         scripts.set(id, file.content!);
 
-        context.response.redirect("/" + encode(id));
+        context.response.body = encode(id);
       } else {
         // TODO: collision
       }
