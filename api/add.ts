@@ -61,8 +61,6 @@ export default async (req: ServerRequest) => {
 
 async function addFile(bucket: S3Bucket, file: FormFile): Promise<string> {
   const content = prependUTF8(file.content!, `// crux.land - ${Date.now()}\n`);
-  console.log(JSON.stringify(content));
-  
   const id = fnv1a(content).toString();
   const ext = file.filename.split(".").pop()! as typeof EXTENSIONS[number];
 
