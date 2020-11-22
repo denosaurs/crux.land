@@ -129,6 +129,7 @@
 				fileLabel.innerText = "Choose a script";
 			}
 		};
+		file.onreset = () => fileLabel.innerText = "Choose a script";
 
 		form.onsubmit = async (e) => {
 			e.preventDefault();
