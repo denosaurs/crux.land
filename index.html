@@ -8,8 +8,14 @@
 		body {
 			margin: 0;
 			display: flex;
-			text-align: center;
 			font-family: sans-serif;
+			line-height: 1.25em;
+		}
+
+		h1 {
+			text-align: center;
+			margin-bottom: 1em;
+			line-height: initial;
 		}
 
 		.grid {
@@ -53,6 +59,7 @@
 
 			cursor: pointer;
 			user-select: none;
+			text-align: center;
 		}
 
 		#submit:disabled {
@@ -100,6 +107,7 @@
 					crux.land is a registry for deno scripts.
 					Scripts can be up to 10MB in size and are immutable,
 					so they can't be changed nor deleted, except if there is a legal reason.
+					<br />
 					You may also request a subdomain to be associated with a script.
 					<br />
 					To add a script you just need select a file and upload it with the interface on the right.
@@ -129,7 +137,7 @@
 				fileLabel.innerText = "Choose a script";
 			}
 		};
-		form.onreset = () => fileLabel.innerText = "Choose a script";
+		file.onreset = () => fileLabel.innerText = "Choose a script";
 
 		form.onsubmit = async (e) => {
 			e.preventDefault();
