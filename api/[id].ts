@@ -6,8 +6,8 @@ export default async (req: ServerRequest) => {
     req.respond({ status: status.BAD_REQUEST });
   }
 
-  const splitUrl = req.url.split("/");
-  const urlId = splitUrl[splitUrl.length - 1];
+  const url = new URL(req.url);
+  const urlId = url.pathname.split("/").pop()!;
 
   console.log("id", urlId);
   console.log("validId", validate(urlId));
@@ -32,7 +32,7 @@ export default async (req: ServerRequest) => {
   return req.respond({
     status: status.OK,
     headers: new Headers({
-      "Content-Type": file.contentType!,
+      "Content-Type": `${file.contentType!}; charset=utf-8`,
     }),
     body: file.body,
   });
