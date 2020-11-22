@@ -7,6 +7,7 @@ export default async (req: ServerRequest) => {
   }
 
   const url = new URL(req.url, "http://crux.land");
+  console.log("url", url);
   const urlId = url.pathname.split("/").pop()!;
 
   console.log("id", urlId);
