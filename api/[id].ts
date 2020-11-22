@@ -8,6 +8,8 @@ export default async (req: ServerRequest) => {
     req.respond({ status: status.BAD_REQUEST });
   }
 
+  console.log("headers", req.headers);
+
   const url = new URL(req.url, "http://crux.land");
   console.log("url", url);
   const [id, ...rest] = url.pathname.split("/").pop()!.split(".");
