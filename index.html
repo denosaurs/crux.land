@@ -122,10 +122,10 @@
 		file.onchange = () => fileLabel.innerText = file.files[0].name;
 
 		form.onsubmit = async (e) => {
+			e.preventDefault();
+
 			url.style.display = "none";
 			err.style.display = "none";
-
-			e.preventDefault();
 
 			submit.disabled = true;
 			submit.value = "Uploading...";
@@ -137,6 +137,9 @@
 
 			submit.disabled = false;
 			submit.value = "Upload";
+
+			form.reset();
+			fileLabel.innerText = "Choose a script";
 
 			if (res.ok) {
 				url.style.display = "block";
