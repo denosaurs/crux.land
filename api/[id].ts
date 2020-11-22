@@ -19,7 +19,7 @@ export default async (req: ServerRequest) => {
     return invalidId(req);
   }
 
-  if (!EXTENSIONS.some((valid) => ext === valid)) {
+  if (ext && !EXTENSIONS.some((valid) => ext === valid)) {
     return invalidExt(req);
   }
 
