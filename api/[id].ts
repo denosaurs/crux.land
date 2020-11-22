@@ -10,7 +10,8 @@ export default async (req: ServerRequest) => {
 
   const url = new URL(req.url, "http://crux.land");
   console.log("url", url);
-  const [id, ext] = url.pathname.split("/").pop()!.split(".");
+  const [id, ...rest] = url.pathname.split("/").pop()!.split(".");
+  const ext = rest.pop();
 
   console.log("id", id);
   console.log("ext", ext);
