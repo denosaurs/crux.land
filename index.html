@@ -55,11 +55,19 @@
 			user-select: none;
 		}
 
-		.url {
+		.err {
 			display: none;
 			grid-column: span 2;
 			cursor: initial;
 			user-select: initial;
+			color: rgb(237, 41, 57) !important;
+		}
+
+		.url {
+			display: none;
+			grid-column: span 2;
+			cursor: initial;
+			user-select: all;
 		}
 
 		@media (prefers-color-scheme: dark) {
@@ -96,27 +104,37 @@
 					<input class="button" type="submit" value="Upload">
 				</form>
 				<div class="button url" id="url"></div>
+				<div class="button err" id="err"></div>
 			</div>
 		</div>
 	</body>
 	<script>
 		const form = document.getElementById("form");
 		const url = document.getElementById("url");
+		const err = document.getElementById("err");
 		const file = document.getElementById("file");
 		const fileLabel = document.getElementById("fileLabel");
 
 		file.onchange = () => fileLabel.innerText = file.files[0].name;
 
 		form.onsubmit = async (e) => {
+			url.style.display = "none";
+			err.style.display = "none";
+
 			e.preventDefault();
 
 			const res = await fetch("/api/add", {
 				method: "POST",
 				body: new FormData(form),
 			});
-
-			url.style.display = "block";
-			url.innerText = window.location.href + await res.text();
+			
+			if (res.ok) {
+				url.style.display = "block";
+				url.innerText = window.location.href + await res.text();
+			} else {
+				err.style.display = "block";
+				err.innerText = await res.text();
+			}
 		};
 	</script>
 </html>

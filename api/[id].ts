@@ -1,6 +1,7 @@
 import { S3Bucket, ServerRequest, status } from "../deps.ts";
 import { decode, validate } from "../util/base58.ts";
 import { EXTENSIONS } from "../util/constants.ts";
+import { fileNotFound, invalidExt, invalidId } from "../util/responses.ts";
 
 export default async (req: ServerRequest) => {
   if (req.method !== "GET") {
@@ -15,15 +16,11 @@ export default async (req: ServerRequest) => {
   console.log("ext", ext);
 
   if (!id || !validate(id)) {
-    console.log("invalid id");
-
-    return req.respond({ status: status.BAD_REQUEST });
+    return invalidId(req);
   }
 
   if (!EXTENSIONS.some((valid) => ext === valid)) {
-    console.log("invalid extension");
-
-    return req.respond({ status: status.BAD_REQUEST });
+    return invalidExt(req);
   }
 
   const bucket = new S3Bucket({
@@ -36,7 +33,7 @@ export default async (req: ServerRequest) => {
   const file = await bucket.getObject(decode(id).toString());
 
   if (!file) {
-    return req.respond({ status: status.BAD_REQUEST });
+    return fileNotFound(req);
   }
 
   return req.respond({

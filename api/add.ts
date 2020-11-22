@@ -9,6 +9,7 @@ import { EXTENSIONS, MAX_SIZE } from "../util/constants.ts";
 import { getBoundry } from "../util/util.ts";
 import { encode } from "../util/base58.ts";
 import { fnv1a } from "../util/fnv1a.ts";
+import { badFileFormat, fileTooLarge, invalidExt } from "../util/responses.ts";
 
 export default async (req: ServerRequest) => {
   if (req.method !== "POST") {
@@ -21,21 +22,15 @@ export default async (req: ServerRequest) => {
   const file = form.file("file");
 
   if (file instanceof Array || file === undefined) {
-    console.log("bad file format");
-
-    return req.respond({ status: status.BAD_REQUEST });
+    return badFileFormat(req);
   }
 
   if (file.size > MAX_SIZE) {
-    console.log("file too large");
-
-    return req.respond({ status: status.BAD_REQUEST });
+    return fileTooLarge(req);
   }
 
   if (!EXTENSIONS.some((ext) => file.filename.endsWith(ext))) {
-    console.log("invalid extension");
-
-    return req.respond({ status: status.BAD_REQUEST });
+    return invalidExt(req);
   }
 
   const bucket = new S3Bucket({
