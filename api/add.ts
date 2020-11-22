@@ -5,7 +5,11 @@ import {
   ServerRequest,
   status,
 } from "../deps.ts";
-import { EXTENSIONS, MAX_SIZE } from "../util/constants.ts";
+import {
+  CONTENT_TYPE_FROM_EXTENSION,
+  EXTENSIONS,
+  MAX_SIZE,
+} from "../util/constants.ts";
 import { getBoundry } from "../util/util.ts";
 import { encode } from "../util/base58.ts";
 import { fnv1a } from "../util/fnv1a.ts";
@@ -29,7 +33,7 @@ export default async (req: ServerRequest) => {
     return fileTooLarge(req);
   }
 
-  if (!EXTENSIONS.some((ext) => file.filename.endsWith(ext))) {
+  if (!EXTENSIONS.some((valid) => valid === file.filename.split(".").pop()!)) {
     return invalidExt(req);
   }
 
@@ -50,15 +54,12 @@ export default async (req: ServerRequest) => {
 
 async function addFile(bucket: S3Bucket, file: FormFile): Promise<string> {
   const id = (fnv1a(file.content!) + Date.now()).toString();
+  const ext = file.filename.split(".").pop()! as typeof EXTENSIONS[number];
 
   const script = await bucket.getObject(id); // temporary
   if (!script) {
     await bucket.putObject(id, file.content!, {
-      contentType: EXTENSIONS.slice(0, 3).some((ext) =>
-          file.filename.endsWith(ext)
-        )
-        ? "application/typescript"
-        : "application/javascript",
+      contentType: CONTENT_TYPE_FROM_EXTENSION[ext],
     });
 
     return encode(+id);
