@@ -1,5 +1,6 @@
 import { S3Bucket, ServerRequest, status } from "../deps.ts";
 import { decode, validate } from "../util/base58.ts";
+import { EXTENSIONS } from "../util/constants.ts";
 
 export default async (req: ServerRequest) => {
   if (req.method !== "GET") {
@@ -12,9 +13,16 @@ export default async (req: ServerRequest) => {
 
   console.log("id", id);
   console.log("ext", ext);
-  console.log("validId", validate(id));
 
   if (!id || !validate(id)) {
+    console.log("invalid id");
+
+    return req.respond({ status: status.BAD_REQUEST });
+  }
+
+  if (!EXTENSIONS.some((valid) => ext === valid)) {
+    console.log("invalid extension");
+
     return req.respond({ status: status.BAD_REQUEST });
   }
 
