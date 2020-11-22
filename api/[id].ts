@@ -8,12 +8,13 @@ export default async (req: ServerRequest) => {
 
   const url = new URL(req.url, "http://crux.land");
   console.log("url", url);
-  const urlId = url.pathname.split("/").pop()!;
+  const [id, ext] = url.pathname.split("/").pop()!.split(".");
 
-  console.log("id", urlId);
-  console.log("validId", validate(urlId));
+  console.log("id", id);
+  console.log("ext", ext);
+  console.log("validId", validate(id));
 
-  if (!urlId || !validate(urlId)) {
+  if (!id || !validate(id)) {
     return req.respond({ status: status.BAD_REQUEST });
   }
 
@@ -24,7 +25,7 @@ export default async (req: ServerRequest) => {
     bucket: Deno.env.get("S3_BUCKET")!,
   });
 
-  const file = await bucket.getObject(decode(urlId).toString());
+  const file = await bucket.getObject(decode(id).toString());
 
   if (!file) {
     return req.respond({ status: status.BAD_REQUEST });

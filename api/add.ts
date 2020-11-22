@@ -33,7 +33,7 @@ export default async (req: ServerRequest) => {
   }
 
   if (!EXTENSIONS.some((ext) => file.filename.endsWith(ext))) {
-    console.log("not js/ts");
+    console.log("invalid extension");
 
     return req.respond({ status: status.BAD_REQUEST });
   }
