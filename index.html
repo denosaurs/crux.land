@@ -97,11 +97,11 @@
 						type="file"
 						name="file"
 						id="file"
-						accept=".ts,.tsx,.js,.jsx">
+						accept=".ts,.tsx,.js,.jsx,.mjs,.cjs">
 					<label class="button"
 						for="file"
 						id="fileLabel">Choose a script</label>
-					<input class="button" type="submit" value="Upload">
+					<input class="button" type="submit" id="submit" value="Upload">
 				</form>
 				<div class="button url" id="url"></div>
 				<div class="button err" id="err"></div>
@@ -114,6 +114,7 @@
 		const err = document.getElementById("err");
 		const file = document.getElementById("file");
 		const fileLabel = document.getElementById("fileLabel");
+		const submit = document.getElementById("submit");
 
 		file.onchange = () => fileLabel.innerText = file.files[0].name;
 
@@ -123,11 +124,17 @@
 
 			e.preventDefault();
 
+			submit.disabled = true;
+			submit.value = "Uploading...";
+
 			const res = await fetch("/api/add", {
 				method: "POST",
 				body: new FormData(form),
 			});
-			
+
+			submit.disabled = false;
+			submit.value = "Upload";
+
 			if (res.ok) {
 				url.style.display = "block";
 				url.innerText = window.location.href + await res.text();
