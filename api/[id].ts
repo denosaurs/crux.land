@@ -6,6 +6,7 @@ export default async (req: ServerRequest) => {
     req.respond({ status: status.BAD_REQUEST });
   }
 
+  console.log(req.url);
   const url = new URL(req.url);
   const urlId = url.pathname.split("/").pop()!;
 
