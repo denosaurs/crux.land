@@ -39,27 +39,20 @@ export default async (req: ServerRequest) => {
     return fileNotFound(req);
   }
 
-  const headers = new Headers({
-    "Content-Type": `${file.contentType!}; charset=utf-8`,
-  });
-  const body = file.body;
-
   if (!ext) {
-    headers.append(
-      "Location",
-      `./${id}.${EXTENSION_FROM_CONTENT_TYPE[file.contentType!]}`,
-    );
-
     return req.respond({
       status: status.TEMPORARY_REDIRECT,
-      headers,
-      body,
+      headers: new Headers({
+        "Location": `./${id}.${EXTENSION_FROM_CONTENT_TYPE[file.contentType!]}`,
+      }),
     });
   } else {
     return req.respond({
       status: status.OK,
-      headers,
-      body,
+      headers: new Headers({
+        "Content-Type": `${file.contentType!}; charset=utf-8`,
+      }),
+      body: file.body,
     });
   }
 };
