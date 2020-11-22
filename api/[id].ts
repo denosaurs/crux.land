@@ -45,7 +45,7 @@ export default async (req: ServerRequest) => {
   if (!ext) {
     headers.append(
       "Location",
-      `./${id}${EXTENSION_FROM_CONTENT_TYPE[file.contentType!]}`,
+      `./${id}.${EXTENSION_FROM_CONTENT_TYPE[file.contentType!]}`,
     );
 
     return req.respond({
