@@ -10,10 +10,17 @@ import {
   EXTENSIONS,
   MAX_SIZE,
 } from "../util/constants.ts";
-import { getBoundry } from "../util/util.ts";
+import {
+  getBoundry,
+  prependUTF8,
+} from "../util/util.ts";
 import { encode } from "../util/base58.ts";
 import { fnv1a } from "../util/fnv1a.ts";
-import { badFileFormat, fileTooLarge, invalidExt } from "../util/responses.ts";
+import {
+  badFileFormat,
+  fileTooLarge,
+  invalidExt,
+} from "../util/responses.ts";
 
 export default async (req: ServerRequest) => {
   if (req.method !== "POST") {
@@ -53,17 +60,22 @@ export default async (req: ServerRequest) => {
 };
 
 async function addFile(bucket: S3Bucket, file: FormFile): Promise<string> {
-  const id = (fnv1a(file.content!) + Date.now()).toString();
+  const content = prependUTF8(file.content!, `// crux.land - ${Date.now()}\n`);
+  console.log(JSON.stringify(content));
+  
+  const id = fnv1a(content).toString();
   const ext = file.filename.split(".").pop()! as typeof EXTENSIONS[number];
 
   const script = await bucket.getObject(id); // temporary
   if (!script) {
-    await bucket.putObject(id, file.content!, {
+    await bucket.putObject(id, content, {
       contentType: CONTENT_TYPE_FROM_EXTENSION[ext],
     });
 
     return encode(+id);
   } else {
-    return await addFile(bucket, file);
+    console.log("collision", id);
+    
+    return addFile(bucket, file);
   }
 }
