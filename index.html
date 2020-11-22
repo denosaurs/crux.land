@@ -147,9 +147,6 @@
 			submit.disabled = false;
 			submit.value = "Upload";
 
-			form.reset();
-			fileLabel.innerText = "Choose a script";
-
 			if (res.ok) {
 				url.style.display = "block";
 				url.innerText = window.location.href + await res.text();
