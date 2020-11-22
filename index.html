@@ -97,9 +97,12 @@
 			<h1>crux.land</h1>
 			<div class="grid">
 				<div>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aspernatur atque deserunt ducimus, id perspiciatis quam qui quo, repellat, rerum sint sit! Ad minima modi nesciunt nihil nulla officiis pariatur.
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aspernatur atque deserunt ducimus, id perspiciatis quam qui quo, repellat, rerum sint sit! Ad minima modi nesciunt nihil nulla officiis pariatur.
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aspernatur atque deserunt ducimus, id perspiciatis quam qui quo, repellat, rerum sint sit! Ad minima modi nesciunt nihil nulla officiis pariatur.
+					crux.land is a registry for deno scripts.
+					Scripts can be up to 10MB in size and are immutable,
+					so they can't be changed nor deleted, except if there is a legal reason.
+					You may also request a subdomain to be associated with a script.
+					<br />
+					To add a script you just need select a file and upload it with the interface on the right.
 				</div>
 				<form method="post" enctype="multipart/form-data" id="form">
 					<input class="file" type="file" name="file" id="file" accept=".ts,.tsx,.js,.jsx,.mjs,.cjs" required>
@@ -119,7 +122,13 @@
 		const fileLabel = document.getElementById("fileLabel");
 		const submit = document.getElementById("submit");
 
-		file.onchange = () => fileLabel.innerText = file.files[0].name;
+		file.onchange = () => {
+			if (file.files[0]) {
+				fileLabel.innerText = file.files[0].name;
+			} else {
+				fileLabel.innerText = "Choose a script";
+			}
+		};
 
 		form.onsubmit = async (e) => {
 			e.preventDefault();
@@ -144,6 +153,7 @@
 			if (res.ok) {
 				url.style.display = "block";
 				url.innerText = window.location.href + await res.text();
+				form.reset();
 			} else {
 				err.style.display = "block";
 				err.innerText = await res.text();
