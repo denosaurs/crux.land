@@ -7,7 +7,13 @@ import {
 import { equal, getBoundry } from "../util/util.ts";
 import { encode } from "../util/base58.ts";
 import { fnv1a } from "../util/fnv1a.ts";
-import { badFileFormat, fileCollision, fileTooLarge, hashCollision, invalidExt } from "../util/responses.ts";
+import {
+  badFileFormat,
+  fileCollision,
+  fileTooLarge,
+  hashCollision,
+  invalidExt,
+} from "../util/responses.ts";
 
 export default async (req: ServerRequest) => {
   if (req.method !== "POST") {

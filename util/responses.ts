@@ -16,12 +16,25 @@ export async function badFileFormat(req: ServerRequest): Promise<void> {
   return req.respond({ status: status.BAD_REQUEST, body: "Bad file format" });
 }
 
-export async function fileCollision(req: ServerRequest, id: string): Promise<void> {
-  return req.respond({ status: status.BAD_REQUEST, body: `File already exists (${id})` });
+export async function fileCollision(
+  req: ServerRequest,
+  id: string,
+): Promise<void> {
+  return req.respond(
+    { status: status.BAD_REQUEST, body: `File already exists (${id})` },
+  );
 }
 
-export async function hashCollision(req: ServerRequest, id: string): Promise<void> {
-  return req.respond({ status: status.BAD_REQUEST, body: `Hash collided, try changing your file slightly (${id})` });
+export async function hashCollision(
+  req: ServerRequest,
+  id: string,
+): Promise<void> {
+  return req.respond(
+    {
+      status: status.BAD_REQUEST,
+      body: `Hash collided, try changing your file slightly (${id})`,
+    },
+  );
 }
 
 export async function fileNotFound(req: ServerRequest): Promise<void> {
