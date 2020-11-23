@@ -20,6 +20,10 @@ export async function fileCollision(req: ServerRequest, id: string): Promise<voi
   return req.respond({ status: status.BAD_REQUEST, body: `File already exists (${id})` });
 }
 
+export async function hashCollision(req: ServerRequest, id: string): Promise<void> {
+  return req.respond({ status: status.BAD_REQUEST, body: `Hash collided, try changing your file slightly (${id})` });
+}
+
 export async function fileNotFound(req: ServerRequest): Promise<void> {
   return req.respond({ status: status.NOT_FOUND, body: "File not found" });
 }

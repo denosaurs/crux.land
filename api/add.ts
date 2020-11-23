@@ -4,10 +4,10 @@ import {
   EXTENSIONS,
   MAX_SIZE,
 } from "../util/constants.ts";
-import { getBoundry } from "../util/util.ts";
+import { equal, getBoundry } from "../util/util.ts";
 import { encode } from "../util/base58.ts";
 import { fnv1a } from "../util/fnv1a.ts";
-import { badFileFormat, fileCollision, fileTooLarge, invalidExt } from "../util/responses.ts";
+import { badFileFormat, fileCollision, fileTooLarge, hashCollision, invalidExt } from "../util/responses.ts";
 
 export default async (req: ServerRequest) => {
   if (req.method !== "POST") {
@@ -47,8 +47,12 @@ export default async (req: ServerRequest) => {
       contentType: CONTENT_TYPE_FROM_EXTENSION[ext],
     });
   } else {
-    console.log("collision", id);
-    return fileCollision(req, id);
+    if (equal(file.content!, script.body)) {
+      return fileCollision(req, id);
+    } else {
+      console.log("collision", id);
+      return hashCollision(req, id);
+    }
   }
 
   return req.respond({
