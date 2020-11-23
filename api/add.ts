@@ -1,26 +1,13 @@
-import {
-  FormFile,
-  MultipartReader,
-  S3Bucket,
-  ServerRequest,
-  status,
-} from "../deps.ts";
+import { MultipartReader, S3Bucket, ServerRequest, status } from "../deps.ts";
 import {
   CONTENT_TYPE_FROM_EXTENSION,
   EXTENSIONS,
   MAX_SIZE,
 } from "../util/constants.ts";
-import {
-  getBoundry,
-  prependUTF8,
-} from "../util/util.ts";
+import { getBoundry } from "../util/util.ts";
 import { encode } from "../util/base58.ts";
 import { fnv1a } from "../util/fnv1a.ts";
-import {
-  badFileFormat,
-  fileTooLarge,
-  invalidExt,
-} from "../util/responses.ts";
+import { badFileFormat, fileCollision, fileTooLarge, invalidExt } from "../util/responses.ts";
 
 export default async (req: ServerRequest) => {
   if (req.method !== "POST") {
@@ -51,29 +38,21 @@ export default async (req: ServerRequest) => {
     bucket: Deno.env.get("S3_BUCKET")!,
   });
 
-  const id = await addFile(bucket, file);
+  const id = encode(fnv1a(file.content!));
+  const ext = file.filename.split(".").pop()! as typeof EXTENSIONS[number];
+
+  const script = await bucket.getObject(id);
+  if (!script) {
+    await bucket.putObject(id, file.content!, {
+      contentType: CONTENT_TYPE_FROM_EXTENSION[ext],
+    });
+  } else {
+    console.log("collision", id);
+    return fileCollision(req, id);
+  }
 
   return req.respond({
     status: status.OK,
     body: id,
   });
 };
-
-async function addFile(bucket: S3Bucket, file: FormFile): Promise<string> {
-  const content = prependUTF8(file.content!, `// crux.land - ${Date.now()}\n`);
-  const id = fnv1a(content).toString();
-  const ext = file.filename.split(".").pop()! as typeof EXTENSIONS[number];
-
-  const script = await bucket.getObject(id); // temporary
-  if (!script) {
-    await bucket.putObject(id, content, {
-      contentType: CONTENT_TYPE_FROM_EXTENSION[ext],
-    });
-
-    return encode(+id);
-  } else {
-    console.log("collision", id);
-    
-    return addFile(bucket, file);
-  }
-}

@@ -3,6 +3,10 @@ const alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 export function encode(data: number): string {
   let output = "";
 
+  if (data === 0) {
+    return alphabet[data];
+  }
+
   while (data > 0) {
     const remainder = data % 58;
     data = Math.floor(data / 58);

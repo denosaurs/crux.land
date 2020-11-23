@@ -1,5 +1,5 @@
 import { S3Bucket, ServerRequest, status } from "../deps.ts";
-import { decode, validate } from "../util/base58.ts";
+import { validate } from "../util/base58.ts";
 import { EXTENSION_FROM_CONTENT_TYPE, EXTENSIONS } from "../util/constants.ts";
 import { fileNotFound, invalidExt, invalidId } from "../util/responses.ts";
 
@@ -33,7 +33,7 @@ export default async (req: ServerRequest) => {
     bucket: Deno.env.get("S3_BUCKET")!,
   });
 
-  const file = await bucket.getObject(decode(id).toString());
+  const file = await bucket.getObject(id);
 
   if (!file) {
     return fileNotFound(req);
