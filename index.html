@@ -1,222 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<title>crux.land</title>
-	</head>
-	<style>
+
+<head>
+	<meta charset="UTF-8">
+	<title>crux.land</title>
+</head>
+<style>
+	body {
+		--border-color: rgb(210, 214, 220);
+		--secondary-color: rgb(244, 245, 247);
+
+		margin: 0;
+		display: flex;
+		font-family: sans-serif;
+		line-height: 1.25em;
+	}
+
+	h1 {
+		text-align: center;
+		margin-bottom: 1em;
+		line-height: initial;
+	}
+
+	a {
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.grid {
+		margin: 0 auto;
+		max-width: 55%;
+		display: grid;
+		grid-template-columns: 2fr 1fr;
+		grid-gap: 5%;
+	}
+
+	form {
+		display: flex;
+		justify-content: space-evenly;
+		align-items: center;
+		flex-direction: column;
+	}
+
+	form .file {
+		width: 0.1px;
+		height: 0.1px;
+		opacity: 0;
+		overflow: hidden;
+		position: absolute;
+		z-index: -1;
+	}
+
+	.button {
+		border-radius: .375rem;
+		box-shadow: rgba(0, 0, 0, 0.05) 0 1px 2px 0;
+		background-color: var(--secondary-color);
+		border: 1px solid var(--border-color);
+		color: inherit;
+
+		padding: 8px 16px;
+		display: inline-block;
+		width: 100%;
+		box-sizing: border-box;
+
+		font-size: 16px;
+		line-height: 24px;
+		font-weight: 500;
+
+		cursor: pointer;
+		user-select: none;
+		text-align: center;
+	}
+
+	#submit:disabled {
+		cursor: not-allowed;
+	}
+
+	.err {
+		display: none;
+		grid-column: span 2;
+		cursor: initial;
+		user-select: initial;
+		color: rgb(237, 41, 57) !important;
+	}
+
+	.url {
+		display: none;
+		grid-column: span 2;
+		cursor: initial;
+		user-select: all;
+	}
+
+	footer {
+		border-top: 1px solid var(--border-color);
+		background-color: var(--secondary-color);
+		height: 75px;
+		width: 100%;
+		bottom: 0;
+		position: absolute;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		padding: 0 20px;
+		justify-content: space-between;
+	}
+
+	footer h1 {
+		margin: 0;
+		font-size: inherit;
+		display: inline-flex;
+		align-items: center;
+		align-self: flex-end;
+	}
+
+	footer h1 p {
+		margin-right: 10px;
+	}
+
+	footer h1 svg {
+		height: 40px;
+	}
+
+	footer h1 svg path {
+		fill: #000;
+	}
+
+	@media (prefers-color-scheme: dark) {
 		body {
-			--border-color: rgb(210, 214, 220);
-			--secondary-color: rgb(244, 245, 247);
+			--border-color: rgb(42, 42, 42);
+			--secondary-color: rgb(32, 32, 32);
 
-			margin: 0;
-			display: flex;
-			font-family: sans-serif;
-			line-height: 1.25em;
-		}
-
-		h1 {
-			text-align: center;
-			margin-bottom: 1em;
-			line-height: initial;
-		}
-
-		a {
-			text-decoration: none;
-			color: inherit;
-		}
-
-		.grid {
-			margin: 0 auto;
-			max-width: 55%;
-			display: grid;
-			grid-template-columns: 2fr 1fr;
-			grid-gap: 5%;
-		}
-
-		form {
-			display: flex;
-			justify-content: space-evenly;
-			align-items: center;
-			flex-direction: column;
-		}
-
-		form .file {
-			width: 0.1px;
-			height: 0.1px;
-			opacity: 0;
-			overflow: hidden;
-			position: absolute;
-			z-index: -1;
-		}
-
-		.button {
-			border-radius: .375rem;
-			box-shadow: rgba(0, 0, 0, 0.05) 0 1px 2px 0;
-			background-color: var(--secondary-color);
-			border: 1px solid var(--border-color);
-			color: inherit;
-
-			padding: 8px 16px;
-			display: inline-block;
-			width: 100%;
-			box-sizing: border-box;
-
-			font-size: 16px;
-			line-height: 24px;
-			font-weight: 500;
-
-			cursor: pointer;
-			user-select: none;
-			text-align: center;
+			background-color: rgb(26, 26, 26);
+			color: rgb(210, 214, 220);
 		}
 
 		#submit:disabled {
-			cursor: not-allowed;
-		}
-
-		.err {
-			display: none;
-			grid-column: span 2;
-			cursor: initial;
-			user-select: initial;
-			color: rgb(237, 41, 57) !important;
-		}
-
-		.url {
-			display: none;
-			grid-column: span 2;
-			cursor: initial;
-			user-select: all;
-		}
-
-		footer {
-			border-top: 1px solid var(--border-color);
-			background-color: var(--secondary-color);
-			height: 75px;
-			width: 100%;
-			bottom: 0;
-			position: absolute;
-			box-sizing: border-box;
-			display: flex;
-			align-items: center;
-			padding: 0 20px;
-			justify-content: space-between;
-		}
-
-		footer h1 {
-			margin: 0;
-			font-size: inherit;
-			display: inline-flex;
-			align-items: center;
-			align-self: flex-end;
-		}
-
-		footer h1 p {
-			margin-right: 10px;
-		}
-
-		footer h1 svg {
-			height: 40px;
+			background-color: rgb(50, 50, 50);
+			color: rgb(192, 196, 202);
 		}
 
 		footer h1 svg path {
-			fill: #000;
+			fill: #fff;
 		}
+	}
+</style>
 
-		@media (prefers-color-scheme: dark) {
-			body {
-				--border-color: rgb(42, 42, 42);
-				--secondary-color: rgb(32, 32, 32);
-
-				background-color: rgb(26, 26, 26);
-				color: rgb(210, 214, 220);
-			}
-
-			#submit:disabled {
-				background-color: rgb(50, 50, 50);
-				color: rgb(192, 196, 202);
-			}
-
-			footer h1 svg path {
-				fill: #fff;
-			}
-		}
-	</style>
-	<body>
-		<div>
-			<h1>crux.land</h1>
-			<div class="grid">
-				<div>
-					crux.land is a registry for deno scripts.
-					Scripts can be up to 10MB in size and are immutable,
-					so they can't be changed nor deleted, except if there is a legal reason.
-					<br />
-					You may also request a subdomain to be associated with a script.
-					<br />
-					To add a script you just need select a file and upload it with the interface on the right.
-				</div>
-				<form method="post" enctype="multipart/form-data" id="form">
-					<input class="file" type="file" name="file" id="file" accept=".ts,.tsx,.js,.jsx,.mjs,.cjs" required>
-					<label class="button" for="file" id="fileLabel">Choose a script</label>
-					<input class="button" type="submit" id="submit" value="Upload">
-				</form>
-				<div class="button url" id="url"></div>
-				<div class="button err" id="err"></div>
+<body>
+	<div>
+		<h1>crux.land</h1>
+		<div class="grid">
+			<div>
+				crux.land is a free registry service meant for hosting small (< 10mb) single deno scripts.
+				All uploaded scripts are immutable and will not be changed nor deleted unless there is a legal reason
+				or if it is found malicious.
+				<br />
+				You may also request a subdomain to be associated with a script.
+				<br />
+				To add a script you just need select a file and upload it with the interface on the right.
 			</div>
+			<form method="post" enctype="multipart/form-data" id="form">
+				<input class="file" type="file" name="file" id="file" accept=".ts,.tsx,.js,.jsx,.mjs,.cjs" required>
+				<label class="button" for="file" id="fileLabel">Choose a script</label>
+				<input class="button" type="submit" id="submit" value="Upload">
+			</form>
+			<div class="button url" id="url"></div>
+			<div class="button err" id="err"></div>
 		</div>
-		<footer>
-			<p>© 2020 Denosaurs team</p>
-			<a href="https://vercel.com?utm_source=denosaurs&utm_campaign=oss">
-				<h1>
-					<p>Powered by</p>
-					<svg viewBox="0 0 283 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M141.04 16c-11.04 0-19 7.2-19 18s8.96 18 20 18c6.67 0 12.55-2.64 16.19-7.09l-7.65-4.42c-2.02 2.21-5.09 3.5-8.54 3.5-4.79 0-8.86-2.5-10.37-6.5h28.02c.22-1.12.35-2.28.35-3.5 0-10.79-7.96-17.99-19-17.99zm-9.46 14.5c1.25-3.99 4.67-6.5 9.45-6.5 4.79 0 8.21 2.51 9.45 6.5h-18.9zM248.72 16c-11.04 0-19 7.2-19 18s8.96 18 20 18c6.67 0 12.55-2.64 16.19-7.09l-7.65-4.42c-2.02 2.21-5.09 3.5-8.54 3.5-4.79 0-8.86-2.5-10.37-6.5h28.02c.22-1.12.35-2.28.35-3.5 0-10.79-7.96-17.99-19-17.99zm-9.45 14.5c1.25-3.99 4.67-6.5 9.45-6.5 4.79 0 8.21 2.51 9.45 6.5h-18.9zM200.24 34c0 6 3.92 10 10 10 4.12 0 7.21-1.87 8.8-4.92l7.68 4.43c-3.18 5.3-9.14 8.49-16.48 8.49-11.05 0-19-7.2-19-18s7.96-18 19-18c7.34 0 13.29 3.19 16.48 8.49l-7.68 4.43c-1.59-3.05-4.68-4.92-8.8-4.92-6.07 0-10 4-10 10zm82.48-29v46h-9V5h9zM36.95 0L73.9 64H0L36.95 0zm92.38 5l-27.71 48L73.91 5H84.3l17.32 30 17.32-30h10.39zm58.91 12v9.69c-1-.29-2.06-.49-3.2-.49-5.81 0-10 4-10 10V51h-9V17h9v9.2c0-5.08 5.91-9.2 13.2-9.2z"/></svg>
-				</h1>
-			</a>
-		</footer>
-	</body>
-	<script>
-		const form = document.getElementById("form");
-		const url = document.getElementById("url");
-		const err = document.getElementById("err");
-		const file = document.getElementById("file");
-		const fileLabel = document.getElementById("fileLabel");
-		const submit = document.getElementById("submit");
+	</div>
+	<footer>
+		<p>© 2020 Denosaurs team</p>
+		<a href="https://vercel.com?utm_source=denosaurs&utm_campaign=oss">
+			<h1>
+				<p>Powered by</p>
+				<svg viewBox="0 0 283 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path
+						d="M141.04 16c-11.04 0-19 7.2-19 18s8.96 18 20 18c6.67 0 12.55-2.64 16.19-7.09l-7.65-4.42c-2.02 2.21-5.09 3.5-8.54 3.5-4.79 0-8.86-2.5-10.37-6.5h28.02c.22-1.12.35-2.28.35-3.5 0-10.79-7.96-17.99-19-17.99zm-9.46 14.5c1.25-3.99 4.67-6.5 9.45-6.5 4.79 0 8.21 2.51 9.45 6.5h-18.9zM248.72 16c-11.04 0-19 7.2-19 18s8.96 18 20 18c6.67 0 12.55-2.64 16.19-7.09l-7.65-4.42c-2.02 2.21-5.09 3.5-8.54 3.5-4.79 0-8.86-2.5-10.37-6.5h28.02c.22-1.12.35-2.28.35-3.5 0-10.79-7.96-17.99-19-17.99zm-9.45 14.5c1.25-3.99 4.67-6.5 9.45-6.5 4.79 0 8.21 2.51 9.45 6.5h-18.9zM200.24 34c0 6 3.92 10 10 10 4.12 0 7.21-1.87 8.8-4.92l7.68 4.43c-3.18 5.3-9.14 8.49-16.48 8.49-11.05 0-19-7.2-19-18s7.96-18 19-18c7.34 0 13.29 3.19 16.48 8.49l-7.68 4.43c-1.59-3.05-4.68-4.92-8.8-4.92-6.07 0-10 4-10 10zm82.48-29v46h-9V5h9zM36.95 0L73.9 64H0L36.95 0zm92.38 5l-27.71 48L73.91 5H84.3l17.32 30 17.32-30h10.39zm58.91 12v9.69c-1-.29-2.06-.49-3.2-.49-5.81 0-10 4-10 10V51h-9V17h9v9.2c0-5.08 5.91-9.2 13.2-9.2z" />
+					</svg>
+			</h1>
+		</a>
+	</footer>
+</body>
+<script>
+	const form = document.getElementById("form");
+	const url = document.getElementById("url");
+	const err = document.getElementById("err");
+	const file = document.getElementById("file");
+	const fileLabel = document.getElementById("fileLabel");
+	const submit = document.getElementById("submit");
 
-		file.onchange = () => {
-			if (file.files[0]) {
-				fileLabel.innerText = file.files[0].name;
-			} else {
-				fileLabel.innerText = "Choose a script";
-			}
-		};
-		form.onreset = () => fileLabel.innerText = "Choose a script";
+	file.onchange = () => {
+		if (file.files[0]) {
+			fileLabel.innerText = file.files[0].name;
+		} else {
+			fileLabel.innerText = "Choose a script";
+		}
+	};
+	form.onreset = () => fileLabel.innerText = "Choose a script";
 
-		form.onsubmit = async (e) => {
-			e.preventDefault();
+	form.onsubmit = async (e) => {
+		e.preventDefault();
 
-			url.style.display = "none";
-			err.style.display = "none";
+		url.style.display = "none";
+		err.style.display = "none";
 
-			submit.disabled = true;
-			submit.value = "Uploading...";
+		submit.disabled = true;
+		submit.value = "Uploading...";
 
-			const res = await fetch("/api/add", {
-				method: "POST",
-				body: new FormData(form),
-			});
+		const res = await fetch("/api/add", {
+			method: "POST",
+			body: new FormData(form),
+		});
 
-			submit.disabled = false;
-			submit.value = "Upload";
+		submit.disabled = false;
+		submit.value = "Upload";
 
-			if (res.ok) {
-				url.style.display = "block";
-				url.innerText = window.location.href + await res.text();
-				form.reset();
-			} else {
-				err.style.display = "block";
-				err.innerText = await res.text();
-			}
-		};
-	</script>
+		if (res.ok) {
+			url.style.display = "block";
+			url.innerText = window.location.href + await res.text();
+			form.reset();
+		} else {
+			err.style.display = "block";
+			err.innerText = await res.text();
+		}
+	};
+</script>
+
 </html>
