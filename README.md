@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/github/license/denosaurs/crux.land)](https://github.com/denosaurs/crux.land/blob/master/LICENSE)
 
-`crux.land` is a free registry service meant for hosting small (`< 10mb`) single deno scripts.
+`crux.land` is a free registry service meant for hosting small (`< 10kB`) single deno scripts.
 All uploaded scripts are immutable and will not be changed nor deleted unless there is a legal reason
 or if it is found malicious.
 

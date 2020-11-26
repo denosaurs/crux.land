@@ -1,4 +1,4 @@
-export const MAX_SIZE = 10000;
+export const MAX_SIZE = 1000 * 10;
 export const EXTENSIONS = [
   "ts",
   "tsx",
