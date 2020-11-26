@@ -1,11 +1,11 @@
 import { S3Bucket, ServerRequest, status } from "../deps.ts";
 import { validate } from "../util/base58.ts";
 import { EXTENSION_FROM_CONTENT_TYPE, EXTENSIONS } from "../util/constants.ts";
-import { fileNotFound, invalidExt, invalidId } from "../util/responses.ts";
+import { fileNotFound, invalidExt, invalidId, invalidMethod } from "../util/responses.ts";
 
 export default async (req: ServerRequest) => {
   if (req.method !== "GET") {
-    req.respond({ status: status.BAD_REQUEST });
+    return invalidMethod(req);
   }
 
   console.log("headers", req.headers);

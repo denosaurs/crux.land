@@ -13,11 +13,12 @@ import {
   fileTooLarge,
   hashCollision,
   invalidExt,
+  invalidMethod,
 } from "../util/responses.ts";
 
 export default async (req: ServerRequest) => {
   if (req.method !== "POST") {
-    req.respond({ status: status.BAD_REQUEST });
+    return invalidMethod(req);
   }
 
   const reader = new MultipartReader(req.body, getBoundry(req.headers));
