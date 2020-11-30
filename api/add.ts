@@ -7,6 +7,7 @@ import {
 import { equal, getBoundry } from "../util/util.ts";
 import { encode } from "../util/base58.ts";
 import { fnv1a } from "../util/fnv1a.ts";
+import { generate } from "../util/token.ts";
 import {
   badFileFormat,
   fileCollision,
@@ -16,7 +17,7 @@ import {
   invalidMethod,
 } from "../util/responses.ts";
 
-export default async (req: ServerRequest) => {
+export default async function (req: ServerRequest) {
   if (req.method !== "POST") {
     return invalidMethod(req);
   }
@@ -26,7 +27,9 @@ export default async (req: ServerRequest) => {
   const form = await reader.readForm();
   const file = form.file("file");
 
-  if (file instanceof Array || file === undefined) {
+  if (
+    file instanceof Array || file === undefined || file.content === undefined
+  ) {
     return badFileFormat(req);
   }
 
@@ -45,25 +48,31 @@ export default async (req: ServerRequest) => {
     bucket: Deno.env.get("S3_BUCKET")!,
   });
 
-  const id = encode(fnv1a(file.content!));
+  const id = encode(fnv1a(file.content));
+  const token = generate();
   const ext = file.filename.split(".").pop()! as typeof EXTENSIONS[number];
-
-  const script = await bucket.getObject(id);
-  if (!script) {
-    await bucket.putObject(id, file.content!, {
-      contentType: CONTENT_TYPE_FROM_EXTENSION[ext],
-    });
-  } else {
-    if (equal(file.content!, script.body)) {
+  const contentType = CONTENT_TYPE_FROM_EXTENSION[ext];
+  
+  const script = await bucket.headObject(id);
+  if (script) {
+    if (equal(file.content, (await bucket.getObject(id))?.body)) {
       return fileCollision(req, id);
-    } else {
-      console.log("collision", id);
-      return hashCollision(req, id);
     }
+    
+    console.log("collision", id);
+    return hashCollision(req, id);
   }
+
+  await bucket.putObject(id, file.content, {
+    contentType,
+    meta: { token }
+  });
 
   return req.respond({
     status: status.OK,
-    body: id,
+    body: JSON.stringify({
+      id,
+      token
+    }),
   });
-};
+}
