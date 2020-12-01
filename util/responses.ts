@@ -1,5 +1,9 @@
 import { ServerRequest, status } from "../deps.ts";
 
+export async function invalidMethod(req: ServerRequest): Promise<void> {
+  return req.respond({ status: status.BAD_REQUEST, body: "Invalid method" });
+}
+
 export async function invalidId(req: ServerRequest): Promise<void> {
   return req.respond({ status: status.BAD_REQUEST, body: "Invalid id" });
 }

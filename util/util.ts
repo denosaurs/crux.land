@@ -28,6 +28,10 @@ export function prependUTF8(arr: Uint8Array, text: string): Uint8Array {
   return new Uint8Array([...encodeUTF8(text), ...arr]);
 }
 
-export function equal(a: Uint8Array, b: Uint8Array): boolean {
-  return a.length === b.length && a.every((v, i) => v === b[i]);
+export function equal(
+  a: Uint8Array | undefined,
+  b: Uint8Array | undefined,
+): boolean {
+  return a === undefined || b === undefined ||
+    (a.length === b.length && a.every((v, i) => v === b[i]));
 }

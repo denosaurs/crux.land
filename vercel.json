@@ -1,14 +1,14 @@
 {
   "functions": {
     "api/**/*.[jt]s": {
-      "runtime": "vercel-deno@0.7.5"
+      "runtime": "vercel-deno@0.7.6"
     }
   },
   "rewrites": [{ "source": "/:id", "destination": "/api/get" }],
   "build": {
     "env": {
       "DENO_UNSTABLE": "true",
-      "DENO_VERSION": "1.5.3"
+      "DENO_VERSION": "1.5.4"
     }
   }
 }
