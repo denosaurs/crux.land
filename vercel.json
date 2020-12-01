@@ -4,9 +4,7 @@
       "runtime": "vercel-deno@0.7.5"
     }
   },
-  "rewrites": [
-    { "source": "/:id", "destination": "/api/:id" }
-  ],
+  "rewrites": [{ "source": "/:id", "destination": "/api/get" }],
   "build": {
     "env": {
       "DENO_UNSTABLE": "true",
