@@ -7,8 +7,12 @@ import {
   invalidId,
   invalidMethod,
 } from "../util/responses.ts";
+import {
+  renderCode
+} from "../templates/code.ts";
 
 type S3File = GetObjectResponse;
+const decoder = new TextDecoder();
 
 async function raw(
   req: ServerRequest,
@@ -41,12 +45,13 @@ async function formatted(
   id: string,
   ext: string | undefined,
 ): Promise<void> {
+  const code = decoder.decode(file.body);
   return req.respond({
     status: status.OK,
     headers: new Headers({
       "Content-Type": 'text/html; charset=utf-8',
     }),
-    body: file.body,
+    body: renderCode(code, id, ext),
   });
 }
 

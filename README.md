@@ -9,7 +9,8 @@ or if it is found malicious.
 ## Maintainers
 
 - Elias Sjögreen ([@eliassjogreen](https://github.com/eliassjogreen))
-- [@crowlKats](https://github.com/crowlKats)
+- crowlKats [@crowlKats](https://github.com/crowlKats)
+- Filippo Rossi [@qu4k](https://github.com/qu4k)
 
 ## Other
 
