@@ -2,176 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./index.css" />
     <title>crux.land</title>
   </head>
-  <style>
-    body {
-      --border-color: rgb(210, 214, 220);
-      --secondary-color: rgb(244, 245, 247);
-
-      margin: 0;
-      display: flex;
-      font-family: sans-serif;
-      line-height: 1.25em;
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 1em;
-      line-height: initial;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .grid {
-      margin: 0 auto;
-      max-width: 55%;
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      grid-gap: 5%;
-    }
-
-    form {
-      display: flex;
-      justify-content: space-evenly;
-      align-items: center;
-      flex-direction: column;
-    }
-
-    form .file {
-      width: 0.1px;
-      height: 0.1px;
-      opacity: 0;
-      overflow: hidden;
-      position: absolute;
-      z-index: -1;
-    }
-
-    .button {
-      border-radius: 0.375rem;
-      box-shadow: rgba(0, 0, 0, 0.05) 0 1px 2px 0;
-      background-color: var(--secondary-color);
-      border: 1px solid var(--border-color);
-      color: inherit;
-
-      padding: 8px 16px;
-      display: inline-block;
-      width: 100%;
-      box-sizing: border-box;
-
-      font-size: 16px;
-      line-height: 24px;
-      font-weight: 500;
-
-      cursor: pointer;
-      user-select: none;
-      text-align: center;
-    }
-
-    #submit:disabled {
-      cursor: not-allowed;
-    }
-
-    .err {
-      display: none;
-      grid-column: span 2;
-      cursor: initial;
-      user-select: initial;
-      color: rgb(237, 41, 57) !important;
-    }
-
-    .url {
-      display: none;
-      grid-column: 1;
-      cursor: text;
-      user-select: all;
-    }
-
-    .tok {
-      display: none;
-      grid-column: 2;
-      grid-row: 2;
-      user-select: initial;
-      color: var(--secondary-color);
-    }
-
-    .tok:hover {
-      cursor: pointer;
-    }
-
-    .tok:focus {
-      color: inherit;
-      cursor: text;
-      user-select: all;
-    }
-
-    footer {
-      border-top: 1px solid var(--border-color);
-      background-color: var(--secondary-color);
-      height: 75px;
-      width: 100%;
-      bottom: 0;
-      position: absolute;
-      box-sizing: border-box;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      align-items: center;
-      padding: 0 20px;
-    }
-
-    footer p {
-      margin: 0;
-    }
-
-    footer svg {
-      height: 40px;
-    }
-
-    .logoFill {
-      fill: #000;
-    }
-
-    .github {
-      justify-self: center;
-    }
-
-    .vercel {
-      margin: 0;
-      font-size: inherit;
-      display: flex;
-      align-items: center;
-      user-select: none;
-      font-weight: 700;
-      justify-self: end;
-    }
-
-    .vercel p {
-      margin-right: 10px;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      body {
-        --border-color: rgb(42, 42, 42);
-        --secondary-color: rgb(32, 32, 32);
-
-        background-color: rgb(26, 26, 26);
-        color: rgb(210, 214, 220);
-      }
-
-      #submit:disabled {
-        background-color: rgb(50, 50, 50);
-        color: rgb(192, 196, 202);
-      }
-
-      .logoFill {
-        fill: #fff;
-      }
-    }
-  </style>
-
   <body>
     <div>
       <h1>crux.land</h1>
@@ -195,14 +28,14 @@
             accept=".ts,.tsx,.js,.jsx,.mjs,.cjs"
             required
           />
-          <label class="button" for="file" id="fileLabel"
+          <label class="item button" for="file" id="fileLabel"
             >Choose a script</label
           >
-          <input class="button" type="submit" id="submit" value="Upload" />
+          <input class="item button" type="submit" id="submit" value="Upload" />
         </form>
-        <div class="button url" id="url">https://crux.land/4JR1qv</div>
-        <button class="button tok" id="tok">2PMcuq</button>
-        <div class="button err" id="err"></div>
+        <div class="item button url" id="url">https://crux.land/4JR1qv</div>
+        <button class="item button tok" id="tok">2PMcuq</button>
+        <div class="item button err" id="err"></div>
       </div>
     </div>
     <footer>
