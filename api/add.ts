@@ -1,4 +1,9 @@
-import { MultipartReader, S3Bucket, ServerRequest, status } from "../deps.ts";
+import {
+  MultipartReader,
+  readerFromIterable,
+  S3Bucket,
+  status,
+} from "../deps.ts";
 import {
   CONTENT_TYPE_FROM_EXTENSION,
   EXTENSIONS,
@@ -17,12 +22,15 @@ import {
   invalidMethod,
 } from "../util/responses.ts";
 
-export default async function (req: ServerRequest) {
+export async function add(req: Request): Promise<Response> {
   if (req.method !== "POST") {
-    return invalidMethod(req);
+    return invalidMethod();
   }
 
-  const reader = new MultipartReader(req.body, getBoundry(req.headers));
+  const reader = new MultipartReader(
+    readerFromIterable(req.body!.getIterator()),
+    getBoundry(req.headers),
+  );
 
   const form = await reader.readForm();
   const file = form.file("file");
@@ -30,15 +38,15 @@ export default async function (req: ServerRequest) {
   if (
     file instanceof Array || file === undefined || file.content === undefined
   ) {
-    return badFileFormat(req);
+    return badFileFormat();
   }
 
   if (file.size > MAX_SIZE) {
-    return fileTooLarge(req);
+    return fileTooLarge();
   }
 
   if (!EXTENSIONS.some((valid) => valid === file.filename.split(".").pop()!)) {
-    return invalidExt(req);
+    return invalidExt();
   }
 
   const bucket = new S3Bucket({
@@ -52,27 +60,29 @@ export default async function (req: ServerRequest) {
   const token = generate();
   const ext = file.filename.split(".").pop()! as typeof EXTENSIONS[number];
   const contentType = CONTENT_TYPE_FROM_EXTENSION[ext];
-  
+
   const script = await bucket.headObject(id);
   if (script) {
     if (equal(file.content, (await bucket.getObject(id))?.body)) {
-      return fileCollision(req, id);
+      return fileCollision(id);
     }
-    
+
     console.log("collision", id);
-    return hashCollision(req, id);
+    return hashCollision(id);
   }
 
   await bucket.putObject(id, file.content, {
     contentType,
-    meta: { token }
+    meta: { token },
   });
 
-  return req.respond({
-    status: status.OK,
-    body: JSON.stringify({
+  return new Response(
+    JSON.stringify({
       id,
-      token
+      token,
     }),
-  });
+    {
+      status: status.OK,
+    },
+  );
 }

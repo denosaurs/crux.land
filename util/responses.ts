@@ -1,46 +1,44 @@
-import { ServerRequest, status } from "../deps.ts";
+import { status } from "../deps.ts";
 
-export async function invalidMethod(req: ServerRequest): Promise<void> {
-  return req.respond({ status: status.BAD_REQUEST, body: "Invalid method" });
+export function invalidMethod(): Response {
+  return new Response("Invalid method", { status: status.BAD_REQUEST });
 }
 
-export async function invalidId(req: ServerRequest): Promise<void> {
-  return req.respond({ status: status.BAD_REQUEST, body: "Invalid id" });
+export function invalidId(): Response {
+  return new Response("Invalid id", { status: status.BAD_REQUEST });
 }
 
-export async function invalidExt(req: ServerRequest): Promise<void> {
-  return req.respond({ status: status.BAD_REQUEST, body: "Invalid extension" });
+export function invalidExt(): Response {
+  return new Response("Invalid extension", { status: status.BAD_REQUEST });
 }
 
-export async function fileTooLarge(req: ServerRequest): Promise<void> {
-  return req.respond({ status: status.BAD_REQUEST, body: "File too large" });
+export function fileTooLarge(): Response {
+  return new Response("File too large", { status: status.BAD_REQUEST });
 }
 
-export async function badFileFormat(req: ServerRequest): Promise<void> {
-  return req.respond({ status: status.BAD_REQUEST, body: "Bad file format" });
+export function badFileFormat(): Response {
+  return new Response("Bad file format", { status: status.BAD_REQUEST });
 }
 
-export async function fileCollision(
-  req: ServerRequest,
+export function fileCollision(
   id: string,
-): Promise<void> {
-  return req.respond(
-    { status: status.BAD_REQUEST, body: `File already exists (${id})` },
-  );
+): Response {
+  return new Response(`File already exists (${id})`, {
+    status: status.BAD_REQUEST,
+  });
 }
 
-export async function hashCollision(
-  req: ServerRequest,
+export function hashCollision(
   id: string,
-): Promise<void> {
-  return req.respond(
+): Response {
+  return new Response(
+    `Hash collided, try changing your file slightly (${id})`,
     {
       status: status.BAD_REQUEST,
-      body: `Hash collided, try changing your file slightly (${id})`,
     },
   );
 }
 
-export async function fileNotFound(req: ServerRequest): Promise<void> {
-  return req.respond({ status: status.NOT_FOUND, body: "File not found" });
+export function fileNotFound(): Response {
+  return new Response("File not found", { status: status.NOT_FOUND });
 }

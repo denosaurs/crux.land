@@ -1,4 +1,4 @@
-import { S3Bucket, GetObjectResponse, ServerRequest, status } from "../deps.ts";
+import { GetObjectResponse, S3Bucket, status } from "../deps.ts";
 import { validate } from "../util/base58.ts";
 import { EXTENSION_FROM_CONTENT_TYPE, EXTENSIONS } from "../util/constants.ts";
 import {
@@ -7,57 +7,46 @@ import {
   invalidId,
   invalidMethod,
 } from "../util/responses.ts";
-import {
-  renderCode
-} from "../templates/code.ts";
+import { renderCode } from "../templates/code.ts";
 
 type S3File = GetObjectResponse;
 const decoder = new TextDecoder();
 
-async function raw(
-  req: ServerRequest,
-  file: S3File,
-  id: string,
-  ext: string | undefined,
-): Promise<void> {
-
+function raw(file: S3File, id: string, ext: string | undefined): Response {
   if (!ext) {
-    return req.respond({
+    return new Response(undefined, {
       status: status.TEMPORARY_REDIRECT,
       headers: new Headers({
         "Location": `./${id}.${EXTENSION_FROM_CONTENT_TYPE[file.contentType!]}`,
       }),
     });
   } else {
-    return req.respond({
+    return new Response(file.body, {
       status: status.OK,
       headers: new Headers({
         "Content-Type": `${file.contentType!}; charset=utf-8`,
       }),
-      body: file.body,
     });
   }
 }
 
-async function formatted(
-  req: ServerRequest,
+function formatted(
   file: S3File,
   id: string,
   ext: string | undefined,
-): Promise<void> {
+): Response {
   const code = decoder.decode(file.body);
-  return req.respond({
+  return new Response(renderCode(code, id, ext), {
     status: status.OK,
     headers: new Headers({
-      "Content-Type": 'text/html; charset=utf-8',
+      "Content-Type": "text/html; charset=utf-8",
     }),
-    body: renderCode(code, id, ext),
   });
 }
 
-export default async function (req: ServerRequest): Promise<void> {
+export async function get(req: Request): Promise<Response> {
   if (req.method !== "GET") {
-    return invalidMethod(req);
+    return invalidMethod();
   }
 
   const accept = req.headers.get("accept");
@@ -68,11 +57,11 @@ export default async function (req: ServerRequest): Promise<void> {
   const ext = rest.pop();
 
   if (!id || !validate(id)) {
-    return invalidId(req);
+    return invalidId();
   }
 
   if (ext && !EXTENSIONS.some((valid) => valid === ext)) {
-    return invalidExt(req);
+    return invalidExt();
   }
 
   const bucket = new S3Bucket({
@@ -85,12 +74,12 @@ export default async function (req: ServerRequest): Promise<void> {
   const file = await bucket.getObject(id);
 
   if (!file) {
-    return fileNotFound(req);
+    return fileNotFound();
   }
 
   if (isHtml) {
-    return formatted(req, file, id, ext);
+    return formatted(file, id, ext);
   } else {
-    return raw(req, file, id, ext);
+    return raw(file, id, ext);
   }
 }
