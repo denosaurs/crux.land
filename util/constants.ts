@@ -1,4 +1,6 @@
+// Max file size (10000 bytes / 10 kB)
 export const MAX_SIZE = 1000 * 10;
+
 export const EXTENSIONS = [
   "ts",
   "tsx",
@@ -7,21 +9,24 @@ export const EXTENSIONS = [
   "mjs",
   "cjs",
 ] as const;
-export const CONTENT_TYPE_FROM_EXTENSION: {
-  [ext in typeof EXTENSIONS[number]]: string;
-} = {
+
+export const CONTENT_TYPE_FROM_EXTENSION = {
   "ts": "application/typescript",
   "tsx": "text/tsx",
   "js": "application/javascript",
   "jsx": "text/jsx",
   "mjs": "application/javascript",
   "cjs": "application/javascript",
-};
-export const EXTENSION_FROM_CONTENT_TYPE: {
-  [type: string]: typeof EXTENSIONS[number];
-} = {
+} as const;
+
+export const EXTENSION_FROM_CONTENT_TYPE = {
   "application/typescript": "ts",
   "text/tsx": "tsx",
   "application/javascript": "js",
   "text/jsx": "jsx",
-};
+} as const;
+
+export const S3_BUCKET = Deno.env.get("S3_BUCKET")!;
+export const S3_REGION = Deno.env.get("S3_REGION")!;
+export const S3_ACCESS_KEY_ID = Deno.env.get("S3_ACCESS_KEY_ID")!;
+export const S3_SECRET_ACCESS_KEY = Deno.env.get("S3_SECRET_ACCESS_KEY")!;

@@ -1,4 +1,5 @@
-import { GetObjectResponse, S3Bucket, status } from "../deps.ts";
+import { GetObjectResponse, S3Bucket, Status } from "../deps.ts";
+import { Code } from "../pages/code.jsx";
 import { validate } from "../util/base58.ts";
 import { EXTENSION_FROM_CONTENT_TYPE, EXTENSIONS } from "../util/constants.ts";
 import {
@@ -6,23 +7,29 @@ import {
   invalidExt,
   invalidId,
   invalidMethod,
+  jsx,
 } from "../util/responses.ts";
-import { renderCode } from "../templates/code.ts";
+import { decodeUTF8, readToUint8Array } from "../util/util.ts";
 
-type S3File = GetObjectResponse;
-const decoder = new TextDecoder();
-
-function raw(file: S3File, id: string, ext: string | undefined): Response {
+function raw(
+  file: GetObjectResponse,
+  id: string,
+  ext: string | undefined,
+): Response {
   if (!ext) {
     return new Response(undefined, {
-      status: status.TEMPORARY_REDIRECT,
+      status: Status.TemporaryRedirect,
       headers: new Headers({
-        "Location": `./${id}.${EXTENSION_FROM_CONTENT_TYPE[file.contentType!]}`,
+        "Location": `./${id}.${
+          EXTENSION_FROM_CONTENT_TYPE[
+            file.contentType! as keyof typeof EXTENSION_FROM_CONTENT_TYPE
+          ]
+        }`,
       }),
     });
   } else {
     return new Response(file.body, {
-      status: status.OK,
+      status: Status.OK,
       headers: new Headers({
         "Content-Type": `${file.contentType!}; charset=utf-8`,
       }),
@@ -30,18 +37,18 @@ function raw(file: S3File, id: string, ext: string | undefined): Response {
   }
 }
 
-function formatted(
-  file: S3File,
+async function formatted(
+  file: GetObjectResponse,
   id: string,
   ext: string | undefined,
-): Response {
-  const code = decoder.decode(file.body);
-  return new Response(renderCode(code, id, ext), {
-    status: status.OK,
-    headers: new Headers({
-      "Content-Type": "text/html; charset=utf-8",
-    }),
-  });
+): Promise<Response> {
+  const body = await readToUint8Array(file.body);
+  const code = decodeUTF8(body);
+  const language = EXTENSION_FROM_CONTENT_TYPE[
+    file.contentType! as keyof typeof EXTENSION_FROM_CONTENT_TYPE
+  ];
+
+  return jsx(Code({ code, language }));
 }
 
 export async function get(req: Request): Promise<Response> {
@@ -60,7 +67,7 @@ export async function get(req: Request): Promise<Response> {
     return invalidId();
   }
 
-  if (ext && !EXTENSIONS.some((valid) => valid === ext)) {
+  if (ext !== undefined && !EXTENSIONS.some((valid) => valid === ext)) {
     return invalidExt();
   }
 

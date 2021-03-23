@@ -1,18 +1,21 @@
 import {
   MultipartReader,
-  readerFromIterable,
+  readerFromStreamReader,
   S3Bucket,
-  status,
+  Status,
 } from "../deps.ts";
 import {
   CONTENT_TYPE_FROM_EXTENSION,
   EXTENSIONS,
   MAX_SIZE,
 } from "../util/constants.ts";
-import { equal, getBoundry } from "../util/util.ts";
+import {
+  getMimeBoundry,
+  readToUint8Array,
+  uint8ArraysEqual,
+} from "../util/util.ts";
 import { encode } from "../util/base58.ts";
 import { fnv1a } from "../util/fnv1a.ts";
-import { generate } from "../util/token.ts";
 import {
   badFileFormat,
   fileCollision,
@@ -20,6 +23,7 @@ import {
   hashCollision,
   invalidExt,
   invalidMethod,
+  json,
 } from "../util/responses.ts";
 
 export async function add(req: Request): Promise<Response> {
@@ -28,8 +32,8 @@ export async function add(req: Request): Promise<Response> {
   }
 
   const reader = new MultipartReader(
-    readerFromIterable(req.body!.getIterator()),
-    getBoundry(req.headers),
+    readerFromStreamReader(req.body!.getReader()),
+    getMimeBoundry(req.headers)!,
   );
 
   const form = await reader.readForm();
@@ -49,6 +53,9 @@ export async function add(req: Request): Promise<Response> {
     return invalidExt();
   }
 
+  const id = encode(fnv1a(file.content));
+  const ext = file.filename.split(".").pop()! as typeof EXTENSIONS[number];
+  const contentType = CONTENT_TYPE_FROM_EXTENSION[ext];
   const bucket = new S3Bucket({
     region: Deno.env.get("S3_REGION")!,
     accessKeyID: Deno.env.get("S3_ACCESS_KEY_ID")!,
@@ -56,14 +63,11 @@ export async function add(req: Request): Promise<Response> {
     bucket: Deno.env.get("S3_BUCKET")!,
   });
 
-  const id = encode(fnv1a(file.content));
-  const token = generate();
-  const ext = file.filename.split(".").pop()! as typeof EXTENSIONS[number];
-  const contentType = CONTENT_TYPE_FROM_EXTENSION[ext];
-
   const script = await bucket.headObject(id);
-  if (script) {
-    if (equal(file.content, (await bucket.getObject(id))?.body)) {
+  if (script !== undefined) {
+    const object = (await bucket.getObject(id))!;
+    const body = await readToUint8Array(object.body);
+    if (uint8ArraysEqual(file.content, body)) {
       return fileCollision(id);
     }
 
@@ -71,18 +75,7 @@ export async function add(req: Request): Promise<Response> {
     return hashCollision(id);
   }
 
-  await bucket.putObject(id, file.content, {
-    contentType,
-    meta: { token },
-  });
+  await bucket.putObject(id, file.content, { contentType });
 
-  return new Response(
-    JSON.stringify({
-      id,
-      token,
-    }),
-    {
-      status: status.OK,
-    },
-  );
+  return json({ id });
 }

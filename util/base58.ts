@@ -1,5 +1,6 @@
 const alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
+/** Encodes a number as a base58 string */
 export function encode(data: number): string {
   let output = "";
 
@@ -16,10 +17,12 @@ export function encode(data: number): string {
   return output;
 }
 
+/** Validates that the given string is a valid base58 string */
 export function validate(data: string): boolean {
   return new RegExp(`^[${alphabet}]*$`).test(data);
 }
 
+/** Decodes a base58 string to encoded number */
 export function decode(data: string): number {
   let output = 0;
 
