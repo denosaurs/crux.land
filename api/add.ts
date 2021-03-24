@@ -1,16 +1,15 @@
-import {
-  MultipartReader,
-  readerFromStreamReader,
-  S3Bucket,
-  Status,
-} from "../deps.ts";
+import { S3Bucket } from "../deps.ts";
 import {
   CONTENT_TYPE_FROM_EXTENSION,
   EXTENSIONS,
   MAX_SIZE,
+  S3_ACCESS_KEY_ID,
+  S3_BUCKET,
+  S3_REGION,
+  S3_SECRET_ACCESS_KEY,
 } from "../util/constants.ts";
 import {
-  getMimeBoundry,
+  encodeUTF8,
   readToUint8Array,
   uint8ArraysEqual,
 } from "../util/util.ts";
@@ -31,43 +30,41 @@ export async function add(req: Request): Promise<Response> {
     return invalidMethod();
   }
 
-  const reader = new MultipartReader(
-    readerFromStreamReader(req.body!.getReader()),
-    getMimeBoundry(req.headers)!,
-  );
-
-  const form = await reader.readForm();
-  const file = form.file("file");
+  const file = await req.json();
 
   if (
-    file instanceof Array || file === undefined || file.content === undefined
+    file instanceof Array || file === undefined || file.content === undefined ||
+    file.name === undefined
   ) {
     return badFileFormat();
   }
 
-  if (file.size > MAX_SIZE) {
+  const content = encodeUTF8(file.content);
+  const size = content.byteLength;
+
+  if (size > MAX_SIZE) {
     return fileTooLarge();
   }
 
-  if (!EXTENSIONS.some((valid) => valid === file.filename.split(".").pop()!)) {
+  if (!EXTENSIONS.some((valid) => valid === file.name.split(".").pop()!)) {
     return invalidExt();
   }
 
-  const id = encode(fnv1a(file.content));
-  const ext = file.filename.split(".").pop()! as typeof EXTENSIONS[number];
+  const id = encode(fnv1a(content));
+  const ext = file.name.split(".").pop()! as typeof EXTENSIONS[number];
   const contentType = CONTENT_TYPE_FROM_EXTENSION[ext];
   const bucket = new S3Bucket({
-    region: Deno.env.get("S3_REGION")!,
-    accessKeyID: Deno.env.get("S3_ACCESS_KEY_ID")!,
-    secretKey: Deno.env.get("S3_SECRET_KEY")!,
-    bucket: Deno.env.get("S3_BUCKET")!,
+    region: S3_REGION,
+    accessKeyID: S3_ACCESS_KEY_ID,
+    secretKey: S3_SECRET_ACCESS_KEY,
+    bucket: S3_BUCKET,
   });
 
   const script = await bucket.headObject(id);
   if (script !== undefined) {
     const object = (await bucket.getObject(id))!;
     const body = await readToUint8Array(object.body);
-    if (uint8ArraysEqual(file.content, body)) {
+    if (uint8ArraysEqual(content, body)) {
       return fileCollision(id);
     }
 
@@ -75,7 +72,7 @@ export async function add(req: Request): Promise<Response> {
     return hashCollision(id);
   }
 
-  await bucket.putObject(id, file.content, { contentType });
+  await bucket.putObject(id, content, { contentType });
 
   return json({ id });
 }

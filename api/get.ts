@@ -1,7 +1,14 @@
 import { GetObjectResponse, S3Bucket, Status } from "../deps.ts";
 import { Code } from "../pages/code.jsx";
 import { validate } from "../util/base58.ts";
-import { EXTENSION_FROM_CONTENT_TYPE, EXTENSIONS } from "../util/constants.ts";
+import {
+  EXTENSION_FROM_CONTENT_TYPE,
+  EXTENSIONS,
+  S3_ACCESS_KEY_ID,
+  S3_BUCKET,
+  S3_REGION,
+  S3_SECRET_ACCESS_KEY,
+} from "../util/constants.ts";
 import {
   fileNotFound,
   invalidExt,
@@ -72,10 +79,10 @@ export async function get(req: Request): Promise<Response> {
   }
 
   const bucket = new S3Bucket({
-    region: Deno.env.get("S3_REGION")!,
-    accessKeyID: Deno.env.get("S3_ACCESS_KEY_ID")!,
-    secretKey: Deno.env.get("S3_SECRET_KEY")!,
-    bucket: Deno.env.get("S3_BUCKET")!,
+    region: S3_REGION,
+    accessKeyID: S3_ACCESS_KEY_ID,
+    secretKey: S3_SECRET_ACCESS_KEY,
+    bucket: S3_BUCKET,
   });
 
   const file = await bucket.getObject(id);

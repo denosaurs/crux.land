@@ -54,26 +54,31 @@ export function Index() {
                 submit.disabled = true;
                 submit.value = 'Uploading...';
 
-                const res = fetch('/api/add', {
-                  method: 'POST',
-                  body: new FormData(form),
-                }).then(async (res) => {
-                  submit.disabled = false;
-                  submit.value = 'Upload';
-
-                  if (res.ok) {
-                    res.json().then(({ id }) => {
-                      result.style.color = 'rgba(55, 65, 81, var(--tw-text-opacity))';
-                      result.innerText = window.location.href + id;
-                    });
-                  } else {
-                    res.text().then(err => {
-                      result.style.color = 'rgba(220, 38, 38, var(--tw-text-opacity))';
-                      result.innerText = err;
-                    });
-                  }
-                  result.style.display = 'flex';
-                  form.reset();
+                file.files[0].text().then((content) => {
+                  const res = fetch('/api/add', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                      name: file.files[0].name,
+                      content
+                    }),
+                  }).then(async (res) => {
+                    submit.disabled = false;
+                    submit.value = 'Upload';
+  
+                    if (res.ok) {
+                      res.json().then(({ id }) => {
+                        result.style.color = 'rgba(55, 65, 81, var(--tw-text-opacity))';
+                        result.innerText = window.location.href + id;
+                      });
+                    } else {
+                      res.text().then(err => {
+                        result.style.color = 'rgba(220, 38, 38, var(--tw-text-opacity))';
+                        result.innerText = err;
+                      });
+                    }
+                    result.style.display = 'flex';
+                    form.reset();
+                  });
                 });
               "
             >

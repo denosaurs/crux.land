@@ -1,22 +1,6 @@
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
-/** Gets the mime boundry from provided Headers */
-export function getMimeBoundry(headers: Headers): string | undefined {
-  const value = headers.get("content-type")!;
-  const params = new Map();
-
-  value
-    .split(";")
-    .slice(1)
-    .map((s) => s.trim().split("="))
-    .filter((arr) => arr.length > 1)
-    .map(([k, v]) => [k, v.replace(/^"([^"]*)"$/, "$1")])
-    .forEach(([k, v]) => params.set(k, v));
-
-  return params.get("boundary");
-}
-
 /** Escapes unsafe html characters in a string */
 export function escapeHTML(unsafe: string): string {
   return unsafe
