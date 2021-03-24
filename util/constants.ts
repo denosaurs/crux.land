@@ -8,6 +8,8 @@ export const EXTENSIONS = [
   "jsx",
   "mjs",
   "cjs",
+  "json",
+  "wasm"
 ] as const;
 
 export const CONTENT_TYPE_FROM_EXTENSION = {
@@ -17,6 +19,8 @@ export const CONTENT_TYPE_FROM_EXTENSION = {
   "jsx": "text/jsx",
   "mjs": "application/javascript",
   "cjs": "application/javascript",
+  "json": "application/json",
+  "wasm": "application/wasm",
 } as const;
 
 export const EXTENSION_FROM_CONTENT_TYPE = {
@@ -24,6 +28,8 @@ export const EXTENSION_FROM_CONTENT_TYPE = {
   "text/tsx": "tsx",
   "application/javascript": "js",
   "text/jsx": "jsx",
+  "application/json": "json",
+  "application/wasm": "wasm"
 } as const;
 
 export const BASE58_ALPHABET =
