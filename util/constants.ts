@@ -26,6 +26,11 @@ export const EXTENSION_FROM_CONTENT_TYPE = {
   "text/jsx": "jsx",
 } as const;
 
+export const BASE58_ALPHABET =
+  "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+export const MIN_LEN = 1;
+export const MAX_LEN = 6;
+
 export const S3_BUCKET = Deno.env.get("S3_BUCKET")!;
 export const S3_REGION = Deno.env.get("S3_REGION")!;
 export const S3_ACCESS_KEY_ID = Deno.env.get("S3_ACCESS_KEY_ID")!;

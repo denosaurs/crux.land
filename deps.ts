@@ -19,3 +19,7 @@ export {
   Prism,
 } from "https://jspm.dev/prism-react-renderer@1.2.0";
 export { default as theme } from "https://jspm.dev/prism-react-renderer@1.2.0/themes/github";
+
+// Router
+export { match } from "https://cdn.skypack.dev/path-to-regexp@6.2.0?dts";
+export type { MatchResult } from "https://cdn.skypack.dev/path-to-regexp@6.2.0?dts";

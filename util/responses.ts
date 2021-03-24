@@ -39,8 +39,8 @@ export function hashCollision(
   );
 }
 
-export function fileNotFound(): Response {
-  return new Response("File not found", { status: Status.NotFound });
+export function notFound(): Response {
+  return new Response("Not found", { status: Status.NotFound });
 }
 
 export function html(html: string, init?: ResponseInit): Response {

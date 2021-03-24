@@ -1,4 +1,4 @@
-import { S3Bucket } from "../deps.ts";
+import { MatchResult, S3Bucket } from "../deps.ts";
 import {
   CONTENT_TYPE_FROM_EXTENSION,
   EXTENSIONS,
@@ -25,7 +25,10 @@ import {
   json,
 } from "../util/responses.ts";
 
-export async function add(req: Request): Promise<Response> {
+export async function add(
+  req: Request,
+  _match: MatchResult,
+): Promise<Response> {
   if (req.method !== "POST") {
     return invalidMethod();
   }
