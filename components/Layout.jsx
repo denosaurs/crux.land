@@ -1,6 +1,6 @@
 import { h } from "../deps.ts";
-import { Footer } from "./Footer.jsx";
-import { Header } from "./Header.jsx";
+import { Footer } from "./footer.jsx";
+import { Header } from "./header.jsx";
 
 export function Layout({ title, header, children }) {
   return (

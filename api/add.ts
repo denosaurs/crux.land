@@ -1,4 +1,4 @@
-import { MatchResult, S3Bucket } from "../deps.ts";
+import { MatchResult, S3Bucket, Status } from "../deps.ts";
 import {
   CONTENT_TYPE_FROM_EXTENSION,
   EXTENSIONS,
@@ -27,7 +27,7 @@ import {
 
 export async function add(
   req: Request,
-  _match: MatchResult,
+  match: MatchResult,
 ): Promise<Response> {
   if (req.method !== "POST") {
     return invalidMethod();
@@ -77,5 +77,5 @@ export async function add(
 
   await bucket.putObject(id, content, { contentType });
 
-  return json({ id });
+  return json({ id }, { status: Status.Created });
 }

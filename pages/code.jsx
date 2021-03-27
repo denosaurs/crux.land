@@ -1,7 +1,7 @@
 import { h } from "../deps.ts";
-import { Layout } from "../components/Layout.jsx";
-import { CodeBlock } from "../components/CodeBlock.jsx";
-import { Block } from "../components/Block.jsx";
+import { Layout } from "../components/layout.jsx";
+import { CodeBlock } from "../components/code_block.jsx";
+import { Block } from "../components/block.jsx";
 
 export function Code({ code, language }) {
   return (

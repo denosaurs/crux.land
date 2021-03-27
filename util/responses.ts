@@ -12,12 +12,52 @@ export function invalidExt(): Response {
   return new Response("Invalid extension", { status: Status.BadRequest });
 }
 
+export function invalidAlias(): Response {
+  return new Response("Invalid alias", { status: Status.BadRequest });
+}
+
+export function aliasCollision(): Response {
+  return new Response("Alias already exists", { status: Status.BadRequest });
+}
+
+export function aliasFailed(): Response {
+  return new Response("Alias request failed", { status: Status.BadRequest });
+}
+
+export function aliasNotFound(): Response {
+  return new Response("Alias not found", { status: Status.BadRequest });
+}
+
+export function invalidSecret(): Response {
+  return new Response("Invalid secret", { status: Status.BadRequest });
+}
+
+export function invalidSecretFormat(): Response {
+  return new Response("Invalid secret format", { status: Status.BadRequest });
+}
+
+export function invalidTagFormat(): Response {
+  return new Response("Invalid tag format", { status: Status.BadRequest });
+}
+
+export function tagCollision(): Response {
+  return new Response("tag already exists", { status: Status.BadRequest });
+}
+
+export function releaseFailed(): Response {
+  return new Response("Release failed", { status: Status.BadRequest });
+}
+
 export function fileTooLarge(): Response {
   return new Response("File too large", { status: Status.BadRequest });
 }
 
 export function badFileFormat(): Response {
   return new Response("Bad file format", { status: Status.BadRequest });
+}
+
+export function created(): Response {
+  return new Response(undefined, { status: Status.Created });
 }
 
 export function fileCollision(

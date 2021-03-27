@@ -6,23 +6,50 @@ import {
   S3_REGION,
   S3_SECRET_ACCESS_KEY,
 } from "../util/constants.ts";
+import { getIdFromAlias } from "../util/alias.ts";
 import { invalidMethod, notFound } from "../util/responses.ts";
 
-export async function get(req: Request, match: MatchResult): Promise<Response> {
+export async function getAlias(
+  req: Request,
+  match: MatchResult,
+): Promise<Response> {
+  if (req.method !== "GET") {
+    return invalidMethod();
+  }
+
+  const { alias, tag, ext } = match.params;
+
+  const id = await getIdFromAlias(alias, tag);
+
+  if (id === undefined) {
+    return notFound();
+  }
+
+  return new Response(undefined, {
+    status: Status.TemporaryRedirect,
+    headers: new Headers({
+      "Location": `/api/get/${id}${ext}`,
+    }),
+  });
+}
+
+export async function getId(
+  req: Request,
+  match: MatchResult,
+): Promise<Response> {
   if (req.method !== "GET") {
     return invalidMethod();
   }
 
   const { id, ext } = match.params;
+  const bucket = new S3Bucket({
+    region: S3_REGION,
+    accessKeyID: S3_ACCESS_KEY_ID,
+    secretKey: S3_SECRET_ACCESS_KEY,
+    bucket: S3_BUCKET,
+  });
 
   if (ext === "") {
-    const bucket = new S3Bucket({
-      region: S3_REGION,
-      accessKeyID: S3_ACCESS_KEY_ID,
-      secretKey: S3_SECRET_ACCESS_KEY,
-      bucket: S3_BUCKET,
-    });
-
     const file = await bucket.headObject(id);
 
     if (file === undefined) {
@@ -32,7 +59,7 @@ export async function get(req: Request, match: MatchResult): Promise<Response> {
     return new Response(undefined, {
       status: Status.TemporaryRedirect,
       headers: new Headers({
-        "Location": `./${id}.${
+        "Location": `/api/get/${id}.${
           EXTENSION_FROM_CONTENT_TYPE[
             file.contentType! as keyof typeof EXTENSION_FROM_CONTENT_TYPE
           ]
@@ -40,13 +67,6 @@ export async function get(req: Request, match: MatchResult): Promise<Response> {
       }),
     });
   }
-
-  const bucket = new S3Bucket({
-    region: S3_REGION,
-    accessKeyID: S3_ACCESS_KEY_ID,
-    secretKey: S3_SECRET_ACCESS_KEY,
-    bucket: S3_BUCKET,
-  });
 
   const file = await bucket.getObject(id);
 

@@ -7,6 +7,11 @@ export {
 // AWS
 export { S3Bucket } from "https://deno.land/x/s3@0.4.0/mod.ts";
 export type { GetObjectResponse } from "https://deno.land/x/s3@0.4.0/mod.ts";
+export {
+  DynamoDBClient,
+  GetItemCommand,
+  PutItemCommand,
+} from "https://cdn.skypack.dev/@aws-sdk/client-dynamodb@3.9.0";
 
 // Preact
 export {

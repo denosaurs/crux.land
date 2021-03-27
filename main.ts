@@ -1,14 +1,12 @@
 import { add } from "./api/add.ts";
-import { get } from "./api/get.ts";
+import { getAlias, getId } from "./api/get.ts";
 import { jsx, notFound } from "./util/responses.ts";
 import { Index } from "./pages/index.jsx";
-import { MatchHandler, router } from "./util/router.ts";
+import { router } from "./util/router.ts";
 import {
-  BASE58_ALPHABET,
+  ALIAS_PATH,
   EXTENSION_FROM_CONTENT_TYPE,
-  EXTENSIONS,
-  MAX_LEN,
-  MIN_LEN,
+  ID_PATH,
   S3_ACCESS_KEY_ID,
   S3_BUCKET,
   S3_REGION,
@@ -17,20 +15,28 @@ import {
 import { MatchResult, S3Bucket, Status } from "./deps.ts";
 import { decodeUTF8, readToUint8Array } from "./util/util.ts";
 import { Code } from "./pages/code.jsx";
+import { request } from "./api/alias/request.ts";
+import { release } from "./api/alias/release.ts";
+import { getIdFromAlias } from "./util/alias.ts";
 
-const idPath = `:id([${BASE58_ALPHABET}]{${MIN_LEN},${MAX_LEN}}):ext((?:\\.(?:${
-  EXTENSIONS.join("|")
-}))?)`;
-
-async function idHandler(
+async function unknownHandler(
   req: Request,
   match: MatchResult,
 ): Promise<Response> {
-  const { id, ext } = match.params;
+  let { id } = match.params;
+  const { alias, tag, ext } = match.params;
   const accept = req.headers.get("accept");
   const isHtml = accept && accept.indexOf("html") >= 0;
 
   if (isHtml) {
+    if (alias !== undefined && tag !== undefined) {
+      id = await getIdFromAlias(alias, tag);
+
+      if (id === undefined) {
+        return notFound();
+      }
+    }
+
     const bucket = new S3Bucket({
       region: S3_REGION,
       accessKeyID: S3_ACCESS_KEY_ID,
@@ -55,22 +61,24 @@ async function idHandler(
     return new Response(undefined, {
       status: Status.TemporaryRedirect,
       headers: new Headers({
-        "Location": `./api/get/${id}${ext}`,
+        "Location": `/api/get${match.path}`,
       }),
     });
   }
 }
 
-const routes: Record<string, MatchHandler> = {
-  "/api/add": add,
-  "/": (_req) => jsx(Index()),
-};
-routes[`/api/get/${idPath}`] = get;
-routes[`/${idPath}`] = idHandler;
-
 addEventListener("fetch", (e: any) => {
   e.respondWith(
-    router(routes, (req) => {
+    router({
+      "/": (_req) => jsx(Index()),
+      "/api/add": add,
+      "/api/alias/request": request,
+      "/api/alias/release": release,
+      [`/api/get/${ID_PATH}`]: getId,
+      [`/api/get/${ALIAS_PATH}`]: getAlias,
+      [`/${ID_PATH}`]: unknownHandler,
+      [`/${ALIAS_PATH}`]: unknownHandler,
+    }, (req) => {
       return notFound();
     })(e.request),
   );

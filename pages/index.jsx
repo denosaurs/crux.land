@@ -1,9 +1,9 @@
 import { h } from "../deps.ts";
-import { Layout } from "../components/Layout.jsx";
-import { Block } from "../components/Block.jsx";
-import { LabelButton } from "../components/LabelButton.jsx";
-import { InputButton } from "../components/InputButton.jsx";
-import { ResultButton } from "../components/ResultButton.jsx";
+import { Layout } from "../components/layout.jsx";
+import { Block } from "../components/block.jsx";
+import { LabelButton } from "../components/label_button.jsx";
+import { InputButton } from "../components/input_button.jsx";
+import { ResultButton } from "../components/result_button.jsx";
 import { EXTENSIONS } from "../util/constants.ts";
 
 export function Index() {
