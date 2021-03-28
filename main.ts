@@ -2,6 +2,7 @@ import { add } from "./api/add.ts";
 import { getAlias, getId } from "./api/get.ts";
 import { jsx, notFound } from "./util/responses.ts";
 import { Index } from "./pages/index.jsx";
+import { Api } from "./pages/api.jsx";
 import { router } from "./util/router.ts";
 import {
   ALIAS_PATH,
@@ -71,6 +72,7 @@ addEventListener("fetch", (e: any) => {
   e.respondWith(
     router({
       "/": (_req) => jsx(Index()),
+      "/api": (_req) => jsx(Api()),
       "/api/add": add,
       "/api/alias/request": request,
       "/api/alias/release": release,
