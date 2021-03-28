@@ -8,11 +8,7 @@ import {
   S3_REGION,
   S3_SECRET_ACCESS_KEY,
 } from "../util/constants.ts";
-import {
-  encodeUTF8,
-  readToUint8Array,
-  uint8ArraysEqual,
-} from "../util/util.ts";
+import { readToUint8Array, uint8ArraysEqual } from "../util/util.ts";
 import { encode } from "../util/base58.ts";
 import { fnv1a } from "../util/fnv1a.ts";
 import {
@@ -33,21 +29,18 @@ export async function add(
     return invalidMethod();
   }
 
-  const file = await req.json();
+  const form = await req.formData();
+  const file = form.get("file");
 
-  if (
-    file instanceof Array || file === undefined || file.content === undefined ||
-    file.name === undefined
-  ) {
+  if (!file || !(file instanceof File)) {
     return badFileFormat();
   }
 
-  const content = encodeUTF8(file.content);
-  const size = content.byteLength;
-
-  if (size > MAX_SIZE) {
+  if (file.size > MAX_SIZE) {
     return fileTooLarge();
   }
+
+  const content = new Uint8Array(await file.arrayBuffer());
 
   if (!EXTENSIONS.some((valid) => valid === file.name.split(".").pop()!)) {
     return invalidExt();
