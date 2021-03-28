@@ -1,6 +1,6 @@
 import { h } from "../deps.ts";
-import { Layout } from "../components/layout.jsx";
-import { Block } from "../components/block.jsx";
+import { Layout } from "../components/layout.tsx";
+import { Block } from "../components/block.tsx";
 
 export function Api() {
   return (
@@ -34,7 +34,9 @@ export function Api() {
   );
 }
 
-function Endpoint({ method, path, children }) {
+function Endpoint(
+  { method, path, children }: { method: string; path: string },
+) {
   return (
     <div>
       <span className="text-lg font-semibold font-mono">

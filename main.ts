@@ -1,8 +1,8 @@
 import { add } from "./api/add.ts";
 import { getAlias, getId } from "./api/get.ts";
 import { jsx, notFound } from "./util/responses.ts";
-import { Index } from "./pages/index.jsx";
-import { Api } from "./pages/api.jsx";
+import { Index } from "./pages/index.tsx";
+import { Api } from "./pages/api.tsx";
 import { router } from "./util/router.ts";
 import {
   ALIAS_PATH,
@@ -15,7 +15,7 @@ import {
 } from "./util/constants.ts";
 import { MatchResult, S3Bucket, Status } from "./deps.ts";
 import { decodeUTF8, readToUint8Array } from "./util/util.ts";
-import { Code } from "./pages/code.jsx";
+import { Code } from "./pages/code.tsx";
 import { request } from "./api/alias/request.ts";
 import { release } from "./api/alias/release.ts";
 import { getIdFromAlias } from "./util/alias.ts";

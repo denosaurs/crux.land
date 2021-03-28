@@ -1,9 +1,9 @@
 import { h } from "../deps.ts";
-import { Layout } from "../components/layout.jsx";
-import { Block } from "../components/block.jsx";
-import { LabelButton } from "../components/label_button.jsx";
-import { InputButton } from "../components/input_button.jsx";
-import { ResultButton } from "../components/result_button.jsx";
+import { Layout } from "../components/layout.tsx";
+import { Block } from "../components/block.tsx";
+import { LabelButton } from "../components/label_button.tsx";
+import { InputButton } from "../components/input_button.tsx";
+import { ResultButton } from "../components/result_button.tsx";
 import { EXTENSIONS } from "../util/constants.ts";
 
 export function Index() {
@@ -12,7 +12,7 @@ export function Index() {
       <Block>
         <div className="flex flex-col lg:flex-row">
           <div className="inset-y-0 left-0 w-full lg:w-3/5">
-            crux.land is a free registry service meant for hosting small ( &#60;
+            crux.land is a free registry service meant for hosting small (≤
             10kB) single deno scripts. All uploaded scripts are immutable and
             will not be changed nor deleted unless there is a legal reason or if
             it is found to be malicious.

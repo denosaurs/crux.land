@@ -1,6 +1,8 @@
 import { h, Prism, PrismExports, theme } from "../deps.ts";
 
-export function CodeBlock({ code, language }) {
+export function CodeBlock(
+  { code, language }: { code: string; language: string },
+) {
   const Highlight = PrismExports.default;
   return (
     <div

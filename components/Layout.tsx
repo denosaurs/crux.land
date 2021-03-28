@@ -1,8 +1,10 @@
 import { h } from "../deps.ts";
-import { Footer } from "./footer.jsx";
-import { Header } from "./header.jsx";
+import { Footer } from "./footer.tsx";
+import { Header } from "./header.tsx";
 
-export function Layout({ title, header, children }) {
+export function Layout(
+  { title, header, children }: { title: string; header: boolean },
+) {
   return (
     <html>
       <head>
