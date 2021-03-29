@@ -1,4 +1,4 @@
-import { S3Bucket, Status } from "../deps.ts";
+import { decode, S3Bucket, Status } from "../deps.ts";
 import {
   CONTENT_TYPE_FROM_EXTENSION,
   EXTENSIONS,
@@ -30,18 +30,20 @@ export async function add(
     return invalidMethod();
   }
 
-  const form = await req.formData();
-  const file = form.get("file");
+  const file = await req.json();
 
-  if (!file || !(file instanceof File)) {
+  if (
+    typeof file.content !== "string" ||
+    typeof file.name !== "string"
+  ) {
     return badFileFormat();
   }
 
-  if (file.size > MAX_SIZE) {
+  const content = decode(file.content);
+
+  if (content.byteLength > MAX_SIZE) {
     return fileTooLarge();
   }
-
-  const content = new Uint8Array(await file.arrayBuffer());
 
   if (!EXTENSIONS.some((valid) => valid === file.name.split(".").pop()!)) {
     return invalidExt();

@@ -42,7 +42,41 @@ export function Index() {
                 label.innerText = 'Choose a script';
               "
               onsubmit="
+                // Copyright 2018-2021 the Deno authors. All rights reserved. MIT license.
+                function encode(data) {
+                  const base64abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 
+                    'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 
+                    'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 
+                    'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', 
+                    '5', '6', '7', '8', '9', '+', '/'];
+                  const uint8 = new Uint8Array(data);
+                  let result = '',
+                    i;
+                  const l = uint8.length;
+                  for (i = 2; i < l; i += 3) {
+                    result += base64abc[uint8[i - 2] >> 2];
+                    result += base64abc[((uint8[i - 2] & 0x03) << 4) | (uint8[i - 1] >> 4)];
+                    result += base64abc[((uint8[i - 1] & 0x0f) << 2) | (uint8[i] >> 6)];
+                    result += base64abc[uint8[i] & 0x3f];
+                  }
+                  if (i === l + 1) {
+                    // 1 octet yet to write
+                    result += base64abc[uint8[i - 2] >> 2];
+                    result += base64abc[(uint8[i - 2] & 0x03) << 4];
+                    result += '==';
+                  }
+                  if (i === l) {
+                    // 2 octets yet to write
+                    result += base64abc[uint8[i - 2] >> 2];
+                    result += base64abc[((uint8[i - 2] & 0x03) << 4) | (uint8[i - 1] >> 4)];
+                    result += base64abc[(uint8[i - 1] & 0x0f) << 2];
+                    result += '=';
+                  }
+                  return result;
+                }
+
                 const form = document.getElementById('form');
+                const file = document.getElementById('file');
                 const submit = document.getElementById('submit');
                 const result = document.getElementById('result');
 
@@ -53,26 +87,31 @@ export function Index() {
                 submit.disabled = true;
                 submit.value = 'Uploading...';
 
-                const res = fetch('/api/add', {
-                  method: 'POST',
-                  body: new FormData(form),
-                }).then(async (res) => {
-                  submit.disabled = false;
-                  submit.value = 'Upload';
+                file.files[0].arrayBuffer().then((buf) => {
+                  fetch('/api/add', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                      name: file.files[0].name,
+                      content: encode(buf)
+                    }),
+                  }).then(async (res) => {
+                    submit.disabled = false;
+                    submit.value = 'Upload';
 
-                  if (res.ok) {
-                    res.json().then(({ id }) => {
-                      result.style.color = 'rgba(55, 65, 81, var(--tw-text-opacity))';
-                      result.innerText = window.location.href + id;
-                    });
-                  } else {
-                    res.text().then(err => {
-                      result.style.color = 'rgba(220, 38, 38, var(--tw-text-opacity))';
-                      result.innerText = err;
-                    });
-                  }
-                  result.style.display = 'flex';
-                  form.reset();
+                    if (res.ok) {
+                      res.json().then(({ id }) => {
+                        result.style.color = 'rgba(55, 65, 81, var(--tw-text-opacity))';
+                        result.innerText = window.location.href + id;
+                      });
+                    } else {
+                      res.text().then(err => {
+                        result.style.color = 'rgba(220, 38, 38, var(--tw-text-opacity))';
+                        result.innerText = err;
+                      });
+                    }
+                    result.style.display = 'flex';
+                    form.reset();
+                  });
                 });
               "
             >
