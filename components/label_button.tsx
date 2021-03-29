@@ -2,7 +2,8 @@ import { h, JSX } from "../deps.ts";
 
 export function LabelButton(
   { children, ...props }: {
-    children: JSX.Element | string;
+    // deno-lint-ignore no-explicit-any
+    children: any;
     props: JSX.HTMLAttributes<HTMLLabelElement>;
   },
 ) {

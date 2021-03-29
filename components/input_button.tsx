@@ -2,7 +2,8 @@ import { h, JSX } from "../deps.ts";
 
 export function InputButton(
   { children, ...props }: {
-    children: JSX.Element;
+    // deno-lint-ignore no-explicit-any
+    children: any;
     props: JSX.HTMLAttributes<HTMLInputElement>;
   },
 ) {

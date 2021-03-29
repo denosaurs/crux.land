@@ -4,7 +4,8 @@ import { Header } from "./header.tsx";
 
 export function Layout(
   { children, title, header }: {
-    children: JSX.Element;
+    // deno-lint-ignore no-explicit-any
+    children: any;
     title: string;
     header?: boolean;
   },
