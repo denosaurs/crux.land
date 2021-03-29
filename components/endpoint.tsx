@@ -1,7 +1,7 @@
 import { h } from "../deps.ts";
 
 export function Endpoint(
-  { children, method, path,  }: { children: any, method: string; path: string },
+  { children, method, path }: { children: any; method: string; path: string },
 ) {
   return (
     <div>

@@ -1,4 +1,4 @@
-import { h, Prism, Highlight, theme } from "../deps.ts";
+import { h, Highlight, Prism, theme } from "../deps.ts";
 
 export function CodeBlock(
   { code, language }: { code: string; language: string },
