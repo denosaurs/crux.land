@@ -80,7 +80,7 @@ export function Index() {
                 name="file"
                 id="file"
                 accept={EXTENSIONS.map((ext) => "." + ext).join(",")}
-                onchange="
+                onChange="
                   const file = document.getElementById('file');
                   const label = document.getElementById('label');
 

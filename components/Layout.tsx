@@ -3,12 +3,16 @@ import { Footer } from "./footer.tsx";
 import { Header } from "./header.tsx";
 
 export function Layout(
-  { title, header, children }: { title: string; header: boolean },
+  { children, title, header }: {
+    children: any;
+    title: string;
+    header?: boolean;
+  },
 ) {
   return (
     <html>
       <head>
-        <meta charset="UTF-8" />
+        <meta charSet="UTF-8" />
         <title>{title}</title>
         <link
           href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"

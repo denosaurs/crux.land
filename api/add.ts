@@ -1,4 +1,4 @@
-import { MatchResult, S3Bucket, Status } from "../deps.ts";
+import { S3Bucket, Status } from "../deps.ts";
 import {
   CONTENT_TYPE_FROM_EXTENSION,
   EXTENSIONS,
@@ -20,10 +20,11 @@ import {
   invalidMethod,
   json,
 } from "../util/responses.ts";
+import { Match } from "../util/router.ts";
 
 export async function add(
   req: Request,
-  match: MatchResult,
+  match: Match,
 ): Promise<Response> {
   if (req.method !== "POST") {
     return invalidMethod();

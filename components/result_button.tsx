@@ -1,6 +1,6 @@
 import { h } from "../deps.ts";
 
-export function ResultButton({ children, ...props }) {
+export function ResultButton({ children, ...props }: { children: any }) {
   return (
     <div
       {...props}

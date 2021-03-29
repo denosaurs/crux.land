@@ -3,7 +3,7 @@ import { getAlias, getId } from "./api/get.ts";
 import { jsx, notFound } from "./util/responses.ts";
 import { Index } from "./pages/index.tsx";
 import { Api } from "./pages/api.tsx";
-import { router } from "./util/router.ts";
+import { Match, router } from "./util/router.ts";
 import {
   ALIAS_PATH,
   EXTENSION_FROM_CONTENT_TYPE,
@@ -13,7 +13,7 @@ import {
   S3_REGION,
   S3_SECRET_ACCESS_KEY,
 } from "./util/constants.ts";
-import { MatchResult, S3Bucket, Status } from "./deps.ts";
+import { S3Bucket, Status } from "./deps.ts";
 import { decodeUTF8, readToUint8Array } from "./util/util.ts";
 import { Code } from "./pages/code.tsx";
 import { request } from "./api/alias/request.ts";
@@ -22,7 +22,7 @@ import { getIdFromAlias } from "./util/alias.ts";
 
 async function unknownHandler(
   req: Request,
-  match: MatchResult,
+  match: Match,
 ): Promise<Response> {
   let { id } = match.params;
   const { alias, tag, ext } = match.params;
@@ -32,10 +32,10 @@ async function unknownHandler(
   if (isHtml) {
     if (alias !== undefined && tag !== undefined) {
       id = await getIdFromAlias(alias, tag);
+    }
 
-      if (id === undefined) {
-        return notFound();
-      }
+    if (id === undefined) {
+      return notFound();
     }
 
     const bucket = new S3Bucket({

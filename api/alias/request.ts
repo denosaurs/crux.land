@@ -1,7 +1,6 @@
 import {
   DynamoDBClient,
   GetItemCommand,
-  MatchResult,
   PutItemCommand,
   Status,
 } from "../../deps.ts";
@@ -20,10 +19,11 @@ import {
   invalidMethod,
   json,
 } from "../../util/responses.ts";
+import { Match } from "../../util/router.ts";
 
 export async function request(
   req: Request,
-  match: MatchResult,
+  match: Match,
 ): Promise<Response> {
   if (req.method !== "POST") {
     return invalidMethod();
@@ -43,41 +43,35 @@ export async function request(
     },
   });
 
-  {
-    const {
-      Item: item,
-    } = await client.send(
-      new GetItemCommand({
-        TableName: DYNAMO_TABLE,
-        Key: {
-          alias: { S: alias },
-        },
-      }),
-    );
+  // @ts-ignore TS2339
+  const { Item: item } = await client.send(
+    new GetItemCommand({
+      TableName: DYNAMO_TABLE,
+      Key: {
+        alias: { S: alias },
+      },
+    }),
+  );
 
-    if (item) {
-      return aliasCollision();
-    }
+  if (item) {
+    return aliasCollision();
   }
 
   const secret = generate();
 
-  {
-    const {
-      $metadata: { httpStatusCode },
-    } = await client.send(
-      new PutItemCommand({
-        TableName: DYNAMO_TABLE,
-        Item: {
-          alias: { S: alias },
-          secret: { S: secret },
-        },
-      }),
-    );
+  // @ts-ignore TS2339
+  const { $metadata: { httpStatusCode } } = await client.send(
+    new PutItemCommand({
+      TableName: DYNAMO_TABLE,
+      Item: {
+        alias: { S: alias },
+        secret: { S: secret },
+      },
+    }),
+  );
 
-    if (httpStatusCode !== Status.OK) {
-      return aliasFailed();
-    }
+  if (httpStatusCode !== Status.OK) {
+    return aliasFailed();
   }
 
   return json({ secret });

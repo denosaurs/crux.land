@@ -1,4 +1,4 @@
-import { MatchResult, S3Bucket, Status } from "../deps.ts";
+import { S3Bucket, Status } from "../deps.ts";
 import {
   EXTENSION_FROM_CONTENT_TYPE,
   S3_ACCESS_KEY_ID,
@@ -8,16 +8,21 @@ import {
 } from "../util/constants.ts";
 import { getIdFromAlias } from "../util/alias.ts";
 import { invalidMethod, notFound } from "../util/responses.ts";
+import { Match } from "../util/router.ts";
 
 export async function getAlias(
   req: Request,
-  match: MatchResult,
+  match: Match,
 ): Promise<Response> {
   if (req.method !== "GET") {
     return invalidMethod();
   }
 
-  const { alias, tag, ext } = match.params;
+  const { alias, tag, ext } = match.params as {
+    alias: string;
+    tag: string;
+    ext: string | undefined;
+  };
 
   const id = await getIdFromAlias(alias, tag);
 
@@ -35,13 +40,13 @@ export async function getAlias(
 
 export async function getId(
   req: Request,
-  match: MatchResult,
+  match: Match,
 ): Promise<Response> {
   if (req.method !== "GET") {
     return invalidMethod();
   }
 
-  const { id, ext } = match.params;
+  const { id, ext } = match.params as { id: string; ext: string | undefined };
   const bucket = new S3Bucket({
     region: S3_REGION,
     accessKeyID: S3_ACCESS_KEY_ID,

@@ -1,7 +1,6 @@
 import {
   DynamoDBClient,
   GetItemCommand,
-  MatchResult,
   PutItemCommand,
   S3Bucket,
 } from "../../deps.ts";
@@ -31,10 +30,11 @@ import {
   tagCollision,
 } from "../../util/responses.ts";
 import { validate } from "../../util/base58.ts";
+import { Match } from "../../util/router.ts";
 
 export async function release(
   req: Request,
-  match: MatchResult,
+  match: Match,
 ): Promise<Response> {
   if (req.method !== "POST") {
     return invalidMethod();
@@ -79,9 +79,8 @@ export async function release(
     },
   });
 
-  const {
-    Item: item,
-  } = await client.send(
+  // @ts-ignore TS2339
+  const { Item: item } = await client.send(
     new GetItemCommand({
       TableName: DYNAMO_TABLE,
       Key: {
@@ -102,9 +101,8 @@ export async function release(
     return tagCollision();
   }
 
-  const {
-    $metadata: { httpStatusCode },
-  } = await client.send(
+  // @ts-ignore TS2339
+  const { $metadata: { httpStatusCode } } = await client.send(
     new PutItemCommand({
       TableName: DYNAMO_TABLE,
       Item: {

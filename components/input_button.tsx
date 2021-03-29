@@ -1,6 +1,6 @@
 import { h } from "../deps.ts";
 
-export function InputButton({ children, ...props }) {
+export function InputButton({ children, ...props }: { children: any }) {
   return (
     <input
       {...props}

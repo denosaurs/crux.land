@@ -18,9 +18,8 @@ export async function getIdFromAlias(
     },
   });
 
-  const {
-    Item: item,
-  } = await client.send(
+  // @ts-ignore TS2339
+  const { Item: item } = await client.send(
     new GetItemCommand({
       TableName: DYNAMO_TABLE,
       Key: {

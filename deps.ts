@@ -14,17 +14,14 @@ export {
 } from "https://cdn.skypack.dev/@aws-sdk/client-dynamodb@3.9.0";
 
 // Preact
-export {
-  default as preact,
-  h,
-} from "https://cdn.skypack.dev/preact@v10.5.13?dts";
-export { default as render } from "https://cdn.skypack.dev/preact-render-to-string@v5.1.16?dts";
-export {
-  default as PrismExports,
-  Prism,
-} from "https://jspm.dev/prism-react-renderer@1.2.0";
+export { default as preact, h } from "https://x.lcas.dev/preact@10.5.11/mod.js";
+export { default as render } from "https://x.lcas.dev/preact@10.5.11/ssr.js";
+
+// Prism
+import PrismExports from "https://jspm.dev/prism-react-renderer@1.2.0";
+export const Highlight = PrismExports.default;
+export { Prism } from "https://jspm.dev/prism-react-renderer@1.2.0";
 export { default as theme } from "https://jspm.dev/prism-react-renderer@1.2.0/themes/github";
 
 // Router
 export { match } from "https://cdn.skypack.dev/path-to-regexp@6.2.0?dts";
-export type { MatchResult } from "https://cdn.skypack.dev/path-to-regexp@6.2.0?dts";

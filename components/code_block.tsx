@@ -1,9 +1,8 @@
-import { h, Prism, PrismExports, theme } from "../deps.ts";
+import { h, Prism, Highlight, theme } from "../deps.ts";
 
 export function CodeBlock(
   { code, language }: { code: string; language: string },
-) {
-  const Highlight = PrismExports.default;
+): h.JSX.Element {
   return (
     <div
       className="shadow-sm rounded-lg border border-gray-200 overflow-hidden p-2 sm:px-3 md:px-4"

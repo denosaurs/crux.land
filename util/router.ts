@@ -1,9 +1,14 @@
-import { match, MatchResult } from "../deps.ts";
+import { match } from "../deps.ts";
 
+export interface Match {
+  path: string;
+  index: number;
+  params: Record<string, string | undefined>;
+}
 export type RequestHandler = (req: Request) => Response | Promise<Response>;
 export type MatchHandler = (
   req: Request,
-  match: MatchResult,
+  match: Match,
 ) => Response | Promise<Response>;
 
 export function router(
@@ -18,7 +23,7 @@ export function router(
       const res = match(path)(new URL(req.url).pathname);
 
       if (res !== false) {
-        return handler(req, res);
+        return handler(req, res as Match);
       }
     }
 

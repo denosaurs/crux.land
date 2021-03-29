@@ -1,6 +1,6 @@
 import { h } from "../deps.ts";
 
-export function LabelButton({ children, ...props }) {
+export function LabelButton({ children, ...props }: { children: any }) {
   return (
     <label
       {...props}
