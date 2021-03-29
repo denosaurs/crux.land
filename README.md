@@ -1,7 +1,6 @@
 # crux.land
 
 [![License](https://img.shields.io/github/license/denosaurs/crux.land)](https://github.com/denosaurs/crux.land/blob/master/LICENSE)
-
 [![Deploy](https://deno.com/deno-deploy-button.svg)](https://dash.deno.com/new?url=https://github.com/denosaurs/crux.land/blob/main/main.ts&env=S3_REGION,S3_ACCESS_KEY_ID,S3_SECRET_ACCESS_KEY,S3_BUCKET,DYNAMO_REGION,DYNAMO_ACCESS_KEY_ID,DYNAMO_SECRET_ACCESS_KEY,DYNAMO_TABLE)
 
 `crux.land` is a free registry service meant for hosting small (`< 10kB`) single
