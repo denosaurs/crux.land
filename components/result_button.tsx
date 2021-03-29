@@ -1,6 +1,11 @@
-import { h } from "../deps.ts";
+import { h, JSX } from "../deps.ts";
 
-export function ResultButton({ children, ...props }: { children: any }) {
+export function ResultButton(
+  { children, ...props }: {
+    children: JSX.Element;
+    props: JSX.HTMLAttributes<HTMLDivElement>;
+  },
+) {
   return (
     <div
       {...props}

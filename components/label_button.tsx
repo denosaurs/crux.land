@@ -1,6 +1,11 @@
-import { h } from "../deps.ts";
+import { h, JSX } from "../deps.ts";
 
-export function LabelButton({ children, ...props }: { children: any }) {
+export function LabelButton(
+  { children, ...props }: {
+    children: JSX.Element | string;
+    props: JSX.HTMLAttributes<HTMLLabelElement>;
+  },
+) {
   return (
     <label
       {...props}

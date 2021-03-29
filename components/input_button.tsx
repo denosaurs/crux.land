@@ -1,6 +1,11 @@
-import { h } from "../deps.ts";
+import { h, JSX } from "../deps.ts";
 
-export function InputButton({ children, ...props }: { children: any }) {
+export function InputButton(
+  { children, ...props }: {
+    children: JSX.Element;
+    props: JSX.HTMLAttributes<HTMLInputElement>;
+  },
+) {
   return (
     <input
       {...props}

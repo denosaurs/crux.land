@@ -1,5 +1,42 @@
 import { h, Highlight, Prism, theme } from "../deps.ts";
 
+type Token = {
+  types: string[];
+  content: string;
+  empty?: boolean;
+};
+
+type StyleObj = {
+  [key: string]: string | number | null;
+};
+
+type RenderProps = {
+  tokens: Token[][];
+  className: string;
+  style: StyleObj;
+  getLineProps: (input: {
+    key?: unknown;
+    style?: StyleObj;
+    className?: string;
+    line: Token[];
+  }) => {
+    key?: unknown;
+    style?: StyleObj;
+    className: string;
+  };
+  getTokenProps: (input: {
+    key?: unknown;
+    style?: StyleObj;
+    className?: string;
+    token: Token;
+  }) => {
+    key?: unknown;
+    style?: StyleObj;
+    className: string;
+    children: string;
+  };
+};
+
 export function CodeBlock(
   { code, language }: { code: string; language: string },
 ): h.JSX.Element {
@@ -14,13 +51,16 @@ export function CodeBlock(
         code={code}
         language={language}
       >
-        {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        {(
+          { className, style, tokens, getLineProps, getTokenProps }:
+            RenderProps,
+        ) => (
           <pre
             className={className + " flex overflow-y-auto"}
             style={{ ...style }}
           >
             <code className="pr-2 sm:pr-3">
-              {tokens.map((line, i) =>
+              {tokens.map((line: Token[], i: number) =>
                 line[0]?.empty && i === tokens.length - 1 ? null : (
                   <div
                     key={i + "l"}
@@ -32,7 +72,7 @@ export function CodeBlock(
               )}
             </code>
             <code>
-              {tokens.map((line, i) => {
+              {tokens.map((line: Token[], i: number) => {
                 const lineProps = getLineProps({ line, key: i });
                 lineProps.className += " text-xs";
                 return line[0]?.empty && i === tokens.length - 1 ? null : (

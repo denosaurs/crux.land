@@ -36,6 +36,7 @@ export function Index() {
             <form
               className="m-0"
               id="form"
+              // @ts-ignore TS2322
               onreset="
                 const label = document.getElementById('label');
                 label.innerText = 'Choose a script';
@@ -80,7 +81,8 @@ export function Index() {
                 name="file"
                 id="file"
                 accept={EXTENSIONS.map((ext) => "." + ext).join(",")}
-                onChange="
+                // @ts-ignore TS2322
+                onchange="
                   const file = document.getElementById('file');
                   const label = document.getElementById('label');
 
@@ -94,12 +96,17 @@ export function Index() {
                 hidden
               />
               <div className="mb-2 mt-4 lg:mt-0">
-                <LabelButton id="label" htmlFor="file">
+                <LabelButton
+                  // @ts-ignore TS2322
+                  id="label"
+                  htmlFor="file"
+                >
                   Choose a script
                 </LabelButton>
               </div>
               <div className="mb-2 mt-2">
                 <InputButton
+                  // @ts-ignore TS2322
                   type="submit"
                   name="submit"
                   id="submit"
@@ -108,7 +115,10 @@ export function Index() {
               </div>
             </form>
             <div className="select-all cursor-text">
-              <ResultButton id="result"></ResultButton>
+              <ResultButton
+                // @ts-ignore TS2322
+                id="result"
+              />
             </div>
           </div>
         </div>

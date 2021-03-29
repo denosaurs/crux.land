@@ -1,3 +1,7 @@
+/// <reference lib="DOM.Iterable" />
+// @ts-ignore TS2726
+/// <reference lib="DOM.AsyncIterable" />
+
 // Std
 export {
   Status,
@@ -15,10 +19,12 @@ export {
 
 // Preact
 export { default as preact, h } from "https://x.lcas.dev/preact@10.5.11/mod.js";
+export type { JSX } from "https://x.lcas.dev/preact@10.5.11/mod.d.ts";
 export { default as render } from "https://x.lcas.dev/preact@10.5.11/ssr.js";
 
 // Prism
 import PrismExports from "https://jspm.dev/prism-react-renderer@1.2.0";
+// @ts-ignore TS2339
 export const Highlight = PrismExports.default;
 export { Prism } from "https://jspm.dev/prism-react-renderer@1.2.0";
 export { default as theme } from "https://jspm.dev/prism-react-renderer@1.2.0/themes/github";

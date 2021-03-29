@@ -68,8 +68,8 @@ async function unknownHandler(
   }
 }
 
-addEventListener("fetch", (e: any) => {
-  e.respondWith(
+addEventListener("fetch", (event: FetchEvent) => {
+  event.respondWith(
     router({
       "/": (_req) => jsx(Index()),
       "/api": (_req) => jsx(Api()),
@@ -82,6 +82,6 @@ addEventListener("fetch", (e: any) => {
       [`/${ALIAS_PATH}`]: unknownHandler,
     }, (req) => {
       return notFound();
-    })(e.request),
+    })(event.request),
   );
 });
