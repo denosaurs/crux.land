@@ -28,9 +28,9 @@ export async function getIdFromAlias(
     }),
   );
 
-  if (item === undefined || item[tag]?.S === undefined) {
+  if (item === undefined || item.tags.M[tag]?.S === undefined) {
     return undefined;
   }
 
-  return item[tag].S;
+  return item.tags.M[tag].S;
 }

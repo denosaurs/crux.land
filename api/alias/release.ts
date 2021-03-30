@@ -97,9 +97,13 @@ export async function release(
     return invalidSecret();
   }
 
-  if (item[tag]?.S !== undefined) {
+  const tags = item.tags.M ?? {};
+
+  if (tags[tag]?.S !== undefined) {
     return tagCollision();
   }
+
+  tags[tag] = { S: id };
 
   // @ts-ignore TS2339
   const { $metadata: { httpStatusCode } } = await client.send(
@@ -108,7 +112,7 @@ export async function release(
       Item: {
         alias: { S: alias },
         secret: { S: secret },
-        [tag]: { S: id },
+        tags: { M: tags }
       },
     }),
   );

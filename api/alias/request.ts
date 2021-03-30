@@ -66,6 +66,7 @@ export async function request(
       Item: {
         alias: { S: alias },
         secret: { S: secret },
+        tags: { M: [] }
       },
     }),
   );
