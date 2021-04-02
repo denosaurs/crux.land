@@ -1,6 +1,10 @@
-import { h, JSX } from "../deps.ts";
+import { ComponentChildren, h, JSX } from "../deps.ts";
 
-// deno-lint-ignore no-explicit-any
-export function Link({ children, ...props }: { children: any }) {
-  return (<a {...props}>{children}</a>);
+export function Link(
+  { children, href }: {
+    children: ComponentChildren;
+    href: string;
+  },
+) {
+  return (<a href={href}>{children}</a>);
 }

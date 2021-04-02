@@ -112,7 +112,7 @@ export async function release(
       Item: {
         alias: { S: alias },
         secret: { S: secret },
-        tags: { M: tags }
+        tags: { M: tags },
       },
     }),
   );

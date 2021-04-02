@@ -8,7 +8,7 @@ import { EXTENSIONS } from "../util/constants.ts";
 
 export function Index() {
   return (
-    <Layout title="crux.land" header>
+    <Layout title="crux.land" description>
       <Block>
         <div className="flex flex-col lg:flex-row">
           <div className="inset-y-0 left-0 w-full lg:w-3/5">

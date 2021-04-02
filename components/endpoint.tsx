@@ -1,8 +1,11 @@
-import { h } from "../deps.ts";
+import { ComponentChildren, h } from "../deps.ts";
 
 export function Endpoint(
-  // deno-lint-ignore no-explicit-any
-  { children, method, path }: { children: any; method: string; path: string },
+  { children, method, path }: {
+    children: ComponentChildren;
+    method: string;
+    path: string;
+  },
 ) {
   return (
     <div>

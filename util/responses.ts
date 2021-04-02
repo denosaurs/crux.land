@@ -40,6 +40,14 @@ export function invalidTagFormat(): Response {
   return new Response("Invalid tag format", { status: Status.BadRequest });
 }
 
+export function invalidGithubCode(): Response {
+  return new Response("Invalid github code", { status: Status.BadRequest });
+}
+
+export function authError(err: unknown): Response {
+  return json(err, { status: Status.BadRequest });
+}
+
 export function tagCollision(): Response {
   return new Response("tag already exists", { status: Status.BadRequest });
 }

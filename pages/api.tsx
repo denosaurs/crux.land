@@ -6,7 +6,7 @@ import { Endpoint } from "../components/endpoint.tsx";
 
 export function Api() {
   return (
-    <Layout title="crux.land" header>
+    <Layout title="crux.land" description>
       <Block>
         <div className="flex flex-col lg:flex-row">
           <div className="inset-y-0 left-0 w-full px-8">
@@ -22,11 +22,15 @@ export function Api() {
               takes a file extension
             </Endpoint>
             <Endpoint method="POST" path="/add">
-              upload a file. Body must be a{" "}
+              upload a script. Mime type must be{"  "}
               <CodeInline>
-                multipart/form-data
-              </CodeInline>, where a file must be present under the{" "}
-              <CodeInline>'file'</CodeInline> key.
+                application/json
+              </CodeInline>{" "}
+              and the body a json object, where the name of the script with
+              extension is provided as a string under the{" "}
+              <CodeInline>'name'</CodeInline>{" "}
+              key and it's content base64 encoded as a string under the{" "}
+              <CodeInline>'content'</CodeInline> key
             </Endpoint>
           </div>
         </div>

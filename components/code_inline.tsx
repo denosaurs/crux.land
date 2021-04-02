@@ -1,7 +1,6 @@
-import { h } from "../deps.ts";
+import { ComponentChildren, h } from "../deps.ts";
 
-// deno-lint-ignore no-explicit-any
-export function CodeInline({ children }: { children: any }) {
+export function CodeInline({ children }: { children: ComponentChildren }) {
   return (
     <span className="font-mono bg-gray-200 rounded px-1">{children}</span>
   );

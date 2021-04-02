@@ -20,7 +20,10 @@ export {
 
 // Preact
 export { default as preact, h } from "https://x.lcas.dev/preact@10.5.11/mod.js";
-export type { JSX } from "https://x.lcas.dev/preact@10.5.11/mod.d.ts";
+export type {
+  ComponentChildren,
+  JSX,
+} from "https://x.lcas.dev/preact@10.5.11/mod.d.ts";
 export { default as render } from "https://x.lcas.dev/preact@10.5.11/ssr.js";
 
 // Prism

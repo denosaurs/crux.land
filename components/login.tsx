@@ -1,6 +1,6 @@
 import { ComponentChildren, h, JSX } from "../deps.ts";
 
-export function InputButton(
+export function Login(
   { children, ...props }: {
     children: ComponentChildren;
     props: JSX.HTMLAttributes<HTMLInputElement>;

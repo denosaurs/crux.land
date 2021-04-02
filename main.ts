@@ -3,6 +3,8 @@ import { getAlias, getId } from "./api/get.ts";
 import { jsx, notFound } from "./util/responses.ts";
 import { Index } from "./pages/index.tsx";
 import { Api } from "./pages/api.tsx";
+import { Admin } from "./pages/admin.tsx";
+import { Alias } from "./pages/alias.tsx";
 import { Match, router } from "./util/router.ts";
 import {
   ALIAS_PATH,
@@ -19,6 +21,8 @@ import { Code } from "./pages/code.tsx";
 import { request } from "./api/alias/request.ts";
 import { release } from "./api/alias/release.ts";
 import { getIdFromAlias } from "./util/alias.ts";
+// import { login } from "./api/login.ts";
+// import { callback } from "./api/login/callback.ts";
 
 async function unknownHandler(
   req: Request,
@@ -72,7 +76,11 @@ addEventListener("fetch", (event: FetchEvent) => {
   event.respondWith(
     router({
       "/": (_req) => jsx(Index()),
+      "/admin": (_req) => jsx(Admin()),
+      "/alias": (_req) => jsx(Alias()),
       "/api": (_req) => jsx(Api()),
+      // "/api/login": login,
+      // "/api/login/callback": callback,
       "/api/add": add,
       "/api/alias/request": request,
       "/api/alias/release": release,
