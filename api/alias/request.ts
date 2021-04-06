@@ -1,15 +1,8 @@
-import {
-  DynamoDBClient,
-  GetItemCommand,
-  PutItemCommand,
-  Status,
-} from "../../deps.ts";
+import { GetItemCommand, PutItemCommand, Status } from "../../deps.ts";
 import {
   ALIAS_NAME_REGEX_TEST,
-  DYNAMO_ACCESS_KEY_ID,
-  DYNAMO_REGION,
-  DYNAMO_SECRET_ACCESS_KEY,
-  DYNAMO_TABLE,
+  DYNAMO_ALIAS_TABLE,
+  DYNAMO_CLIENT,
 } from "../../util/constants.ts";
 import { generate } from "../../util/token.ts";
 import {
@@ -35,18 +28,10 @@ export async function request(
     return invalidAlias();
   }
 
-  const client = new DynamoDBClient({
-    region: DYNAMO_REGION,
-    credentials: {
-      accessKeyId: DYNAMO_ACCESS_KEY_ID,
-      secretAccessKey: DYNAMO_SECRET_ACCESS_KEY,
-    },
-  });
-
   // @ts-ignore TS2339
-  const { Item: item } = await client.send(
+  const { Item: item } = await DYNAMO_CLIENT.send(
     new GetItemCommand({
-      TableName: DYNAMO_TABLE,
+      TableName: DYNAMO_ALIAS_TABLE,
       Key: {
         alias: { S: alias },
       },
@@ -60,9 +45,9 @@ export async function request(
   const secret = generate();
 
   // @ts-ignore TS2339
-  const { $metadata: { httpStatusCode } } = await client.send(
+  const { $metadata: { httpStatusCode } } = await DYNAMO_CLIENT.send(
     new PutItemCommand({
-      TableName: DYNAMO_TABLE,
+      TableName: DYNAMO_ALIAS_TABLE,
       Item: {
         alias: { S: alias },
         secret: { S: secret },

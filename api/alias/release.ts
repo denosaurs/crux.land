@@ -1,20 +1,10 @@
-import {
-  DynamoDBClient,
-  GetItemCommand,
-  PutItemCommand,
-  S3Bucket,
-} from "../../deps.ts";
+import { GetItemCommand, PutItemCommand } from "../../deps.ts";
 import {
   ALIAS_NAME_REGEX_TEST,
   ALIAS_TAG_REGEX_TEST,
-  DYNAMO_ACCESS_KEY_ID,
-  DYNAMO_REGION,
-  DYNAMO_SECRET_ACCESS_KEY,
-  DYNAMO_TABLE,
-  S3_ACCESS_KEY_ID,
-  S3_BUCKET,
-  S3_REGION,
-  S3_SECRET_ACCESS_KEY,
+  DYNAMO_ALIAS_TABLE,
+  DYNAMO_CLIENT,
+  S3_CLIENT,
 } from "../../util/constants.ts";
 import {
   aliasNotFound,
@@ -58,31 +48,15 @@ export async function release(
     return invalidId();
   }
 
-  const bucket = new S3Bucket({
-    region: S3_REGION,
-    accessKeyID: S3_ACCESS_KEY_ID,
-    secretKey: S3_SECRET_ACCESS_KEY,
-    bucket: S3_BUCKET,
-  });
-
-  const file = await bucket.headObject(id);
+  const file = await S3_CLIENT.headObject(id);
 
   if (file === undefined) {
     return notFound();
   }
-
-  const client = new DynamoDBClient({
-    region: DYNAMO_REGION,
-    credentials: {
-      accessKeyId: DYNAMO_ACCESS_KEY_ID,
-      secretAccessKey: DYNAMO_SECRET_ACCESS_KEY,
-    },
-  });
-
   // @ts-ignore TS2339
-  const { Item: item } = await client.send(
+  const { Item: item } = await DYNAMO_CLIENT.send(
     new GetItemCommand({
-      TableName: DYNAMO_TABLE,
+      TableName: DYNAMO_ALIAS_TABLE,
       Key: {
         alias: { S: alias },
       },
@@ -106,9 +80,9 @@ export async function release(
   tags[tag] = { S: id };
 
   // @ts-ignore TS2339
-  const { $metadata: { httpStatusCode } } = await client.send(
+  const { $metadata: { httpStatusCode } } = await DYNAMO_CLIENT.send(
     new PutItemCommand({
-      TableName: DYNAMO_TABLE,
+      TableName: DYNAMO_ALIAS_TABLE,
       Item: {
         alias: { S: alias },
         secret: { S: secret },

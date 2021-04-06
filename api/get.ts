@@ -1,11 +1,5 @@
-import { S3Bucket, Status } from "../deps.ts";
-import {
-  EXTENSION_FROM_CONTENT_TYPE,
-  S3_ACCESS_KEY_ID,
-  S3_BUCKET,
-  S3_REGION,
-  S3_SECRET_ACCESS_KEY,
-} from "../util/constants.ts";
+import { Status } from "../deps.ts";
+import { EXTENSION_FROM_CONTENT_TYPE, S3_CLIENT } from "../util/constants.ts";
 import { getIdFromAlias } from "../util/alias.ts";
 import { invalidMethod, notFound } from "../util/responses.ts";
 import { Match } from "../util/router.ts";
@@ -47,15 +41,9 @@ export async function getId(
   }
 
   const { id, ext } = match.params as { id: string; ext: string | undefined };
-  const bucket = new S3Bucket({
-    region: S3_REGION,
-    accessKeyID: S3_ACCESS_KEY_ID,
-    secretKey: S3_SECRET_ACCESS_KEY,
-    bucket: S3_BUCKET,
-  });
 
   if (ext === "") {
-    const file = await bucket.headObject(id);
+    const file = await S3_CLIENT.headObject(id);
 
     if (file === undefined) {
       return notFound();
@@ -73,7 +61,7 @@ export async function getId(
     });
   }
 
-  const file = await bucket.getObject(id);
+  const file = await S3_CLIENT.getObject(id);
 
   if (file === undefined) {
     return notFound();

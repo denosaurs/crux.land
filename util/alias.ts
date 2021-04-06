@@ -1,9 +1,9 @@
 import { DynamoDBClient, GetItemCommand } from "../deps.ts";
 import {
   DYNAMO_ACCESS_KEY_ID,
+  DYNAMO_ALIAS_TABLE,
   DYNAMO_REGION,
   DYNAMO_SECRET_ACCESS_KEY,
-  DYNAMO_TABLE,
 } from "./constants.ts";
 
 export async function getIdFromAlias(
@@ -21,16 +21,18 @@ export async function getIdFromAlias(
   // @ts-ignore TS2339
   const { Item: item } = await client.send(
     new GetItemCommand({
-      TableName: DYNAMO_TABLE,
+      TableName: DYNAMO_ALIAS_TABLE,
       Key: {
         alias: { S: alias },
       },
     }),
   );
 
-  if (item === undefined || item.tags.M[tag]?.S === undefined) {
+  const id = item?.tags?.M?.[tag]?.S;
+
+  if (id === null || id === undefined) {
     return undefined;
   }
 
-  return item.tags.M[tag].S;
+  return id;
 }

@@ -45,6 +45,6 @@ export async function callback(
   }
 
   return new Response(undefined, {
-    status: Status.Ok,
+    status: Status.OK,
   });
 }
