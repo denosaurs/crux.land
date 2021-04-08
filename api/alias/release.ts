@@ -3,8 +3,6 @@ import {
   ALIAS_NAME_REGEX_TEST,
   ALIAS_TAG_REGEX_TEST,
   DYNAMO_ALIAS_TABLE,
-  DYNAMO_CLIENT,
-  S3_CLIENT,
 } from "../../util/constants.ts";
 import {
   aliasNotFound,
@@ -21,6 +19,7 @@ import {
 } from "../../util/responses.ts";
 import { validate } from "../../util/base58.ts";
 import { Match } from "../../util/router.ts";
+import { S3_CLIENT, DYNAMO_CLIENT } from "../../util/clients.ts";
 
 export async function release(
   req: Request,

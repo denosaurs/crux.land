@@ -48,6 +48,10 @@ export function authError(err: unknown): Response {
   return json(err, { status: Status.BadRequest });
 }
 
+export function couldNotCreateUser(): Response {
+  return new Response("Could not create user", { status: Status.BadRequest });
+}
+
 export function tagCollision(): Response {
   return new Response("tag already exists", { status: Status.BadRequest });
 }

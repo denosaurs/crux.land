@@ -2,7 +2,6 @@ import { GetItemCommand, PutItemCommand, Status } from "../../deps.ts";
 import {
   ALIAS_NAME_REGEX_TEST,
   DYNAMO_ALIAS_TABLE,
-  DYNAMO_CLIENT,
 } from "../../util/constants.ts";
 import { generate } from "../../util/token.ts";
 import {
@@ -13,6 +12,7 @@ import {
   json,
 } from "../../util/responses.ts";
 import { Match } from "../../util/router.ts";
+import { DYNAMO_CLIENT } from "../../util/clients.ts";
 
 export async function request(
   req: Request,

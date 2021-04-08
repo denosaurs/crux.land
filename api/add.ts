@@ -3,7 +3,6 @@ import {
   CONTENT_TYPE_FROM_EXTENSION,
   EXTENSIONS,
   MAX_SIZE,
-  S3_CLIENT,
 } from "../util/constants.ts";
 import { readToUint8Array, uint8ArraysEqual } from "../util/util.ts";
 import { encode } from "../util/base58.ts";
@@ -18,6 +17,7 @@ import {
   json,
 } from "../util/responses.ts";
 import { Match } from "../util/router.ts";
+import { S3_CLIENT } from "../util/clients.ts";
 
 export async function add(
   req: Request,

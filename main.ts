@@ -21,8 +21,8 @@ import { Code } from "./pages/code.tsx";
 import { request } from "./api/alias/request.ts";
 import { release } from "./api/alias/release.ts";
 import { getIdFromAlias } from "./util/alias.ts";
-// import { login } from "./api/login.ts";
-// import { callback } from "./api/login/callback.ts";
+import { login } from "./api/login.ts";
+import { callback } from "./api/login/callback.ts";
 
 async function unknownHandler(
   req: Request,
@@ -79,8 +79,8 @@ addEventListener("fetch", (event: FetchEvent) => {
       "/admin": (_req) => jsx(Admin()),
       "/alias": (_req) => jsx(Alias()),
       "/api": (_req) => jsx(Api()),
-      // "/api/login": login,
-      // "/api/login/callback": callback,
+      "/api/login": login,
+      "/api/login/callback": callback,
       "/api/add": add,
       "/api/alias/request": request,
       "/api/alias/release": release,

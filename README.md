@@ -25,7 +25,11 @@ enviornment variables are:
 | DYNAMO_REGION            |
 | DYNAMO_ACCESS_KEY_ID     |
 | DYNAMO_SECRET_ACCESS_KEY |
-| DYNAMO_TABLE             |
+| DYNAMO_ALIAS_TABLE       |
+| DYNAMO_USER_TABLE        |
+| GITHUB_CLIENT_ID         |
+| GITHUB_CLIENT_SECRET     |
+| GITHUB_CALLBACK_URL      |
 
 Once the enviornment variables are set you can start it locally using:
 

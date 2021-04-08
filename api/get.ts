@@ -1,8 +1,9 @@
 import { Status } from "../deps.ts";
-import { EXTENSION_FROM_CONTENT_TYPE, S3_CLIENT } from "../util/constants.ts";
+import { EXTENSION_FROM_CONTENT_TYPE } from "../util/constants.ts";
 import { getIdFromAlias } from "../util/alias.ts";
 import { invalidMethod, notFound } from "../util/responses.ts";
 import { Match } from "../util/router.ts";
+import { S3_CLIENT } from "../util/clients.ts";
 
 export async function getAlias(
   req: Request,
