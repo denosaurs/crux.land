@@ -52,9 +52,9 @@ export const ALIAS_PATH =
     EXTENSIONS.join("|")
   }))?)`;
 
-export const S3_BUCKET = Deno.env.get("S3_BUCKET");
-export const DYNAMO_ALIAS_TABLE = Deno.env.get("DYNAMO_ALIAS_TABLE");
-export const DYNAMO_USER_TABLE = Deno.env.get("DYNAMO_USER_TABLE");
+export const S3_BUCKET = Deno.env.get("S3_BUCKET")!;
+export const DYNAMO_ALIAS_TABLE = Deno.env.get("DYNAMO_ALIAS_TABLE")!;
+export const DYNAMO_USER_TABLE = Deno.env.get("DYNAMO_USER_TABLE")!;
 
 export const S3_REGION = Deno.env.get("S3_REGION")!;
 export const S3_ACCESS_KEY_ID = Deno.env.get("S3_ACCESS_KEY_ID")!;
