@@ -68,4 +68,4 @@ export const DYNAMO_SECRET_ACCESS_KEY = Deno.env.get(
 
 export const GITHUB_CLIENT_ID = Deno.env.get("GITHUB_CLIENT_ID")!;
 export const GITHUB_CLIENT_SECRET = Deno.env.get("GITHUB_CLIENT_SECRET")!;
-export const GITHUB_CALLBACK_URL = Deno.env.get("GITHUB_CALLBACK_URL")!;
+export const GITHUB_CALLBACK_URL = Deno.env.get("GITHUB_CALLBACK_URL");
