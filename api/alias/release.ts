@@ -19,7 +19,7 @@ import {
 } from "../../util/responses.ts";
 import { validate } from "../../util/base58.ts";
 import { Match } from "../../util/router.ts";
-import { S3_CLIENT, DYNAMO_CLIENT } from "../../util/clients.ts";
+import { DYNAMO_CLIENT, S3_CLIENT } from "../../util/clients.ts";
 
 export async function release(
   req: Request,
