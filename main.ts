@@ -7,6 +7,7 @@ import { Admin } from "./pages/admin.tsx";
 import { Alias } from "./pages/alias.tsx";
 import { Match, router } from "./util/router.ts";
 import {
+  ALIAS_NAME_REGEX,
   ALIAS_PATH,
   EXTENSION_FROM_CONTENT_TYPE,
   ID_PATH,
@@ -23,6 +24,11 @@ import { release } from "./api/alias/release.ts";
 import { getIdFromAlias } from "./util/alias.ts";
 import { login } from "./api/login.ts";
 import { callback } from "./api/login/callback.ts";
+import {
+  completionsAlias,
+  completionsSchema,
+  completionsTags,
+} from "./api/completions.ts";
 
 async function unknownHandler(
   req: Request,
@@ -84,10 +90,14 @@ addEventListener("fetch", (event: FetchEvent) => {
       "/api/add": add,
       "/api/alias/request": request,
       "/api/alias/release": release,
+      "/api/completions": completionsAlias,
+      [`/api/completions/:alias(${ALIAS_NAME_REGEX.source})/tags`]:
+        completionsTags,
       [`/api/get/${ID_PATH}`]: getId,
       [`/api/get/${ALIAS_PATH}`]: getAlias,
       [`/${ID_PATH}`]: unknownHandler,
       [`/${ALIAS_PATH}`]: unknownHandler,
+      "/.well-known/deno-import-intellisense.json": completionsSchema,
     }, (req) => {
       return notFound();
     })(event.request),

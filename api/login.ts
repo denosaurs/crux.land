@@ -8,7 +8,7 @@ export function login(
 ): Response {
   const url = new URL("https://github.com/login/oauth/authorize");
   url.searchParams.set("client_id", GITHUB_CLIENT_ID);
-  
+
   if (GITHUB_CALLBACK_URL) {
     url.searchParams.set("redirect_uri", GITHUB_CALLBACK_URL);
   }

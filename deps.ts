@@ -16,6 +16,7 @@ export {
   DynamoDBClient,
   GetItemCommand,
   PutItemCommand,
+  ScanCommand,
 } from "https://cdn.skypack.dev/@aws-sdk/client-dynamodb@3.9.0";
 
 // Preact

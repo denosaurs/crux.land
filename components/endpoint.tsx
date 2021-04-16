@@ -8,7 +8,7 @@ export function Endpoint(
   },
 ) {
   return (
-    <div>
+    <div className="mb-6">
       <span className="text-lg font-semibold font-mono">
         <span className="text-yellow-600">{method}</span>{" "}
         <span className="text-gray-700">{path}</span>
