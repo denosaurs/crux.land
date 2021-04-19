@@ -16,7 +16,7 @@ import { generate } from "../../util/token.ts";
 
 export async function callback(
   req: Request,
-  match: Match,
+  _match: Match,
 ): Promise<Response> {
   const url = new URL(req.url);
   const code = url.searchParams.get("code");

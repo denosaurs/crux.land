@@ -6,6 +6,7 @@ import {
 } from "../util/constants.ts";
 import { DYNAMO_CLIENT } from "../util/clients.ts";
 import { Match } from "../util/router.ts";
+import { json } from "../util/responses.ts";
 
 export async function completionsAlias(): Promise<Response> {
   // @ts-ignore TS2339
@@ -15,15 +16,11 @@ export async function completionsAlias(): Promise<Response> {
     }),
   );
 
-  return new Response(JSON.stringify(items.map((item) => item.alias.S)), {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  return json(items.map((item: { alias: { S: string } }) => item.alias.S));
 }
 
 export async function completionsTags(
-  req: Request,
+  _req: Request,
   matches: Match,
 ): Promise<Response> {
   // @ts-ignore TS2339
@@ -36,38 +33,27 @@ export async function completionsTags(
     }),
   );
 
-  return new Response(JSON.stringify(Object.keys(item.tags.M)), {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  return json(Object.keys(item.tags.M));
 }
 
 export function completionsSchema(): Response {
-  return new Response(
-    JSON.stringify({
-      version: 1,
-      registries: [
-        {
-          schema:
-            `/:module(${ALIAS_NAME_REGEX.source})@:tag(${ALIAS_TAG_REGEX.source})`,
-          variables: [
-            {
-              key: "module",
-              url: "https://crux.land/api/completions",
-            },
-            {
-              key: "tag",
-              url: "https://crux.land/api/completions/${module}/tags",
-            },
-          ],
-        },
-      ],
-    }),
-    {
-      headers: {
-        "Content-Type": "application/json",
+  return json({
+    version: 1,
+    registries: [
+      {
+        schema:
+          `/:module(${ALIAS_NAME_REGEX.source})@:tag(${ALIAS_TAG_REGEX.source})`,
+        variables: [
+          {
+            key: "module",
+            url: "https://crux.land/api/completions",
+          },
+          {
+            key: "tag",
+            url: "https://crux.land/api/completions/${module}/tags",
+          },
+        ],
       },
-    },
-  );
+    ],
+  });
 }

@@ -98,7 +98,7 @@ addEventListener("fetch", (event: FetchEvent) => {
       [`/${ID_PATH}`]: unknownHandler,
       [`/${ALIAS_PATH}`]: unknownHandler,
       "/.well-known/deno-import-intellisense.json": completionsSchema,
-    }, (req) => {
+    }, (_req) => {
       return notFound();
     })(event.request),
   );

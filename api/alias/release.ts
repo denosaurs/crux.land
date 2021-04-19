@@ -1,4 +1,4 @@
-import { GetItemCommand, PutItemCommand } from "../../deps.ts";
+import { GetItemCommand, PutItemCommand, Status } from "../../deps.ts";
 import {
   ALIAS_NAME_REGEX_TEST,
   ALIAS_TAG_REGEX_TEST,
@@ -90,7 +90,7 @@ export async function release(
     }),
   );
 
-  if (httpStatusCode === 200) {
+  if (httpStatusCode !== Status.OK) {
     return releaseFailed();
   }
 
