@@ -59,5 +59,5 @@ export async function authenticate(
 ): Promise<boolean> {
   const user = await getUser(id);
 
-  return !(user?.secret !== secret && admin ? user?.admin : true);
+  return !(user?.secret !== secret && (admin ? user?.admin : true));
 }
