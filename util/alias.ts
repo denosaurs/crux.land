@@ -1,4 +1,3 @@
-import { GetItemCommand, PutItemCommand } from "../deps.ts";
 import { DYNAMO_CLIENT } from "./clients.ts";
 import { DYNAMO_ALIAS_TABLE } from "./constants.ts";
 
@@ -10,16 +9,15 @@ export interface Alias {
   tags: Tags;
 }
 
+export type Requests = Alias[];
+
 export async function getAlias(alias: string): Promise<Alias | undefined> {
-  // @ts-ignore TS2339
-  const { Item: item } = await DYNAMO_CLIENT.send(
-    new GetItemCommand({
-      TableName: DYNAMO_ALIAS_TABLE,
-      Key: {
-        alias: { S: alias },
-      },
-    }),
-  );
+  const { Item: item } = await DYNAMO_CLIENT.getItem({
+    TableName: DYNAMO_ALIAS_TABLE,
+    Key: {
+      alias: { S: alias },
+    },
+  });
 
   if (item) {
     return {
@@ -35,21 +33,18 @@ export async function getAlias(alias: string): Promise<Alias | undefined> {
 }
 
 export async function putAlias(alias: Alias) {
-  // @ts-ignore TS2339
-  return await DYNAMO_CLIENT.send(
-    new PutItemCommand({
-      TableName: DYNAMO_ALIAS_TABLE,
-      Item: {
-        alias: { S: alias.alias },
-        owner: { N: alias.owner.toString() },
-        tags: {
-          M: Object.fromEntries(
-            Object.entries(alias.tags).map(([tag, id]) => [tag, { S: id }]),
-          ),
-        },
+  return await DYNAMO_CLIENT.putItem({
+    TableName: DYNAMO_ALIAS_TABLE,
+    Item: {
+      alias: { S: alias.alias },
+      owner: { N: alias.owner.toString() },
+      tags: {
+        M: Object.fromEntries(
+          Object.entries(alias.tags).map(([tag, id]) => [tag, { S: id }]),
+        ),
       },
-    }),
-  );
+    },
+  });
 }
 
 export async function getIdFromAlias(

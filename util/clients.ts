@@ -1,4 +1,4 @@
-import { DynamoDBClient, S3Bucket } from "../deps.ts";
+import { DynamoDB, S3Bucket } from "../deps.ts";
 import {
   DYNAMO_ACCESS_KEY_ID,
   DYNAMO_REGION,
@@ -9,7 +9,7 @@ import {
   S3_SECRET_ACCESS_KEY,
 } from "./constants.ts";
 
-export const DYNAMO_CLIENT = new DynamoDBClient({
+export const DYNAMO_CLIENT = new DynamoDB({
   region: DYNAMO_REGION,
   credentials: {
     accessKeyId: DYNAMO_ACCESS_KEY_ID,

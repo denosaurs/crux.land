@@ -60,7 +60,6 @@ export async function release(
 
   item.tags[tag] = script;
 
-  // @ts-ignore TS2339
   const { $metadata: { httpStatusCode } } = await putAlias(item);
 
   if (httpStatusCode !== Status.OK) {

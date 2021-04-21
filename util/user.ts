@@ -1,4 +1,4 @@
-import { GetItemCommand, PutItemCommand, Status } from "../deps.ts";
+import { Status } from "../deps.ts";
 import { DYNAMO_CLIENT } from "./clients.ts";
 import { DYNAMO_USER_TABLE } from "./constants.ts";
 import { generate } from "./token.ts";
@@ -10,15 +10,12 @@ export interface User {
 }
 
 export async function getUser(id: number): Promise<User | undefined> {
-  // @ts-ignore TS2339
-  const { Item: item } = await DYNAMO_CLIENT.send(
-    new GetItemCommand({
-      TableName: DYNAMO_USER_TABLE,
-      Key: {
-        id: { N: id.toString() },
-      },
-    }),
-  );
+  const { Item: item } = await DYNAMO_CLIENT.getItem({
+    TableName: DYNAMO_USER_TABLE,
+    Key: {
+      id: { N: id.toString() },
+    },
+  });
 
   if (item) {
     return {
@@ -35,17 +32,14 @@ export async function createUser(
 ): Promise<User | undefined> {
   const secret = generate();
 
-  // @ts-ignore TS2339
-  const { $metadata: { httpStatusCode } } = await DYNAMO_CLIENT.send(
-    new PutItemCommand({
-      TableName: DYNAMO_USER_TABLE,
-      Item: {
-        id: { N: id.toString() },
-        secret: { S: secret },
-        admin: { BOOL: admin },
-      },
-    }),
-  );
+  const { $metadata: { httpStatusCode } } = await DYNAMO_CLIENT.putItem({
+    TableName: DYNAMO_USER_TABLE,
+    Item: {
+      id: { N: id.toString() },
+      secret: { S: secret },
+      admin: { BOOL: admin },
+    },
+  });
 
   if (httpStatusCode === Status.OK) {
     return { id, admin, secret };

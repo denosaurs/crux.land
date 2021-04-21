@@ -1,4 +1,3 @@
-import { ScanCommand } from "../deps.ts";
 import {
   ALIAS_NAME_REGEX,
   ALIAS_TAG_REGEX,
@@ -10,12 +9,9 @@ import { aliasNotFound, json } from "../util/responses.ts";
 import { getAlias } from "../util/alias.ts";
 
 export async function completionsAlias(): Promise<Response> {
-  // @ts-ignore TS2339
-  const { Items: items } = await DYNAMO_CLIENT.send(
-    new ScanCommand({
-      TableName: DYNAMO_ALIAS_TABLE,
-    }),
-  );
+  const { Items: items } = await DYNAMO_CLIENT.scan({
+    TableName: DYNAMO_ALIAS_TABLE,
+  });
 
   return json(items.map((item: { alias: { S: string } }) => item.alias.S));
 }

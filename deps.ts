@@ -12,12 +12,8 @@ export { decode } from "https://deno.land/std@0.94.0/encoding/base64.ts";
 // AWS
 export { S3Bucket } from "https://deno.land/x/s3@0.4.0/mod.ts";
 export type { GetObjectResponse } from "https://deno.land/x/s3@0.4.0/mod.ts";
-export {
-  DynamoDBClient,
-  GetItemCommand,
-  PutItemCommand,
-  ScanCommand,
-} from "https://cdn.skypack.dev/@aws-sdk/client-dynamodb@3.13.0";
+export { DynamoDB } from "https://cdn.skypack.dev/@aws-sdk/client-dynamodb@3.13.0";
+export {} from "https://cdn.skypack.dev/@aws-sdk/lib-dynamodb@3.13.0";
 
 // Preact
 export { default as preact, h } from "https://x.lcas.dev/preact@10.5.11/mod.js";
