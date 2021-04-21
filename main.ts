@@ -1,6 +1,6 @@
 import { add } from "./api/add.ts";
 import { getAlias, getId } from "./api/get.ts";
-import { jsx, notFound } from "./util/responses.ts";
+import { jsx, notFound, redirect } from "./util/responses.ts";
 import { Index } from "./pages/index.tsx";
 import { Api } from "./pages/api.tsx";
 import { Admin } from "./pages/admin.tsx";
@@ -16,7 +16,7 @@ import {
   S3_REGION,
   S3_SECRET_ACCESS_KEY,
 } from "./util/constants.ts";
-import { S3Bucket, Status } from "./deps.ts";
+import { S3Bucket } from "./deps.ts";
 import { decodeUTF8, readToUint8Array } from "./util/util.ts";
 import { Code } from "./pages/code.tsx";
 import { request } from "./api/alias/request.ts";
@@ -69,12 +69,7 @@ async function unknownHandler(
 
     return jsx(Code({ code, language }));
   } else {
-    return new Response(undefined, {
-      status: Status.TemporaryRedirect,
-      headers: new Headers({
-        "Location": `/api/get${match.path}`,
-      }),
-    });
+    return redirect(`/api/get${match.path}`);
   }
 }
 

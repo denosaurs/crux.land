@@ -1,5 +1,6 @@
 import { Status } from "../deps.ts";
 import { GITHUB_CALLBACK_URL, GITHUB_CLIENT_ID } from "../util/constants.ts";
+import { redirect } from "../util/responses.ts";
 import { Match } from "../util/router.ts";
 
 export function login(
@@ -13,10 +14,5 @@ export function login(
     url.searchParams.set("redirect_uri", GITHUB_CALLBACK_URL);
   }
 
-  return new Response(undefined, {
-    status: Status.TemporaryRedirect,
-    headers: new Headers({
-      "Location": url.toString(),
-    }),
-  });
+  return redirect(url.toString());
 }

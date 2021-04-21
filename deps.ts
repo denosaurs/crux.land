@@ -6,8 +6,8 @@
 export {
   Status,
   STATUS_TEXT,
-} from "https://deno.land/std@0.91.0/http/http_status.ts";
-export { decode } from "https://deno.land/std@0.91.0/encoding/base64.ts";
+} from "https://deno.land/std@0.94.0/http/http_status.ts";
+export { decode } from "https://deno.land/std@0.94.0/encoding/base64.ts";
 
 // AWS
 export { S3Bucket } from "https://deno.land/x/s3@0.4.0/mod.ts";
@@ -17,13 +17,14 @@ export {
   GetItemCommand,
   PutItemCommand,
   ScanCommand,
-} from "https://cdn.skypack.dev/@aws-sdk/client-dynamodb@3.9.0";
+} from "https://cdn.skypack.dev/@aws-sdk/client-dynamodb@3.13.0";
 
 // Preact
 export { default as preact, h } from "https://x.lcas.dev/preact@10.5.11/mod.js";
 export type {
   ComponentChildren,
   JSX,
+  VNode,
 } from "https://x.lcas.dev/preact@10.5.11/mod.d.ts";
 export { default as render } from "https://x.lcas.dev/preact@10.5.11/ssr.js";
 

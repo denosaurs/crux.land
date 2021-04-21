@@ -7,7 +7,7 @@ export {
   GetItemCommand,
   PutItemCommand,
   ResourceNotFoundException,
-} from "https://cdn.skypack.dev/@aws-sdk/client-dynamodb@3.9.0";
+} from "https://cdn.skypack.dev/@aws-sdk/client-dynamodb@3.13.0";
 
 export {
   CreateBucketCommand,
@@ -15,4 +15,4 @@ export {
   HeadBucketCommand,
   HeadObjectCommand,
   S3Client,
-} from "https://cdn.skypack.dev/@aws-sdk/client-s3@3.9.0";
+} from "https://cdn.skypack.dev/@aws-sdk/client-s3@3.13.0";

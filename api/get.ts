@@ -1,7 +1,7 @@
 import { Status } from "../deps.ts";
 import { EXTENSION_FROM_CONTENT_TYPE } from "../util/constants.ts";
 import { getIdFromAlias } from "../util/alias.ts";
-import { invalidMethod, notFound } from "../util/responses.ts";
+import { invalidMethod, notFound, redirect } from "../util/responses.ts";
 import { Match } from "../util/router.ts";
 import { S3_CLIENT } from "../util/clients.ts";
 
@@ -25,12 +25,7 @@ export async function getAlias(
     return notFound();
   }
 
-  return new Response(undefined, {
-    status: Status.TemporaryRedirect,
-    headers: new Headers({
-      "Location": `/api/get/${id}${ext}`,
-    }),
-  });
+  return redirect(`/api/get/${id}${ext}`);
 }
 
 export async function getId(
@@ -50,16 +45,11 @@ export async function getId(
       return notFound();
     }
 
-    return new Response(undefined, {
-      status: Status.TemporaryRedirect,
-      headers: new Headers({
-        "Location": `/api/get/${id}.${
-          EXTENSION_FROM_CONTENT_TYPE[
-            file.contentType! as keyof typeof EXTENSION_FROM_CONTENT_TYPE
-          ]
-        }`,
-      }),
-    });
+    return redirect(`/api/get/${id}.${
+      EXTENSION_FROM_CONTENT_TYPE[
+        file.contentType! as keyof typeof EXTENSION_FROM_CONTENT_TYPE
+      ]
+    }`);
   }
 
   const file = await S3_CLIENT.getObject(id);

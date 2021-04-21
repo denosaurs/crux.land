@@ -120,3 +120,12 @@ export function json(obj: unknown, init?: ResponseInit): Response {
     },
   });
 }
+
+export function redirect(location: string): Response {
+  return new Response(undefined, {
+    status: Status.TemporaryRedirect,
+    headers: new Headers({
+      "Location": location,
+    }),
+  });
+}
