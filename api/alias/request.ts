@@ -1,64 +1,49 @@
-import { GetItemCommand, PutItemCommand, Status } from "../../deps.ts";
+import { Status } from "../../deps.ts";
+import { ALIAS_NAME_REGEX_TEST } from "../../util/constants.ts";
 import {
-  ALIAS_NAME_REGEX_TEST,
-  DYNAMO_ALIAS_TABLE,
-} from "../../util/constants.ts";
-import { generate } from "../../util/token.ts";
-import {
-  aliasCollision,
-  aliasFailed,
+  couldNotAuthenticate,
+  created,
+  error,
   invalidAlias,
   invalidMethod,
-  json,
 } from "../../util/responses.ts";
 import { Match } from "../../util/router.ts";
-import { DYNAMO_CLIENT } from "../../util/clients.ts";
+import { authenticate } from "../../util/user.ts";
+import { getAlias, putAlias } from "../../util/alias.ts";
 
 export async function request(
   req: Request,
-  match: Match,
+  _match: Match,
 ): Promise<Response> {
   if (req.method !== "POST") {
     return invalidMethod();
   }
 
-  const { alias } = await req.json();
+  const { alias, user, secret } = await req.json();
 
-  if (typeof alias !== "string" && ALIAS_NAME_REGEX_TEST.test(alias)) {
+  if (!await authenticate(user, secret)) {
+    return couldNotAuthenticate();
+  }
+
+  if (!ALIAS_NAME_REGEX_TEST.test(alias)) {
     return invalidAlias();
   }
 
-  // @ts-ignore TS2339
-  const { Item: item } = await DYNAMO_CLIENT.send(
-    new GetItemCommand({
-      TableName: DYNAMO_ALIAS_TABLE,
-      Key: {
-        alias: { S: alias },
-      },
-    }),
-  );
+  const item = await getAlias(alias);
 
   if (item) {
-    return aliasCollision();
+    return error("Alias already exists", Status.BadRequest);
   }
 
-  const secret = generate();
-
-  // @ts-ignore TS2339
-  const { $metadata: { httpStatusCode } } = await DYNAMO_CLIENT.send(
-    new PutItemCommand({
-      TableName: DYNAMO_ALIAS_TABLE,
-      Item: {
-        alias: { S: alias },
-        secret: { S: secret },
-        tags: { M: [] },
-      },
-    }),
-  );
+  const { $metadata: { httpStatusCode } } = await putAlias({
+    alias,
+    owner: user,
+    tags: {},
+  });
 
   if (httpStatusCode !== Status.OK) {
-    return aliasFailed();
+    return error("Alias request failed", Status.BadRequest);
   }
 
-  return json({ secret });
+  return created();
 }

@@ -42,7 +42,7 @@ export function Layout(
           <div className="mt-2 flex flex-row space-x-4">
             <a href="/api">Api</a>
             <a href="/alias">Alias</a>
-            <a>Login</a>
+            <a href="/api/login">Login</a>
           </div>
         </div>
 

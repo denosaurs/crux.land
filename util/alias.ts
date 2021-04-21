@@ -1,25 +1,18 @@
-import { DynamoDBClient, GetItemCommand } from "../deps.ts";
-import {
-  DYNAMO_ACCESS_KEY_ID,
-  DYNAMO_ALIAS_TABLE,
-  DYNAMO_REGION,
-  DYNAMO_SECRET_ACCESS_KEY,
-} from "./constants.ts";
+import { GetItemCommand, PutItemCommand } from "../deps.ts";
+import { DYNAMO_CLIENT } from "./clients.ts";
+import { DYNAMO_ALIAS_TABLE } from "./constants.ts";
 
-export async function getIdFromAlias(
-  alias: string,
-  tag: string,
-): Promise<string | undefined> {
-  const client = new DynamoDBClient({
-    region: DYNAMO_REGION,
-    credentials: {
-      accessKeyId: DYNAMO_ACCESS_KEY_ID,
-      secretAccessKey: DYNAMO_SECRET_ACCESS_KEY,
-    },
-  });
+export type Tags = Record<string, string>;
 
+export interface Alias {
+  alias: string;
+  owner: number;
+  tags: Tags;
+}
+
+export async function getAlias(alias: string): Promise<Alias | undefined> {
   // @ts-ignore TS2339
-  const { Item: item } = await client.send(
+  const { Item: item } = await DYNAMO_CLIENT.send(
     new GetItemCommand({
       TableName: DYNAMO_ALIAS_TABLE,
       Key: {
@@ -28,11 +21,46 @@ export async function getIdFromAlias(
     }),
   );
 
-  const id = item?.tags?.M?.[tag]?.S;
+  if (item) {
+    return {
+      alias: item.alias.S,
+      owner: parseInt(item.owner.N),
+      tags: Object.fromEntries(
+        Object.entries(item.tags.M as Record<string, { S: string }>).map((
+          [tag, { S: id }],
+        ) => [tag, id]),
+      ),
+    };
+  }
+}
 
-  if (id === null || id === undefined) {
+export async function putAlias(alias: Alias) {
+  // @ts-ignore TS2339
+  return await DYNAMO_CLIENT.send(
+    new PutItemCommand({
+      TableName: DYNAMO_ALIAS_TABLE,
+      Item: {
+        alias: { S: alias.alias },
+        owner: { N: alias.owner.toString() },
+        tags: {
+          M: Object.fromEntries(
+            Object.entries(alias.tags).map(([tag, id]) => [tag, { S: id }]),
+          ),
+        },
+      },
+    }),
+  );
+}
+
+export async function getIdFromAlias(
+  alias: string,
+  tag: string,
+): Promise<string | undefined> {
+  const item = await getAlias(alias);
+
+  if (item === undefined) {
     return undefined;
   }
 
-  return id;
+  return item.tags[tag];
 }

@@ -1,4 +1,4 @@
-import { GetItemCommand, ScanCommand } from "../deps.ts";
+import { ScanCommand } from "../deps.ts";
 import {
   ALIAS_NAME_REGEX,
   ALIAS_TAG_REGEX,
@@ -6,7 +6,8 @@ import {
 } from "../util/constants.ts";
 import { DYNAMO_CLIENT } from "../util/clients.ts";
 import { Match } from "../util/router.ts";
-import { json } from "../util/responses.ts";
+import { aliasNotFound, json } from "../util/responses.ts";
+import { getAlias } from "../util/alias.ts";
 
 export async function completionsAlias(): Promise<Response> {
   // @ts-ignore TS2339
@@ -21,19 +22,15 @@ export async function completionsAlias(): Promise<Response> {
 
 export async function completionsTags(
   _req: Request,
-  matches: Match,
+  match: Match,
 ): Promise<Response> {
-  // @ts-ignore TS2339
-  const { Item: item } = await DYNAMO_CLIENT.send(
-    new GetItemCommand({
-      TableName: DYNAMO_ALIAS_TABLE,
-      Key: {
-        alias: { S: matches.params.alias },
-      },
-    }),
-  );
+  const alias = await getAlias(match.params.alias!);
 
-  return json(Object.keys(item.tags.M));
+  if (alias === undefined) {
+    return aliasNotFound();
+  }
+
+  return json(Object.keys(alias.tags));
 }
 
 export function completionsSchema(): Response {

@@ -38,7 +38,7 @@ export async function getId(
 
   const { id, ext } = match.params as { id: string; ext: string | undefined };
 
-  if (ext === "") {
+  if (ext === "" || ext === undefined) {
     const file = await S3_CLIENT.headObject(id);
 
     if (file === undefined) {

@@ -8,11 +8,9 @@ import { readToUint8Array, uint8ArraysEqual } from "../util/util.ts";
 import { encode } from "../util/base58.ts";
 import { fnv1a } from "../util/fnv1a.ts";
 import {
-  badFileFormat,
+  error,
   fileCollision,
-  fileTooLarge,
   hashCollision,
-  invalidExt,
   invalidMethod,
   json,
 } from "../util/responses.ts";
@@ -21,7 +19,7 @@ import { S3_CLIENT } from "../util/clients.ts";
 
 export async function add(
   req: Request,
-  match: Match,
+  _match: Match,
 ): Promise<Response> {
   if (req.method !== "POST") {
     return invalidMethod();
@@ -33,17 +31,17 @@ export async function add(
     typeof file.content !== "string" ||
     typeof file.name !== "string"
   ) {
-    return badFileFormat();
+    return error("Bad file format", Status.BadRequest);
   }
 
   const content = decode(file.content);
 
   if (content.byteLength > MAX_SIZE) {
-    return fileTooLarge();
+    return error("File too large", Status.BadRequest);
   }
 
   if (!EXTENSIONS.some((valid) => valid === file.name.split(".").pop()!)) {
-    return invalidExt();
+    return error("Invalid extension", Status.BadRequest);
   }
 
   const id = encode(fnv1a(content));

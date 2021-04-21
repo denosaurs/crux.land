@@ -1,97 +1,70 @@
-import { GetItemCommand, PutItemCommand, Status } from "../../deps.ts";
+import { Status } from "../../deps.ts";
 import {
   ALIAS_NAME_REGEX_TEST,
   ALIAS_TAG_REGEX_TEST,
-  DYNAMO_ALIAS_TABLE,
 } from "../../util/constants.ts";
 import {
   aliasNotFound,
+  couldNotAuthenticate,
   created,
-  invalidAlias,
-  invalidId,
+  error,
   invalidMethod,
-  invalidSecret,
-  invalidSecretFormat,
-  invalidTagFormat,
   notFound,
-  releaseFailed,
-  tagCollision,
 } from "../../util/responses.ts";
-import { validate } from "../../util/base58.ts";
 import { Match } from "../../util/router.ts";
-import { DYNAMO_CLIENT, S3_CLIENT } from "../../util/clients.ts";
+import { S3_CLIENT } from "../../util/clients.ts";
+import { authenticate } from "../../util/user.ts";
+import { getAlias, putAlias } from "../../util/alias.ts";
 
 export async function release(
   req: Request,
-  match: Match,
+  _match: Match,
 ): Promise<Response> {
   if (req.method !== "POST") {
     return invalidMethod();
   }
 
-  const { alias, secret, tag, id } = await req.json();
+  const { alias, user, secret, tag, script } = await req.json();
 
-  if (typeof alias !== "string" && ALIAS_NAME_REGEX_TEST.test(alias)) {
-    return invalidAlias();
+  if (!await authenticate(user, secret)) {
+    return couldNotAuthenticate();
   }
 
-  if (typeof secret !== "string" && validate(secret)) {
-    return invalidSecretFormat();
+  if (!ALIAS_NAME_REGEX_TEST.test(alias)) {
+    return error("Invalid alias format", Status.BadRequest);
   }
 
-  if (typeof tag !== "string" && ALIAS_TAG_REGEX_TEST.test(tag)) {
-    return invalidTagFormat();
+  if (!ALIAS_TAG_REGEX_TEST.test(tag)) {
+    return error("Invalid tag format", Status.BadRequest);
   }
 
-  if (typeof id !== "string" && validate(id)) {
-    return invalidId();
-  }
-
-  const file = await S3_CLIENT.headObject(id);
+  const file = await S3_CLIENT.headObject(script);
 
   if (file === undefined) {
     return notFound();
   }
-  // @ts-ignore TS2339
-  const { Item: item } = await DYNAMO_CLIENT.send(
-    new GetItemCommand({
-      TableName: DYNAMO_ALIAS_TABLE,
-      Key: {
-        alias: { S: alias },
-      },
-    }),
-  );
+
+  const item = await getAlias(alias);
 
   if (item === undefined) {
     return aliasNotFound();
   }
 
-  if (item.secret.S !== secret) {
-    return invalidSecret();
+  if (item.owner !== user) {
+    return error("You are not the owner of this alias", Status.Unauthorized);
   }
 
-  const tags = item.tags.M ?? {};
-
-  if (tags[tag]?.S !== undefined) {
-    return tagCollision();
+  if (item.tags[tag] !== undefined) {
+    return error("Tag already exists", Status.BadRequest);
   }
 
-  tags[tag] = { S: id };
+  item.tags[tag] = script;
 
   // @ts-ignore TS2339
-  const { $metadata: { httpStatusCode } } = await DYNAMO_CLIENT.send(
-    new PutItemCommand({
-      TableName: DYNAMO_ALIAS_TABLE,
-      Item: {
-        alias: { S: alias },
-        secret: { S: secret },
-        tags: { M: tags },
-      },
-    }),
-  );
+  const { $metadata: { httpStatusCode } } = await putAlias(item);
 
   if (httpStatusCode !== Status.OK) {
-    return releaseFailed();
+    return error("Release failed", Status.BadRequest);
   }
 
   return created();
