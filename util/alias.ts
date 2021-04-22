@@ -1,3 +1,4 @@
+import { marshall, Status, unmarshall } from "../deps.ts";
 import { DYNAMO_CLIENT } from "./clients.ts";
 import { DYNAMO_ALIAS_TABLE } from "./constants.ts";
 
@@ -11,39 +12,87 @@ export interface Alias {
 
 export type Requests = Alias[];
 
+export async function getRequests(): Promise<Requests> {
+  const { Item: item } = await DYNAMO_CLIENT.getItem({
+    TableName: DYNAMO_ALIAS_TABLE,
+    Key: marshall({
+      alias: "$requests",
+    }),
+  });
+
+  if (item === undefined) {
+    await DYNAMO_CLIENT.putItem({
+      TableName: DYNAMO_ALIAS_TABLE,
+      Item: marshall({
+        alias: "$requests",
+        requests: [],
+      }),
+    });
+
+    return [];
+  }
+
+  return unmarshall(item).requests;
+}
+
+export async function pushRequest(alias: Alias) {
+  const requests = await getRequests();
+  requests.push(alias);
+
+  return await DYNAMO_CLIENT.putItem({
+    TableName: DYNAMO_ALIAS_TABLE,
+    Item: marshall({
+      alias: "$requests",
+      requests,
+    }),
+  });
+}
+
+export async function approveRequest(index: number) {
+  const requests = await getRequests();
+  const alias = requests.splice(index, 1)[0];
+
+  if (alias) {
+    await putAlias(alias);
+  }
+
+  return await DYNAMO_CLIENT.putItem({
+    TableName: DYNAMO_ALIAS_TABLE,
+    Item: marshall({
+      alias: "$requests",
+      requests,
+    }),
+  });
+}
+
+export async function denyRequest(index: number) {
+  const requests = await getRequests();
+  requests.splice(index, 1)[0];
+
+  return await DYNAMO_CLIENT.putItem({
+    TableName: DYNAMO_ALIAS_TABLE,
+    Item: marshall({
+      alias: "$requests",
+      requests,
+    }),
+  });
+}
+
 export async function getAlias(alias: string): Promise<Alias | undefined> {
   const { Item: item } = await DYNAMO_CLIENT.getItem({
     TableName: DYNAMO_ALIAS_TABLE,
-    Key: {
-      alias: { S: alias },
-    },
+    Key: marshall({ alias }),
   });
 
   if (item) {
-    return {
-      alias: item.alias.S,
-      owner: parseInt(item.owner.N),
-      tags: Object.fromEntries(
-        Object.entries(item.tags.M as Record<string, { S: string }>).map((
-          [tag, { S: id }],
-        ) => [tag, id]),
-      ),
-    };
+    return unmarshall(item);
   }
 }
 
 export async function putAlias(alias: Alias) {
   return await DYNAMO_CLIENT.putItem({
     TableName: DYNAMO_ALIAS_TABLE,
-    Item: {
-      alias: { S: alias.alias },
-      owner: { N: alias.owner.toString() },
-      tags: {
-        M: Object.fromEntries(
-          Object.entries(alias.tags).map(([tag, id]) => [tag, { S: id }]),
-        ),
-      },
-    },
+    Item: marshall(alias),
   });
 }
 

@@ -29,6 +29,9 @@ import {
   completionsSchema,
   completionsTags,
 } from "./api/completions.ts";
+import { approve } from "./api/alias/approve.ts";
+import { deny } from "./api/alias/deny.ts";
+import { requests } from "./api/alias/requests.ts";
 
 async function unknownHandler(
   req: Request,
@@ -85,6 +88,9 @@ addEventListener("fetch", (event: FetchEvent) => {
       "/api/add": add,
       "/api/alias/request": request,
       "/api/alias/release": release,
+      "/api/alias/requests": requests,
+      "/api/alias/approve": approve,
+      "/api/alias/deny": deny,
       "/api/completions": completionsAlias,
       [`/api/completions/:alias(${ALIAS_NAME_REGEX.source})/tags`]:
         completionsTags,

@@ -9,7 +9,7 @@ import {
 } from "../../util/responses.ts";
 import { Match } from "../../util/router.ts";
 import { authenticate } from "../../util/user.ts";
-import { getAlias, putAlias } from "../../util/alias.ts";
+import { getAlias, pushRequest, putAlias } from "../../util/alias.ts";
 
 export async function request(
   req: Request,
@@ -35,12 +35,11 @@ export async function request(
     return error("Alias already exists", Status.BadRequest);
   }
 
-  const { $metadata: { httpStatusCode } } = await putAlias({
+  const { $metadata: { httpStatusCode } } = await pushRequest({
     alias,
     owner: user,
     tags: {},
   });
-
   if (httpStatusCode !== Status.OK) {
     return error("Alias request failed", Status.BadRequest);
   }

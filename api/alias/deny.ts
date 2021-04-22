@@ -7,9 +7,9 @@ import {
 } from "../../util/responses.ts";
 import { Match } from "../../util/router.ts";
 import { authenticate } from "../../util/user.ts";
-import { approveRequest } from "../../util/alias.ts";
+import { denyRequest } from "../../util/alias.ts";
 
-export async function approve(
+export async function deny(
   req: Request,
   _match: Match,
 ): Promise<Response> {
@@ -23,9 +23,9 @@ export async function approve(
     return couldNotAuthenticate();
   }
 
-  const { $metadata: { httpStatusCode } } = await approveRequest(index);
+  const { $metadata: { httpStatusCode } } = await denyRequest(index);
   if (httpStatusCode !== Status.OK) {
-    return error("Alias approval failed", Status.BadRequest);
+    return error("Alias denial failed", Status.BadRequest);
   }
 
   return created();

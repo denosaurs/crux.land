@@ -24,6 +24,10 @@ export function status(status: number): Response {
   return new Response(undefined, { status });
 }
 
+export function ok(): Response {
+  return status(Status.OK);
+}
+
 export function created(): Response {
   return status(Status.Created);
 }

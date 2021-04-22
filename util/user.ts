@@ -1,4 +1,4 @@
-import { Status } from "../deps.ts";
+import { marshall, Status, unmarshall } from "../deps.ts";
 import { DYNAMO_CLIENT } from "./clients.ts";
 import { DYNAMO_USER_TABLE } from "./constants.ts";
 import { generate } from "./token.ts";
@@ -12,17 +12,11 @@ export interface User {
 export async function getUser(id: number): Promise<User | undefined> {
   const { Item: item } = await DYNAMO_CLIENT.getItem({
     TableName: DYNAMO_USER_TABLE,
-    Key: {
-      id: { N: id.toString() },
-    },
+    Key: marshall({ id }),
   });
 
   if (item) {
-    return {
-      id: parseInt(item.id.N),
-      admin: item.admin.BOOL,
-      secret: item.secret.S,
-    };
+    return unmarshall(item);
   }
 }
 
@@ -34,11 +28,7 @@ export async function createUser(
 
   const { $metadata: { httpStatusCode } } = await DYNAMO_CLIENT.putItem({
     TableName: DYNAMO_USER_TABLE,
-    Item: {
-      id: { N: id.toString() },
-      secret: { S: secret },
-      admin: { BOOL: admin },
-    },
+    Item: marshall({ id, secret, admin }),
   });
 
   if (httpStatusCode === Status.OK) {
