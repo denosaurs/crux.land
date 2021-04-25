@@ -35,19 +35,15 @@ export function created(): Response {
 export function fileCollision(
   id: string,
 ): Response {
-  return new Response(`File already exists (${id})`, {
-    status: Status.BadRequest,
-  });
+  return error(`File already exists (${id})`, Status.BadRequest);
 }
 
 export function hashCollision(
   id: string,
 ): Response {
-  return new Response(
+  return error(
     `Hash collided, try changing your file slightly (${id})`,
-    {
-      status: Status.BadRequest,
-    },
+    Status.InternalServerError,
   );
 }
 

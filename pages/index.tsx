@@ -4,6 +4,7 @@ import { Block } from "../components/block.tsx";
 import { LabelButton } from "../components/label_button.tsx";
 import { InputButton } from "../components/input_button.tsx";
 import { ResultButton } from "../components/result_button.tsx";
+import { CodeInline } from "../components/code_inline.tsx";
 import { EXTENSIONS } from "../util/constants.ts";
 
 export function Index() {
@@ -20,17 +21,27 @@ export function Index() {
             <br />
             <br />
 
-            Usage... Dolor deserunt proident ex esse. Ex reprehenderit ex dolore
-            aute irure adipisicing anim anim mollit. Aute nisi in sint mollit
-            aute nisi nostrud dolor aliquip anim cillum Lorem et. Id est aute
-            esse ea ea eiusmod laboris officia exercitation.
+            To use crux.land simply upload a file with one of the supported file
+            extensions ({EXTENSIONS.map((ext, idx) =>
+              <span>
+                <CodeInline>{ext}</CodeInline>
+                {EXTENSIONS.length - 1 === idx ? "" : ", "}
+              </span>
+            )}) and if successful you will recieve a permanent link to said
+            file. This link may be used in deno or browsers import and
+            automatically serve the correct{" "}
+            <CodeInline>Content-Type</CodeInline>{" "}
+            header. An optional extension may be added to the end of the url but
+            is not necessary as it is automatically redirected to.
 
             <br />
             <br />
 
-            A custom name may also be associated with your uploaded scripts.
-            These aliases are versioned and can be updated with new versions
-            unlike the raw links for a script which has not been aliased.
+            A custom name may also be requested to be associated with your
+            uploaded scripts. These aliases are versioned and can be updated
+            with new tags unlike the raw links for a script which are permanent
+            and therefor not versioned. To request an alias a GitHub account
+            login is required to prevent abuse.
           </div>
           <div className="flex flex-col inset-y-0 right-0 w-full lg:w-2/5">
             <form

@@ -9,7 +9,7 @@ import {
 } from "../../util/responses.ts";
 import { Match } from "../../util/router.ts";
 import { authenticate } from "../../util/user.ts";
-import { getAlias, pushRequest, putAlias } from "../../util/alias.ts";
+import { getAlias, pushRequest } from "../../util/alias.ts";
 
 export async function request(
   req: Request,

@@ -3,7 +3,12 @@ import {
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
 } from "../../util/constants.ts";
-import { couldNotAuthenticate, error, json } from "../../util/responses.ts";
+import {
+  couldNotAuthenticate,
+  error,
+  json,
+  redirect,
+} from "../../util/responses.ts";
 import { Match } from "../../util/router.ts";
 import { createUser, getUser } from "../../util/user.ts";
 
@@ -48,14 +53,19 @@ export async function callback(
     return couldNotAuthenticate();
   }
 
-  let user = await getUser(id);
-  if (user) {
-    return json(user);
-  }
+  const user = await getUser(id) ?? await createUser(id);
 
-  user = await createUser(id);
-  if (user) {
-    return json(user);
+  if (user !== undefined) {
+    const accept = req.headers.get("accept");
+    const isHtml = accept && accept.indexOf("html") >= 0;
+
+    if (isHtml) {
+      return redirect(
+        `/alias?user=${encodeURIComponent(JSON.stringify(user))}`,
+      );
+    } else {
+      return json(user);
+    }
   }
 
   return error("Could not create user", Status.BadRequest);

@@ -2,10 +2,11 @@ import { ComponentChildren, h, JSX } from "../deps.ts";
 import { Footer } from "./footer.tsx";
 
 export function Layout(
-  { children, title, description }: {
+  { children, title, description, script }: {
     children: ComponentChildren;
     title: string;
     description?: boolean;
+    script?: string;
   },
 ) {
   return (
@@ -41,14 +42,15 @@ export function Layout(
             : null}
           <div className="mt-2 flex flex-row space-x-4">
             <a href="/api">Api</a>
-            <a href="/alias">Alias</a>
-            <a href="/api/login">Login</a>
+            <a href="/api/login">Alias</a>
           </div>
         </div>
 
         {children}
 
         <Footer />
+
+        {script ? <script>{script}</script> : null}
       </body>
     </html>
   );
