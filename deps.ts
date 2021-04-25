@@ -10,8 +10,8 @@ export {
 export { decode } from "https://deno.land/std@0.94.0/encoding/base64.ts";
 
 // AWS
-export { S3Bucket } from "https://deno.land/x/s3@0.4.0/mod.ts";
-export type { GetObjectResponse } from "https://deno.land/x/s3@0.4.0/mod.ts";
+export { S3Bucket } from "https://deno.land/x/s3@0.4.1/mod.ts";
+export type { GetObjectResponse } from "https://deno.land/x/s3@0.4.1/mod.ts";
 export { DynamoDB } from "https://cdn.skypack.dev/@aws-sdk/client-dynamodb@3.13.0";
 export {
   marshall,
