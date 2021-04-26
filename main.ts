@@ -32,6 +32,7 @@ import {
 import { approve } from "./api/alias/approve.ts";
 import { deny } from "./api/alias/deny.ts";
 import { requests } from "./api/alias/requests.ts";
+import { list } from "./api/alias/list.ts";
 
 async function unknownHandler(
   req: Request,
@@ -91,6 +92,7 @@ addEventListener("fetch", (event: FetchEvent) => {
       "/api/alias/requests": requests,
       "/api/alias/approve": approve,
       "/api/alias/deny": deny,
+      "/api/alias/list": list,
       "/api/completions": completionsAlias,
       [`/api/completions/:alias(${ALIAS_NAME_REGEX.source})/tags`]:
         completionsTags,

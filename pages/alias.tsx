@@ -10,17 +10,32 @@ export function Alias() {
     <Layout
       title="crux.land"
       script="
-      const json = new URLSearchParams(new URL(document.URL).search).get('user');
+      const user = getUser();
 
-      if (json !== null) {
-        localStorage.setItem('user', decodeURIComponent(json));
-        location.href = '/alias';
-      } else if (localStorage.getItem('user') === null) {
-        location.href = '/api/login';
+      if (getUser() === null) {
+        location.href = '/';
       }
 
-      const { id: user, secret, admin } = JSON.parse(localStorage.getItem('user'));
-      "
+      const aliasList = document.getElementById('aliasList');
+  
+      fetch('/api/alias/list', {
+        body: JSON.stringify({ user: user.id }),
+        method: 'POST',
+      }).then(async function (res) {
+        const aliases = await res.json();
+
+        for (const { alias, owner, tags } of aliases) {
+          const outer = document.createElement('div');
+          outer.className = 'w-full mb-2 justify-center py-2 px-4 border border-gray-300 text-md font-medium rounded-md bg-gray-100';
+          aliasList.appendChild(outer);
+
+          const text = document.createElement('div');
+          text.className = '';
+          text.innerHTML = alias;
+          outer.appendChild(text);
+        }
+      });
+    "
     >
       <Block>
         <div className="flex flex-col">
@@ -35,67 +50,61 @@ export function Alias() {
             <div
               className="flex flex-col inset-y-0 right-0 w-full lg:w-1/2 lg:ml-2"
             >
-              <form
-                className="m-0"
-                id="form"
-                // @ts-ignore TS2322
-                onreset="
-                  const alias = document.getElementById('alias');
-                  alias.innerText = '';
-                "
-                onsubmit="
-                const form = document.getElementById('form');
-                const request = document.getElementById('request');
-                const alias = document.getElementById('alias').value;
-                const result = document.getElementById('result');
+              <div className="mb-2 mt-4 lg:mt-0">
+                <TextButton
+                  // @ts-ignore TS2322
+                  id="aliasInput"
+                  placeholder="alias"
+                  required
+                />
+              </div>
+              <div className="mb-2 mt-2 lg:mt-0">
+                <InputButton
+                  // @ts-ignore TS2322
+                  type="button"
+                  id="request"
+                  value="Request"
+                  onclick="
+                    const request = document.getElementById('request');
+                    const alias = document.getElementById('aliasInput').value;
+                    const result = document.getElementById('result');
+                    const user = getUser();
 
-                event.preventDefault();
-
-                result.style.display = 'none';
-
-                request.disabled = true;
-                
-                fetch('/api/alias/request', {
-                  method: 'POST',
-                  body: JSON.stringify({
-                    alias, user, secret
-                  }),
-                }).then((res) => {
-                  request.disabled = false;
-
-                  if (res.ok) {
-                    result.style.color = 'rgba(52, 211, 153, var(--tw-text-opacity))';
-                    result.innerText = 'Successfully requested!';
-                  } else {
-                    res.json().then(({ error }) => {
+                    if (user === null) {
                       result.style.color = 'rgba(220, 38, 38, var(--tw-text-opacity))';
-                      result.innerText = error;
+                      result.innerText = 'You are not logged in...';
+                      result.style.display = 'flex';
+                    
+                      return;
+                    }
+
+                    result.style.display = 'none';
+
+                    request.disabled = true;
+
+                    fetch('/api/alias/request', {
+                      method: 'POST',
+                      body: JSON.stringify({
+                        alias, user: user.id, secret: user.secret
+                      }),
+                    }).then((res) => {
+                      if (res.ok) {
+                        result.style.color = 'rgba(52, 211, 153, var(--tw-text-opacity))';
+                        result.innerText = 'Successfully requested!';
+                      } else {
+                        res.json().then(({ error }) => {
+                          result.style.color = 'rgba(220, 38, 38, var(--tw-text-opacity))';
+                          result.innerText = error;
+                        });
+                      }
+                      result.style.display = 'flex';
+
+                      alias.innerText = '';
+                      request.disabled = false;
                     });
-                  }
-                  result.style.display = 'flex';
-                  form.reset();
-                });
-                "
-              >
-                <div className="mb-2 mt-4 lg:mt-0">
-                  <TextButton
-                    // @ts-ignore TS2322
-                    name="alias"
-                    id="alias"
-                    placeholder="alias"
-                    required
-                  />
-                </div>
-                <div className="mb-2 mt-2 lg:mt-0">
-                  <InputButton
-                    // @ts-ignore TS2322
-                    type="submit"
-                    name="request"
-                    id="request"
-                    value="Request"
-                  />
-                </div>
-              </form>
+                    "
+                />
+              </div>
               <div className="select-all cursor-text">
                 <ResultButton
                   // @ts-ignore TS2322
@@ -105,7 +114,8 @@ export function Alias() {
             </div>
           </div>
           <div
-            className="mt-4 h-96 w-full flex py-2 px-4 border border-gray-300 rounded-md bg-gray-50 overflow-y-scroll"
+            className="mt-4 h-96 w-full flex flex-col py-2 px-4 border border-gray-300 rounded-md bg-gray-50 overflow-y-scroll"
+            id="aliasList"
           >
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { marshall, Status, unmarshall } from "../deps.ts";
+import { marshall, unmarshall } from "../deps.ts";
 import { DYNAMO_CLIENT } from "./clients.ts";
 import { DYNAMO_ALIAS_TABLE } from "./constants.ts";
 
@@ -107,4 +107,23 @@ export async function getIdFromAlias(
   }
 
   return item.tags[tag];
+}
+
+export async function listAliases(id: number): Promise<Alias[]> {
+  const { Items: items } = await DYNAMO_CLIENT.scan({
+    TableName: DYNAMO_ALIAS_TABLE,
+    FilterExpression: "#owner = :owner",
+    ExpressionAttributeValues: {
+      ":owner": { "N": id.toString() },
+    },
+    ExpressionAttributeNames: {
+      "#owner": "owner",
+    },
+  });
+
+  if (items) {
+    return items.map(unmarshall);
+  } else {
+    return [];
+  }
 }

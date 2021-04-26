@@ -61,7 +61,7 @@ export async function callback(
 
     if (isHtml) {
       return redirect(
-        `/alias?user=${encodeURIComponent(JSON.stringify(user))}`,
+        `/?user=${encodeURIComponent(JSON.stringify(user))}`,
       );
     } else {
       return json(user);
