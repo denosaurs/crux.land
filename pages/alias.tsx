@@ -21,20 +21,50 @@ export function Alias() {
       fetch('/api/alias/list', {
         body: JSON.stringify({ user: user.id }),
         method: 'POST',
-      }).then(async function (res) {
+      }).then(async (res) => {
         const aliases = await res.json();
+        let first = true;
 
         for (const { alias, owner, tags } of aliases) {
           const outer = document.createElement('div');
-          outer.className = 'w-full mb-2 justify-center py-2 px-4 border border-gray-300 text-md font-medium rounded-md bg-gray-100';
+          outer.className = 'w-full mb-2 justify-center py-2 px-4 border border-gray-300 rounded-md bg-gray-100';
           aliasList.appendChild(outer);
 
-          const text = document.createElement('div');
-          text.className = '';
+          const label = document.createElement('label');
+          label.className = 'flex items-center space-x-3';
+          
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.value = alias;
+          radio.className = 'appearance-none h-6 w-6 rounded-full';
+          radio.name = 'alias';
+
+          if (first) {
+            radio.checked = true;
+            first = false;
+          }
+          
+          const text = document.createElement('span');
+          text.className = 'text-gray-900 font-medium';
           text.innerHTML = alias;
-          outer.appendChild(text);
+
+          label.append(radio, text);
+          outer.appendChild(label)
         }
       });
+    "
+      style="
+      input[type=radio] {
+        outline-color: rgba(209,213,219,var(--tw-border-opacity));
+        outline-width: 1px;
+        outline-style: solid;
+      }
+
+      input[type=radio]:checked {
+        background-color: rgba(37,99,235,var(--tw-bg-opacity));
+        border-width: 4px;
+        border-color: rgba(243,244,246,var(--tw-bg-opacity));
+      }
     "
     >
       <Block>
@@ -67,16 +97,8 @@ export function Alias() {
                   onclick="
                     const request = document.getElementById('request');
                     const alias = document.getElementById('aliasInput').value;
-                    const result = document.getElementById('result');
+                    const result = document.getElementById('requestResult');
                     const user = getUser();
-
-                    if (user === null) {
-                      result.style.color = 'rgba(220, 38, 38, var(--tw-text-opacity))';
-                      result.innerText = 'You are not logged in...';
-                      result.style.display = 'flex';
-                    
-                      return;
-                    }
 
                     result.style.display = 'none';
 
@@ -108,7 +130,7 @@ export function Alias() {
               <div className="select-all cursor-text">
                 <ResultButton
                   // @ts-ignore TS2322
-                  id="result"
+                  id="requestResult"
                 />
               </div>
             </div>
@@ -118,6 +140,81 @@ export function Alias() {
             id="aliasList"
           >
           </div>
+          <div className="flex flex-row mt-2">
+            <div className="w-1/3">
+              <TextButton
+                // @ts-ignore TS2322
+                id="tag"
+                placeholder="tag"
+                required
+              />
+            </div>
+            <div className="ml-2 mr-2 w-1/3">
+              <TextButton
+                // @ts-ignore TS2322
+                id="script"
+                placeholder="script"
+                required
+              />
+            </div>
+            <div className="w-1/3">
+              <InputButton
+                // @ts-ignore TS2322
+                type="button"
+                id="release"
+                value="release"
+                onclick="
+                  const release = document.getElementById('release');
+                  const tag = document.getElementById('tag').value;
+                  const script = document.getElementById('script').value;
+                  const result = document.getElementById('releaseResult');
+                  const alias = [...document.getElementsByName('alias')].find((elem) => elem.checked).value;
+                  const user = getUser();
+
+                  if (tag === '' || script === '') {
+                    result.style.color = 'rgba(220, 38, 38, var(--tw-text-opacity))';
+                    result.innerText = 'Must have both script and tag';
+                    result.style.display = 'flex';
+
+                    return;
+                  }
+
+                  release.disabled = true;
+
+                  fetch('/api/alias/release', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                      alias,
+                      user: user.id,
+                      secret: user.secret,
+                      tag,
+                      script
+                    }),
+                  }).then((res) => {
+                    if (res.ok) {
+                      result.style.color = 'rgba(52, 211, 153, var(--tw-text-opacity))';
+                      result.innerText = 'Successfully released!';
+                    } else {
+                      res.json().then(({ error }) => {
+                        result.style.color = 'rgba(220, 38, 38, var(--tw-text-opacity))';
+                        result.innerText = error;
+                      });
+                    }
+                    result.style.display = 'flex';
+
+                    release.disabled = false;
+                  });
+                "
+              >
+              </InputButton>
+            </div>
+          </div>
+        </div>
+        <div className="select-all cursor-text mt-2 w-full">
+          <ResultButton
+            // @ts-ignore TS2322
+            id="releaseResult"
+          />
         </div>
       </Block>
     </Layout>

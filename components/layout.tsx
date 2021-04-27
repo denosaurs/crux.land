@@ -2,11 +2,12 @@ import { ComponentChildren, h, JSX } from "../deps.ts";
 import { Footer } from "./footer.tsx";
 
 export function Layout(
-  { children, title, description, script }: {
+  { children, title, description, script, style }: {
     children: ComponentChildren;
     title: string;
     description?: boolean;
     script?: string;
+    style?: string;
   },
 ) {
   return (
@@ -102,9 +103,13 @@ export function Layout(
 
             reloadUser();
           `}
-
-          {script}
         </script>
+        {script
+          ? <script dangerouslySetInnerHTML={{ __html: script }}></script>
+          : null}
+        {style
+          ? <style dangerouslySetInnerHTML={{ __html: style }}></style>
+          : null}
       </body>
     </html>
   );

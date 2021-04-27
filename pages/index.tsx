@@ -143,7 +143,7 @@ export function Index() {
                           result.innerText = window.location.href + id;
                         });
                       } else {
-                        res.text().then(({ error }) => {
+                        res.json().then(({ error }) => {
                           result.style.color = 'rgba(220, 38, 38, var(--tw-text-opacity))';
                           result.innerText = error;
                         });
