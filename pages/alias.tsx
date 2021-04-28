@@ -16,13 +16,17 @@ export function Alias() {
           location.href = '/';
         }
 
-        const aliasList = document.getElementById('aliasList');
-        const tagList = document.getElementById('tagList');
-      
-        fetch('/api/alias/list', {
-          body: JSON.stringify({ user: user.id }),
-          method: 'POST',
-        }).then(async (res) => {
+        async function listAliases() {
+          const aliasList = document.getElementById('aliasList');
+          const tagList = document.getElementById('tagList');
+
+          const res = await fetch('/api/alias/list', {
+            body: JSON.stringify({ user: user.id }),
+            method: 'POST',
+          });
+
+          aliasList.innerHTML = '';
+
           const aliases = await res.json();
           let first = true;
 
@@ -71,7 +75,9 @@ export function Alias() {
             outer.appendChild(label);
             aliasList.appendChild(outer);
           }
-        });
+        }
+
+        listAliases();
       "
       style="
         input[type=radio] {
@@ -232,6 +238,8 @@ export function Alias() {
                     result.style.display = 'flex';
 
                     release.disabled = false;
+
+                    listAliases();
                   });
                 "
               >
