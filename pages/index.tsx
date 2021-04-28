@@ -17,7 +17,7 @@ export function Index() {
         <div className="flex flex-col lg:flex-row">
           <div className="inset-y-0 left-0 w-full lg:w-3/5">
             crux.land is a free registry service meant for hosting small (≤
-            10kB) single deno scripts. All uploaded scripts are immutable and
+            20kB) single deno scripts. All uploaded scripts are immutable and
             will not be changed nor deleted unless there is a legal reason or if
             it is found to be malicious.
 

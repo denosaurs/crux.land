@@ -1,5 +1,5 @@
-// Max file size (10000 bytes / 10 kB)
-export const MAX_SIZE = 1000 * 10;
+// Max file size (20000 bytes / 20 kB)
+export const MAX_SIZE = 2000 * 10;
 
 export const EXTENSIONS = [
   "ts",
