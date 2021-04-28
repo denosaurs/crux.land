@@ -39,7 +39,7 @@ async function unknownHandler(
   match: Match,
 ): Promise<Response> {
   let { id } = match.params;
-  const { alias, tag, ext } = match.params;
+  const { alias, tag, _ext } = match.params;
   const accept = req.headers.get("accept");
   const isHtml = accept && accept.indexOf("html") >= 0;
 

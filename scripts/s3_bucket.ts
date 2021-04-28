@@ -22,7 +22,7 @@ try {
     }),
   );
   console.log("Bucket already exists");
-} catch (err) {
+} catch {
   console.log("Bucket not found");
   console.log("Creating bucket");
   // @ts-ignore TS2339
