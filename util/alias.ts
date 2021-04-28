@@ -48,12 +48,19 @@ export async function pushRequest(alias: Alias) {
   });
 }
 
-export async function approveRequest(index: number) {
+export async function approveRequest(owner: number, alias: string) {
   const requests = await getRequests();
-  const alias = requests.splice(index, 1)[0];
+  const found = requests.splice(
+    requests.findIndex((request) =>
+      request.owner === owner && request.alias === alias
+    ),
+    1,
+  )[0];
 
-  if (alias) {
-    await putAlias(alias);
+  if (found) {
+    await putAlias(found);
+  } else {
+    return;
   }
 
   return await DYNAMO_CLIENT.putItem({
@@ -65,9 +72,14 @@ export async function approveRequest(index: number) {
   });
 }
 
-export async function denyRequest(index: number) {
+export async function denyRequest(owner: number, alias: string) {
   const requests = await getRequests();
-  requests.splice(index, 1)[0];
+  requests.splice(
+    requests.findIndex((request) =>
+      request.owner === owner && request.alias === alias
+    ),
+    1,
+  );
 
   return await DYNAMO_CLIENT.putItem({
     TableName: DYNAMO_ALIAS_TABLE,

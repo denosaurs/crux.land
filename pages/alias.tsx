@@ -10,62 +10,82 @@ export function Alias() {
     <Layout
       title="crux.land"
       script="
-      const user = getUser();
+        const user = getUser();
 
-      if (getUser() === null) {
-        location.href = '/';
-      }
-
-      const aliasList = document.getElementById('aliasList');
-  
-      fetch('/api/alias/list', {
-        body: JSON.stringify({ user: user.id }),
-        method: 'POST',
-      }).then(async (res) => {
-        const aliases = await res.json();
-        let first = true;
-
-        for (const { alias, owner, tags } of aliases) {
-          const outer = document.createElement('div');
-          outer.className = 'w-full mb-2 justify-center py-2 px-4 border border-gray-300 rounded-md bg-gray-100';
-          aliasList.appendChild(outer);
-
-          const label = document.createElement('label');
-          label.className = 'flex items-center space-x-3';
-          
-          const radio = document.createElement('input');
-          radio.type = 'radio';
-          radio.value = alias;
-          radio.className = 'appearance-none h-6 w-6 rounded-full';
-          radio.name = 'alias';
-
-          if (first) {
-            radio.checked = true;
-            first = false;
-          }
-          
-          const text = document.createElement('span');
-          text.className = 'text-gray-900 font-medium';
-          text.innerHTML = alias;
-
-          label.append(radio, text);
-          outer.appendChild(label)
+        if (user === null) {
+          location.href = '/';
         }
-      });
-    "
-      style="
-      input[type=radio] {
-        outline-color: rgba(209,213,219,var(--tw-border-opacity));
-        outline-width: 1px;
-        outline-style: solid;
-      }
 
-      input[type=radio]:checked {
-        background-color: rgba(37,99,235,var(--tw-bg-opacity));
-        border-width: 4px;
-        border-color: rgba(243,244,246,var(--tw-bg-opacity));
-      }
-    "
+        const aliasList = document.getElementById('aliasList');
+        const tagList = document.getElementById('tagList');
+      
+        fetch('/api/alias/list', {
+          body: JSON.stringify({ user: user.id }),
+          method: 'POST',
+        }).then(async (res) => {
+          const aliases = await res.json();
+          let first = true;
+
+          for (const { alias, owner, tags } of aliases) {
+            const outer = document.createElement('div');
+            outer.className = 'w-full mb-2 justify-center py-2 px-4 border border-gray-300 rounded-md bg-gray-100';
+
+            const label = document.createElement('label');
+            label.className = 'flex items-center space-x-3 text-gray-900 font-medium';
+
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.value = alias;
+            radio.className = 'appearance-none h-6 w-6 rounded-full';
+            radio.name = 'alias';
+            radio.onclick = () => {
+              tagList.innerHTML = '';
+              
+              for (const tag in tags) {
+                const script = tags[tag];
+                const tagButton = document.createElement('div');
+                tagButton.className = 'flex flex-row justify-around w-full mb-2 py-2 px-4 space-x-4 border border-gray-300 rounded-md bg-gray-100 text-gray-900 font-medium';
+                
+                const tagLink = document.createElement('a');
+                tagLink.href = new URL(`${alias}@${tag}`, new URL(document.URL).origin);
+                tagLink.innerHTML = tag;
+
+                const scriptLink = document.createElement('a');
+                scriptLink.href = new URL(script, new URL(document.URL).origin);
+                scriptLink.innerHTML = script;
+                
+                tagButton.append(tagLink, scriptLink);
+                tagList.appendChild(tagButton);
+              }
+            };
+
+            if (first) {
+              radio.click();
+              first = false;
+            }
+
+            const text = document.createElement('span');
+            text.innerHTML = alias;
+
+            label.append(radio, text);
+            outer.appendChild(label);
+            aliasList.appendChild(outer);
+          }
+        });
+      "
+      style="
+        input[type=radio] {
+          outline-color: rgba(209,213,219,var(--tw-border-opacity));
+          outline-width: 1px;
+          outline-style: solid;
+        }
+
+        input[type=radio]:checked {
+          background-color: rgba(37,99,235,var(--tw-bg-opacity));
+          border-width: 4px;
+          border-color: rgba(243,244,246,var(--tw-bg-opacity));
+        }
+      "
     >
       <Block>
         <div className="flex flex-col">
@@ -136,9 +156,18 @@ export function Alias() {
             </div>
           </div>
           <div
-            className="mt-4 h-96 w-full flex flex-col py-2 px-4 border border-gray-300 rounded-md bg-gray-50 overflow-y-scroll"
-            id="aliasList"
+            className="mt-4 h-96 w-full flex flex-row py-2 px-4 border border-gray-300 rounded-md bg-gray-50"
           >
+            <div
+              className="flex flex-col inset-y-0 left-0 mr-2 overflow-y-auto w-1/2"
+              id="aliasList"
+            >
+            </div>
+            <div
+              className="flex flex-col py-2 px-4 inset-y-0 right-0 border border-gray-300 rounded-md bg-gray-100 overflow-y-auto w-1/2"
+              id="tagList"
+            >
+            </div>
           </div>
           <div className="flex flex-row mt-2">
             <div className="w-1/3">

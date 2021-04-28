@@ -17,13 +17,13 @@ export async function approve(
     return invalidMethod();
   }
 
-  const { index, user, secret } = await req.json();
+  const { owner, alias, user, secret } = await req.json();
 
   if (!await authenticate(user, secret, true)) {
     return couldNotAuthenticate();
   }
 
-  const { $metadata: { httpStatusCode } } = await approveRequest(index);
+  const { $metadata: { httpStatusCode } } = await approveRequest(owner, alias);
   if (httpStatusCode !== Status.OK) {
     return error("Alias approval failed", Status.BadRequest);
   }
