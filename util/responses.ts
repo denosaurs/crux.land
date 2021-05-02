@@ -1,4 +1,4 @@
-import { preact, render, Status, STATUS_TEXT } from "../deps.ts";
+import { Status } from "../deps.ts";
 
 export function invalidMethod(): Response {
   return error("Invalid method", Status.BadRequest);
@@ -53,7 +53,6 @@ export function notFound(): Response {
 
 export function html(html: string, init?: ResponseInit): Response {
   return new Response(html, {
-    statusText: init?.statusText ?? STATUS_TEXT.get(init?.status ?? Status.OK),
     status: init?.status ?? Status.OK,
     headers: {
       "Content-Type": "text/html; charset=utf-8",
@@ -62,13 +61,8 @@ export function html(html: string, init?: ResponseInit): Response {
   });
 }
 
-export function jsx(jsx: preact.VNode, init?: ResponseInit): Response {
-  return html(render(jsx), init);
-}
-
 export function json(obj: unknown, init?: ResponseInit): Response {
   return new Response(JSON.stringify(obj), {
-    statusText: init?.statusText ?? STATUS_TEXT.get(init?.status ?? Status.OK),
     status: init?.status ?? Status.OK,
     headers: {
       "Content-Type": "application/json; charset=utf-8",

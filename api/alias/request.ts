@@ -1,4 +1,4 @@
-import { Status } from "../../deps.ts";
+import { Match, Status } from "../../deps.ts";
 import { ALIAS_NAME_REGEX_TEST } from "../../util/constants.ts";
 import {
   couldNotAuthenticate,
@@ -7,7 +7,6 @@ import {
   invalidAlias,
   invalidMethod,
 } from "../../util/responses.ts";
-import { Match } from "../../util/router.ts";
 import { authenticate } from "../../util/user.ts";
 import { getAlias, pushRequest } from "../../util/alias.ts";
 

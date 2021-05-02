@@ -42,7 +42,7 @@ export function CodeBlock(
 ): h.JSX.Element {
   return (
     <div
-      className="shadow-sm rounded-lg border border-gray-200 overflow-hidden p-2 sm:px-3 md:px-4"
+      class="shadow-sm rounded-lg border border-gray-200 overflow-hidden p-2 sm:px-3 md:px-4"
       style="background-color: rgb(246, 248, 250);"
     >
       <Highlight
@@ -56,15 +56,15 @@ export function CodeBlock(
             RenderProps,
         ) => (
           <pre
-            className={className + " flex overflow-y-auto"}
+            class={`${className} flex overflow-y-auto`}
             style={{ ...style }}
           >
-            <code className="pr-2 sm:pr-3">
+            <code class="pr-2 sm:pr-3">
               {tokens.map((line: Token[], i: number) =>
                 line[0]?.empty && i === tokens.length - 1 ? null : (
                   <div
                     key={i + "l"}
-                    className="text-gray-300 token-line text-right select-none text-xs"
+                    class="text-gray-300 token-line text-right select-none text-xs"
                   >
                     {i + 1}
                   </div>

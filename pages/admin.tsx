@@ -1,12 +1,11 @@
 import { h } from "../deps.ts";
 import { Layout } from "../components/layout.tsx";
 import { Block } from "../components/block.tsx";
-import { ResultButton } from "../components/result_button.tsx";
+import { InputButton } from "../components/input_button.tsx";
 
 export function Admin() {
   return (
     <Layout
-      title="crux.land"
       script="
         const user = getUser();
 
@@ -33,7 +32,7 @@ export function Admin() {
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.value = JSON.stringify({ alias, owner });
-            checkbox.className = 'appearance-none h-6 w-6 rounded-md';
+            checkbox.className = 'appearance-none h-6 w-6 rounded-md cursor-pointer';
             checkbox.name = 'request';
 
             const aliasText = document.createElement('span');
@@ -70,18 +69,18 @@ export function Admin() {
       "
     >
       <Block>
-        <div className="flex flex-col">
+        <div class="flex flex-col">
           <div
-            className="mt-4 h-80 w-full flex flex-row py-2 px-4 border border-gray-300 rounded-md bg-gray-50"
+            class="mt-4 h-80 w-full flex flex-row py-2 px-4 border border-gray-300 rounded-md bg-gray-50"
           >
             <div
-              className="flex flex-col inset-y-0 left-0 mr-2 overflow-y-auto w-full"
+              class="flex flex-col inset-y-0 left-0 mr-2 overflow-y-auto w-full"
               id="requestList"
             >
             </div>
           </div>
           <div
-            className="w-full flex flex-row mt-2 space-x-2"
+            class="w-full flex flex-row mt-2 space-x-2"
           >
             <input
               className="w-full flex justify-center cursor-pointer py-2 px-4 border border-gray-300 text-md font-medium rounded-md text-green-700 bg-gray-100 hover:text-green-500 hover:bg-gray-50 active:bg-gray-100 active:text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:border-blue-300"
@@ -155,12 +154,19 @@ export function Admin() {
             />
           </div>
           <div
-            className="flex flex-col-reverse h-48 mt-2 py-2 px-4 inset-y-0 right-0 border border-gray-300 rounded-md bg-gray-50 overflow-y-auto w-full"
+            class="flex flex-col-reverse h-48 mt-2 py-2 px-4 inset-y-0 right-0 border border-gray-300 rounded-md bg-gray-50 overflow-y-auto w-full"
             id="result"
           >
           </div>
         </div>
       </Block>
+
+      <div
+        style="display: none"
+        class="w-full mb-2 justify-center py-2 px-4 border border-gray-300 rounded-md bg-gray-100 text-gray-900 font-medium flex flex-row items-center space-x-3 appearance-none h-6 w-6 justify-around space-x-4 text-green-700 text-red-700 cursor-pointer"
+      >
+        UGLY HACK!
+      </div>
     </Layout>
   );
 }

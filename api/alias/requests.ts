@@ -3,7 +3,7 @@ import {
   invalidMethod,
   json,
 } from "../../util/responses.ts";
-import { Match } from "../../util/router.ts";
+import { Match } from "../../deps.ts";
 import { authenticate } from "../../util/user.ts";
 import { getRequests } from "../../util/alias.ts";
 

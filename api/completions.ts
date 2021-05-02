@@ -4,9 +4,9 @@ import {
   DYNAMO_ALIAS_TABLE,
 } from "../util/constants.ts";
 import { DYNAMO_CLIENT } from "../util/clients.ts";
-import { Match } from "../util/router.ts";
 import { aliasNotFound, json } from "../util/responses.ts";
 import { getAlias } from "../util/alias.ts";
+import { Match } from "../deps.ts";
 
 export async function completionsAlias(): Promise<Response> {
   const { Items: items } = await DYNAMO_CLIENT.scan({

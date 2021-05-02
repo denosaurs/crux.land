@@ -1,6 +1,6 @@
 import { GITHUB_CALLBACK_URL, GITHUB_CLIENT_ID } from "../util/constants.ts";
 import { redirect } from "../util/responses.ts";
-import { Match } from "../util/router.ts";
+import { Match } from "../deps.ts";
 
 export function login(
   _req: Request,

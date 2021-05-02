@@ -11,10 +11,10 @@ export function Endpoint(
   },
 ) {
   return (
-    <div className="mb-7">
-      <span className="text-lg font-semibold font-mono">
-        <span className="text-yellow-600">{method}</span>{" "}
-        <span className="text-gray-700">{path}</span>
+    <div class="mb-7">
+      <span class="text-lg font-semibold font-mono">
+        <span class="text-yellow-600">{method}</span>{" "}
+        <span class="text-gray-700">{path}</span>
       </span>
       <br />
       {requestBody && <ApiTable {...requestBody} />}

@@ -10,12 +10,11 @@ import { EXTENSIONS } from "../util/constants.ts";
 export function Index() {
   return (
     <Layout
-      title="crux.land"
       description
     >
       <Block>
-        <div className="flex flex-col lg:flex-row">
-          <div className="inset-y-0 left-0 w-full lg:w-3/5">
+        <div class="flex flex(col lg:row)">
+          <div class="inset-y-0 left-0 w(full lg:3/5)">
             crux.land is a free registry service meant for hosting small (≤
             20kB) single deno scripts. All uploaded scripts are immutable and
             will not be changed nor deleted unless there is a legal reason or if
@@ -46,7 +45,7 @@ export function Index() {
             and therefor not versioned. To request an alias a GitHub account
             login is required to prevent abuse.
           </div>
-          <div className="flex flex-col inset-y-0 right-0 w-full lg:w-2/5">
+          <div class="flex flex-col inset-y-0 right-0 w(full lg:2/5)">
             <input
               type="file"
               name="file"
@@ -66,7 +65,7 @@ export function Index() {
               required
               hidden
             />
-            <div className="mb-2 mt-4 lg:mt-0">
+            <div class="mb-2 mt(4 lg:0)">
               <LabelButton
                 // @ts-ignore TS2322
                 id="label"
@@ -75,7 +74,7 @@ export function Index() {
                 Choose a script
               </LabelButton>
             </div>
-            <div className="mb-2 mt-2 lg:mt-0">
+            <div class="mb-2 mt(2 lg:0)">
               <InputButton
                 // @ts-ignore TS2322
                 type="button"
@@ -156,7 +155,7 @@ export function Index() {
                 "
               />
             </div>
-            <div className="select-all cursor-text">
+            <div class="select-all cursor-text">
               <ResultButton
                 // @ts-ignore TS2322
                 id="result"

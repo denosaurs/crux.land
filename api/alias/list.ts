@@ -1,5 +1,5 @@
 import { invalidMethod, json } from "../../util/responses.ts";
-import { Match } from "../../util/router.ts";
+import { Match } from "../../deps.ts";
 import { listAliases } from "../../util/alias.ts";
 
 export async function list(

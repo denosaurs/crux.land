@@ -1,11 +1,10 @@
-import { Status } from "../../deps.ts";
+import { Match, Status } from "../../deps.ts";
 import {
   couldNotAuthenticate,
   created,
   error,
   invalidMethod,
 } from "../../util/responses.ts";
-import { Match } from "../../util/router.ts";
 import { authenticate } from "../../util/user.ts";
 import { denyRequest } from "../../util/alias.ts";
 

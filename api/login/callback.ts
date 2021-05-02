@@ -1,4 +1,4 @@
-import { Status } from "../../deps.ts";
+import { Match, Status } from "../../deps.ts";
 import {
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
@@ -9,7 +9,6 @@ import {
   json,
   redirect,
 } from "../../util/responses.ts";
-import { Match } from "../../util/router.ts";
 import { createUser, getUser } from "../../util/user.ts";
 
 export async function callback(

@@ -8,7 +8,6 @@ import { ResultButton } from "../components/result_button.tsx";
 export function Alias() {
   return (
     <Layout
-      title="crux.land"
       script="
         const user = getUser();
 
@@ -40,7 +39,7 @@ export function Alias() {
             const radio = document.createElement('input');
             radio.type = 'radio';
             radio.value = alias;
-            radio.className = 'appearance-none h-6 w-6 rounded-full';
+            radio.className = 'appearance-none h-6 w-6 rounded-full cursor-pointer';
             radio.name = 'alias';
             radio.onclick = () => {
               tagList.innerHTML = '';
@@ -94,9 +93,9 @@ export function Alias() {
       "
     >
       <Block>
-        <div className="flex flex-col">
-          <div className="inset-y-0 left-0 w-full flex flex-col lg:flex-row">
-            <div className="inset-y-0 left-0 w-full lg:w-1/2">
+        <div class="flex flex-col">
+          <div class="inset-y-0 left-0 w-full flex flex-col lg:flex-row">
+            <div class="inset-y-0 left-0 w-full lg:w-1/2">
               To request an alias simply enter an alias and press request. The
               request will then be either granted or denied by our admins and
               will then appear in your list of aliases below. You may then
@@ -104,9 +103,9 @@ export function Alias() {
               uploaded with your alias and provided tag.
             </div>
             <div
-              className="flex flex-col inset-y-0 right-0 w-full lg:w-1/2 lg:ml-2"
+              class="flex flex-col inset-y-0 right-0 w-full lg:w-1/2 lg:ml-2"
             >
-              <div className="mb-2 mt-4 lg:mt-0">
+              <div class="mb-2 mt-4 lg:mt-0">
                 <TextButton
                   // @ts-ignore TS2322
                   id="aliasInput"
@@ -114,7 +113,7 @@ export function Alias() {
                   required
                 />
               </div>
-              <div className="mb-2 mt-2 lg:mt-0">
+              <div class="mb-2 mt-2 lg:mt-0">
                 <InputButton
                   // @ts-ignore TS2322
                   type="button"
@@ -153,7 +152,7 @@ export function Alias() {
                     "
                 />
               </div>
-              <div className="select-all cursor-text">
+              <div class="select-all cursor-text">
                 <ResultButton
                   // @ts-ignore TS2322
                   id="requestResult"
@@ -162,21 +161,21 @@ export function Alias() {
             </div>
           </div>
           <div
-            className="mt-4 h-96 w-full flex flex-row py-2 px-4 border border-gray-300 rounded-md bg-gray-50"
+            class="mt-4 h-96 w-full flex flex-row py-2 px-4 border border-gray-300 rounded-md bg-gray-50"
           >
             <div
-              className="flex flex-col inset-y-0 left-0 mr-2 overflow-y-auto w-1/2"
+              class="flex flex-col inset-y-0 left-0 mr-2 overflow-y-auto w-1/2"
               id="aliasList"
             >
             </div>
             <div
-              className="flex flex-col py-2 px-4 inset-y-0 right-0 border border-gray-300 rounded-md bg-gray-100 overflow-y-auto w-1/2"
+              class="flex flex-col py-2 px-4 inset-y-0 right-0 border border-gray-300 rounded-md bg-gray-100 overflow-y-auto w-1/2"
               id="tagList"
             >
             </div>
           </div>
-          <div className="flex flex-row mt-2">
-            <div className="w-1/3">
+          <div class="flex flex-row mt-2">
+            <div class="w-1/3">
               <TextButton
                 // @ts-ignore TS2322
                 id="tag"
@@ -184,7 +183,7 @@ export function Alias() {
                 required
               />
             </div>
-            <div className="ml-2 mr-2 w-1/3">
+            <div class="ml-2 mr-2 w-1/3">
               <TextButton
                 // @ts-ignore TS2322
                 id="script"
@@ -192,7 +191,7 @@ export function Alias() {
                 required
               />
             </div>
-            <div className="w-1/3">
+            <div class="w-1/3">
               <InputButton
                 // @ts-ignore TS2322
                 type="button"
@@ -247,13 +246,20 @@ export function Alias() {
             </div>
           </div>
         </div>
-        <div className="select-all cursor-text mt-2 w-full">
+        <div class="select-all cursor-text mt-2 w-full">
           <ResultButton
             // @ts-ignore TS2322
             id="releaseResult"
           />
         </div>
       </Block>
+
+      <div
+        style="display: none"
+        class="w-full mb-2 justify-center py-2 px-4 border border-gray-300 rounded-md bg-gray-100 flex items-center space-x-3 text-gray-900 font-medium appearance-none h-6 w-6 rounded-full flex-row justify-around space-x-4 cursor-pointer"
+      >
+        UGLY HACK!
+      </div>
     </Layout>
   );
 }

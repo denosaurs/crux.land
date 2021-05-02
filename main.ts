@@ -1,22 +1,17 @@
 import { add } from "./api/add.ts";
 import { getAlias, getId } from "./api/get.ts";
-import { jsx, notFound, redirect } from "./util/responses.ts";
+import { notFound, redirect } from "./util/responses.ts";
 import { Index } from "./pages/index.tsx";
 import { Api } from "./pages/api.tsx";
 import { Admin } from "./pages/admin.tsx";
 import { Alias } from "./pages/alias.tsx";
-import { Match, router } from "./util/router.ts";
 import {
   ALIAS_NAME_REGEX,
   ALIAS_PATH,
   EXTENSION_FROM_CONTENT_TYPE,
   ID_PATH,
-  S3_ACCESS_KEY_ID,
-  S3_BUCKET,
-  S3_REGION,
-  S3_SECRET_ACCESS_KEY,
 } from "./util/constants.ts";
-import { S3Bucket } from "./deps.ts";
+import { Match, router } from "./deps.ts";
 import { decodeUTF8, readToUint8Array } from "./util/util.ts";
 import { Code } from "./pages/code.tsx";
 import { request } from "./api/alias/request.ts";
@@ -33,13 +28,16 @@ import { approve } from "./api/alias/approve.ts";
 import { deny } from "./api/alias/deny.ts";
 import { requests } from "./api/alias/requests.ts";
 import { list } from "./api/alias/list.ts";
+import { S3_CLIENT } from "./util/clients.ts";
+import { jsx } from "./util/jsx.ts";
+import { Head } from "./components/head.tsx";
 
 async function unknownHandler(
   req: Request,
   match: Match,
 ): Promise<Response> {
   let { id } = match.params;
-  const { alias, tag, _ext } = match.params;
+  const { alias, tag } = match.params;
   const accept = req.headers.get("accept");
   const isHtml = accept && accept.indexOf("html") >= 0;
 
@@ -52,14 +50,7 @@ async function unknownHandler(
       return notFound();
     }
 
-    const bucket = new S3Bucket({
-      region: S3_REGION,
-      accessKeyID: S3_ACCESS_KEY_ID,
-      secretKey: S3_SECRET_ACCESS_KEY,
-      bucket: S3_BUCKET,
-    });
-
-    const file = await bucket.getObject(id);
+    const file = await S3_CLIENT.getObject(id);
 
     if (file === undefined) {
       return notFound();
@@ -71,7 +62,7 @@ async function unknownHandler(
       file.contentType! as keyof typeof EXTENSION_FROM_CONTENT_TYPE
     ];
 
-    return jsx(Code({ code, language }));
+    return jsx(Code({ code, language }), Head());
   } else {
     return redirect(`/api/get${match.path}`);
   }
@@ -80,10 +71,10 @@ async function unknownHandler(
 addEventListener("fetch", (event: FetchEvent) => {
   event.respondWith(
     router({
-      "/": (_req) => jsx(Index()),
-      "/admin": (_req) => jsx(Admin()),
-      "/alias": (_req) => jsx(Alias()),
-      "/api": (_req) => jsx(Api()),
+      "/": (_req) => jsx(Index(), Head()),
+      "/admin": (_req) => jsx(Admin(), Head()),
+      "/alias": (_req) => jsx(Alias(), Head()),
+      "/api": (_req) => jsx(Api(), Head()),
       "/api/login": login,
       "/api/login/callback": callback,
       "/api/add": add,

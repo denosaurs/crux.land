@@ -1,4 +1,4 @@
-import { Status } from "../../deps.ts";
+import { Match, Status } from "../../deps.ts";
 import {
   ALIAS_NAME_REGEX_TEST,
   ALIAS_TAG_REGEX_TEST,
@@ -11,7 +11,6 @@ import {
   invalidMethod,
   notFound,
 } from "../../util/responses.ts";
-import { Match } from "../../util/router.ts";
 import { S3_CLIENT } from "../../util/clients.ts";
 import { authenticate } from "../../util/user.ts";
 import { getAlias, putAlias } from "../../util/alias.ts";

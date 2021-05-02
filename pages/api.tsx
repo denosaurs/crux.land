@@ -3,15 +3,14 @@ import { Layout } from "../components/layout.tsx";
 import { Block } from "../components/block.tsx";
 import { CodeInline } from "../components/code_inline.tsx";
 import { Endpoint } from "../components/endpoint.tsx";
-import { Tags } from "../util/alias.ts";
 
 export function Api() {
   return (
-    <Layout title="crux.land" description>
+    <Layout description>
       <Block>
-        <div className="flex flex-col lg:flex-row">
-          <div className="inset-y-0 left-0 w-full px-8">
-            <div className="text-lg font-medium mb-4">
+        <div class="flex flex-col lg:flex-row">
+          <div class="inset-y-0 left-0 w-full px-8">
+            <div class="text-lg font-medium mb-4">
               All endpoints are under the <CodeInline>/api</CodeInline> endpoint
             </div>
             <Endpoint method="GET" path="/get/:id">
@@ -110,7 +109,7 @@ export function Api() {
             >
               List all aliases belonging to a specific user
             </Endpoint>
-            <div className="text-xl font-medium mb-4 mt-10">
+            <div class="text-xl font-medium mb-4 mt-10">
               The following endpoints require admin privileges
             </div>
             <Endpoint

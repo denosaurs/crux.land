@@ -14,7 +14,7 @@ import {
   invalidMethod,
   json,
 } from "../util/responses.ts";
-import { Match } from "../util/router.ts";
+import { Match } from "../deps.ts";
 import { S3_CLIENT } from "../util/clients.ts";
 
 export async function add(

@@ -5,7 +5,7 @@ import { Block } from "../components/block.tsx";
 
 export function Code({ code, language }: { code: string; language: string }) {
   return (
-    <Layout title="crux.land">
+    <Layout>
       <Block>
         <CodeBlock code={code} language={language} />
       </Block>
