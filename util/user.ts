@@ -1,6 +1,6 @@
 import { marshall, Status, unmarshall } from "../server_deps.ts";
 import { DYNAMO_CLIENT } from "./clients.ts";
-import { DYNAMO_USER_TABLE } from "./constants.ts";
+import { DYNAMO_USER_TABLE } from "./backend_constants.ts";
 import { generate } from "./token.ts";
 
 export interface User {

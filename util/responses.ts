@@ -1,9 +1,5 @@
 import { Status } from "../server_deps.ts";
 
-export function invalidMethod(): Response {
-  return error("Invalid method", Status.BadRequest);
-}
-
 export function invalidAlias(): Response {
   return error("Invalid alias", Status.BadRequest);
 }
@@ -22,10 +18,6 @@ export function error(error: unknown, status: number): Response {
 
 export function status(status: number): Response {
   return new Response(undefined, { status });
-}
-
-export function ok(): Response {
-  return status(Status.OK);
 }
 
 export function created(): Response {

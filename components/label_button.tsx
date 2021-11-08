@@ -4,7 +4,7 @@ import { ComponentChildren, h, JSX, tw } from "../deps.ts";
 export function LabelButton(
   { children, ...props }: {
     children: ComponentChildren;
-    props: JSX.HTMLAttributes<HTMLLabelElement>;
+    props?: JSX.HTMLAttributes<HTMLLabelElement>;
   },
 ) {
   return (

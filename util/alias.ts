@@ -1,6 +1,6 @@
 import { marshall, unmarshall } from "../server_deps.ts";
 import { DYNAMO_CLIENT } from "./clients.ts";
-import { DYNAMO_ALIAS_TABLE } from "./constants.ts";
+import { DYNAMO_ALIAS_TABLE } from "./backend_constants.ts";
 
 export type Tags = Record<string, string>;
 
