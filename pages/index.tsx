@@ -1,20 +1,21 @@
-import { h } from "../deps.ts";
-import { Layout } from "../components/layout.tsx";
+/** @jsx h */
+import { h, PageConfig, tw } from "../deps.ts";
 import { Block } from "../components/block.tsx";
+import { EXTENSIONS } from "../util/constants.ts";
+import { CodeInline } from "../components/code_inline.tsx";
 import { LabelButton } from "../components/label_button.tsx";
 import { InputButton } from "../components/input_button.tsx";
 import { ResultButton } from "../components/result_button.tsx";
-import { CodeInline } from "../components/code_inline.tsx";
-import { EXTENSIONS } from "../util/constants.ts";
+import { Layout } from "../components/layout.tsx";
 
-export function Index() {
+export default function Home() {
   return (
     <Layout
       description
     >
       <Block>
-        <div class="flex flex(col lg:row)">
-          <div class="inset-y-0 left-0 w(full lg:3/5)">
+        <div class={tw`flex flex(col lg:row)`}>
+          <div class={tw`inset-y-0 left-0 w(full lg:3/5)`}>
             crux.land is a free registry service meant for hosting small (≤
             20kB) single deno scripts. All uploaded scripts are immutable and
             will not be changed nor deleted unless there is a legal reason or if
@@ -24,12 +25,12 @@ export function Index() {
             <br />
 
             To use crux.land simply upload a file with one of the supported file
-            extensions ({EXTENSIONS.map((ext, idx) =>
+            extensions ({EXTENSIONS.map((ext, idx) => (
               <span>
                 <CodeInline>{ext}</CodeInline>
                 {EXTENSIONS.length - 1 === idx ? "" : ", "}
               </span>
-            )}) and if successful you will recieve a permanent link to said
+            ))}) and if successful you will receive a permanent link to said
             file. This link may be used in deno or browsers import and
             automatically serve the correct{" "}
             <CodeInline>Content-Type</CodeInline>{" "}
@@ -45,7 +46,7 @@ export function Index() {
             and therefor not versioned. To request an alias a GitHub account
             login is required to prevent abuse.
           </div>
-          <div class="flex flex-col inset-y-0 right-0 w(full lg:2/5)">
+          <div class={tw`flex flex-col inset-y-0 right-0 w(full lg:2/5)`}>
             <input
               type="file"
               name="file"
@@ -65,7 +66,7 @@ export function Index() {
               required
               hidden
             />
-            <div class="mb-2 mt(4 lg:0)">
+            <div class={tw`mb-2 mt(4 lg:0)`}>
               <LabelButton
                 // @ts-ignore TS2322
                 id="label"
@@ -74,7 +75,7 @@ export function Index() {
                 Choose a script
               </LabelButton>
             </div>
-            <div class="mb-2 mt(2 lg:0)">
+            <div class={tw`mb-2 mt(2 lg:0)`}>
               <InputButton
                 // @ts-ignore TS2322
                 type="button"
@@ -84,10 +85,10 @@ export function Index() {
                 onclick="
                   // Copyright 2018-2021 the Deno authors. All rights reserved. MIT license.
                   function encode(data) {
-                    const base64abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 
-                      'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 
-                      'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 
-                      'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', 
+                    const base64abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+                      'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a',
+                      'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+                      'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4',
                       '5', '6', '7', '8', '9', '+', '/'];
                     const uint8 = new Uint8Array(data);
                     let result = '',
@@ -155,11 +156,9 @@ export function Index() {
                 "
               />
             </div>
-            <div class="select-all cursor-text">
-              <ResultButton
-                // @ts-ignore TS2322
-                id="result"
-              />
+            <div class={tw`select-all cursor-text`}>
+              <ResultButton // @ts-ignore TS2322
+               id="result" />
             </div>
           </div>
         </div>
@@ -167,3 +166,5 @@ export function Index() {
     </Layout>
   );
 }
+
+export const config: PageConfig = { runtimeJS: true };

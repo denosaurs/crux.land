@@ -1,4 +1,4 @@
-import { marshall, unmarshall } from "../deps.ts";
+import { marshall, unmarshall } from "../server_deps.ts";
 import { DYNAMO_CLIENT } from "./clients.ts";
 import { DYNAMO_ALIAS_TABLE } from "./constants.ts";
 

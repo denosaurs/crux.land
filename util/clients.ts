@@ -1,4 +1,4 @@
-import { DynamoDB, S3Bucket } from "../deps.ts";
+import { DynamoDB, S3Bucket } from "../server_deps.ts";
 import {
   DYNAMO_ACCESS_KEY_ID,
   DYNAMO_REGION,

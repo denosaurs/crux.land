@@ -1,4 +1,5 @@
-import { h } from "../deps.ts";
+/** @jsx h */
+import { h, tw } from "../deps.ts";
 import { Layout } from "../components/layout.tsx";
 import { Block } from "../components/block.tsx";
 import { CodeInline } from "../components/code_inline.tsx";
@@ -8,9 +9,9 @@ export function Api() {
   return (
     <Layout description>
       <Block>
-        <div class="flex flex-col lg:flex-row">
-          <div class="inset-y-0 left-0 w-full px-8">
-            <div class="text-lg font-medium mb-4">
+        <div class={tw`flex flex-col lg:flex-row`}>
+          <div class={tw`inset-y-0 left-0 w-full px-8`}>
+            <div class={tw`text-lg font-medium mb-4`}>
               All endpoints are under the <CodeInline>/api</CodeInline> endpoint
             </div>
             <Endpoint method="GET" path="/get/:id">
@@ -109,7 +110,7 @@ export function Api() {
             >
               List all aliases belonging to a specific user
             </Endpoint>
-            <div class="text-xl font-medium mb-4 mt-10">
+            <div class={tw`text-xl font-medium mb-4 mt-10`}>
               The following endpoints require admin privileges
             </div>
             <Endpoint

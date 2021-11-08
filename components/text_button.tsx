@@ -1,4 +1,5 @@
-import { ComponentChildren, h, JSX } from "../deps.ts";
+/** @jsx h */
+import { ComponentChildren, h, JSX, tw } from "../deps.ts";
 
 export function TextButton(
   { children, ...props }: {
@@ -10,7 +11,7 @@ export function TextButton(
     <input
       {...props}
       type="text"
-      class="
+      class={tw`
         w-full
         flex
         justify-center
@@ -28,7 +29,7 @@ export function TextButton(
         ease-in-out
         hover:(text-gray-500 bg-gray-5)
         active:(bg-gray-100 text-gray-700)
-        focus:(outline-none shadow border-blue-300)"
+        focus:(outline-none shadow border-blue-300)`}
     />
   );
 }

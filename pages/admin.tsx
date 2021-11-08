@@ -1,7 +1,7 @@
-import { h } from "../deps.ts";
+/** @jsx h */
+import { h, tw } from "../deps.ts";
 import { Layout } from "../components/layout.tsx";
 import { Block } from "../components/block.tsx";
-import { InputButton } from "../components/input_button.tsx";
 
 export function Admin() {
   return (
@@ -25,7 +25,7 @@ export function Admin() {
           for (const { alias, owner, tags } of requests) {
             const outer = document.createElement('div');
             outer.className = 'w-full mb-2 justify-center py-2 px-4 border border-gray-300 rounded-md bg-gray-100 text-gray-900 font-medium';
-            
+
             const label = document.createElement('label');
             label.className = 'flex flex-row items-center space-x-3 text-gray-900 font-medium';
 
@@ -69,21 +69,22 @@ export function Admin() {
       "
     >
       <Block>
-        <div class="flex flex-col">
+        <div class={tw`flex flex-col`}>
           <div
-            class="mt-4 h-80 w-full flex flex-row py-2 px-4 border border-gray-300 rounded-md bg-gray-50"
+            class={tw
+              `mt-4 h-80 w-full flex flex-row py-2 px-4 border border-gray-300 rounded-md bg-gray-50`}
           >
             <div
-              class="flex flex-col inset-y-0 left-0 mr-2 overflow-y-auto w-full"
+              class={tw
+                `flex flex-col inset-y-0 left-0 mr-2 overflow-y-auto w-full`}
               id="requestList"
             >
             </div>
           </div>
-          <div
-            class="w-full flex flex-row mt-2 space-x-2"
-          >
+          <div class={tw`w-full flex flex-row mt-2 space-x-2`}>
             <input
-              className="w-full flex justify-center cursor-pointer py-2 px-4 border border-gray-300 text-md font-medium rounded-md text-green-700 bg-gray-100 hover:text-green-500 hover:bg-gray-50 active:bg-gray-100 active:text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:border-blue-300"
+              className={tw
+                `w-full flex justify-center cursor-pointer py-2 px-4 border border-gray-300 text-md font-medium rounded-md text-green-700 bg-gray-100 hover:text-green-500 hover:bg-gray-50 active:bg-gray-100 active:text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:border-blue-300`}
               type="button"
               id="approve"
               value="approve"
@@ -118,7 +119,8 @@ export function Admin() {
               "
             />
             <input
-              className="w-full flex justify-center cursor-pointer py-2 px-4 border border-gray-300 text-md font-medium rounded-md text-red-700 bg-gray-100 hover:text-red-500 hover:bg-gray-50 active:bg-gray-100 active:text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:border-blue-300"
+              className={tw
+                `w-full flex justify-center cursor-pointer py-2 px-4 border border-gray-300 text-md font-medium rounded-md text-red-700 bg-gray-100 hover:text-red-500 hover:bg-gray-50 active:bg-gray-100 active:text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:border-blue-300`}
               type="button"
               id="deny"
               value="deny"
@@ -134,7 +136,7 @@ export function Admin() {
                   }).then(async (res) => {
                     const resultButton = document.createElement('div');
                     resultButton.className = 'flex flex-row justify-around w-full mb-2 py-2 px-4 space-x-4 border border-gray-300 rounded-md bg-gray-100 font-medium';
-                    
+
                     if (res.ok) {
                       resultButton.className += ' text-green-700';
                       resultButton.innerHTML = `Successfully denied ${alias} by ${usersCache[owner].login}`;
@@ -154,7 +156,8 @@ export function Admin() {
             />
           </div>
           <div
-            class="flex flex-col-reverse h-48 mt-2 py-2 px-4 inset-y-0 right-0 border border-gray-300 rounded-md bg-gray-50 overflow-y-auto w-full"
+            class={tw
+              `flex flex-col-reverse h-48 mt-2 py-2 px-4 inset-y-0 right-0 border border-gray-300 rounded-md bg-gray-50 overflow-y-auto w-full`}
             id="result"
           >
           </div>
@@ -163,7 +166,8 @@ export function Admin() {
 
       <div
         style="display: none"
-        class="w-full mb-2 justify-center py-2 px-4 border border-gray-300 rounded-md bg-gray-100 text-gray-900 font-medium flex flex-row items-center space-x-3 appearance-none h-6 w-6 justify-around space-x-4 text-green-700 text-red-700 cursor-pointer"
+        class={tw
+          `w-full mb-2 justify-center py-2 px-4 border border-gray-300 rounded-md bg-gray-100 text-gray-900 font-medium flex flex-row items-center space-x-3 appearance-none h-6 w-6 justify-around space-x-4 text-green-700 text-red-700 cursor-pointer`}
       >
         UGLY HACK!
       </div>

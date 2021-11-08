@@ -1,4 +1,4 @@
-import { Status } from "../deps.ts";
+import { Status } from "../server_deps.ts";
 
 export function invalidMethod(): Response {
   return error("Invalid method", Status.BadRequest);

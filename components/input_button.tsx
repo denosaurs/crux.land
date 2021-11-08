@@ -1,4 +1,5 @@
-import { ComponentChildren, h, JSX } from "../deps.ts";
+/** @jsx h */
+import { ComponentChildren, h, JSX, tw } from "../deps.ts";
 
 export function InputButton(
   { children, ...props }: {
@@ -9,7 +10,7 @@ export function InputButton(
   return (
     <input
       {...props}
-      class="
+      class={tw`
         w-full
         flex
         justify-center
@@ -26,7 +27,7 @@ export function InputButton(
         ease-in-out
         hover:(text-gray-500 bg-gray-50)
         active:(bg-gray-100 text-gray-700)
-        focus:(outline-none shadow border-blue-300)"
+        focus:(outline-none shadow border-blue-300)`}
     >
       {children}
     </input>
