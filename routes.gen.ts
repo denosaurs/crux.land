@@ -4,21 +4,47 @@
 
 import * as $0 from "./pages/index.tsx";
 import * as $1 from "./pages/_render.ts";
-import * as $2 from "./pages/api/login.ts";
-import * as $3 from "./pages/[id].tsx";
-import * as $4 from "./pages/api.tsx";
-import * as $5 from "./pages/admin.tsx";
-import * as $6 from "./pages/alias.tsx";
+import * as $2 from "./pages/api/get_id.ts";
+import * as $3 from "./pages/api/alias/requests.ts";
+import * as $4 from "./pages/api/alias/deny.ts";
+import * as $5 from "./pages/api/alias/request.ts";
+import * as $6 from "./pages/api/alias/list.ts";
+import * as $7 from "./pages/api/alias/release.ts";
+import * as $8 from "./pages/api/alias/approve.ts";
+import * as $9 from "./pages/api/login.ts";
+import * as $10 from "./pages/api/completions/schema.ts";
+import * as $11 from "./pages/api/completions/alias.ts";
+import * as $12 from "./pages/api/completions/tags.ts";
+import * as $13 from "./pages/api/add.ts";
+import * as $14 from "./pages/api/login/callback.ts";
+import * as $15 from "./pages/api/get_alias.ts";
+import * as $16 from "./pages/[id].tsx";
+import * as $17 from "./pages/api.tsx";
+import * as $18 from "./pages/admin.tsx";
+import * as $19 from "./pages/alias.tsx";
 
 const routes = {
   pages: {
     "./pages/index.tsx": $0,
     "./pages/_render.ts": $1,
-    "./pages/api/login.ts": $2,
-    "./pages/[id].tsx": $3,
-    "./pages/api.tsx": $4,
-    "./pages/admin.tsx": $5,
-    "./pages/alias.tsx": $6,
+    "./pages/api/get_id.ts": $2,
+    "./pages/api/alias/requests.ts": $3,
+    "./pages/api/alias/deny.ts": $4,
+    "./pages/api/alias/request.ts": $5,
+    "./pages/api/alias/list.ts": $6,
+    "./pages/api/alias/release.ts": $7,
+    "./pages/api/alias/approve.ts": $8,
+    "./pages/api/login.ts": $9,
+    "./pages/api/completions/schema.ts": $10,
+    "./pages/api/completions/alias.ts": $11,
+    "./pages/api/completions/tags.ts": $12,
+    "./pages/api/add.ts": $13,
+    "./pages/api/login/callback.ts": $14,
+    "./pages/api/get_alias.ts": $15,
+    "./pages/[id].tsx": $16,
+    "./pages/api.tsx": $17,
+    "./pages/admin.tsx": $18,
+    "./pages/alias.tsx": $19,
   },
   baseUrl: import.meta.url,
 };
