@@ -1,7 +1,7 @@
 import { HandlerContext } from "../../../server_deps.ts";
 import { PageConfig } from "../../../deps.ts";
 import { json } from "../../../util/responses.ts";
-import { DYNAMO_ALIAS_TABLE } from "../../../util/constants.ts";
+import { DYNAMO_ALIAS_TABLE } from "../../../util/backend_constants.ts";
 import { DYNAMO_CLIENT } from "../../../util/clients.ts";
 
 export const handler = {

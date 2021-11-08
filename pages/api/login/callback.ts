@@ -8,7 +8,7 @@ import {
 import {
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
-} from "../../../util/constants.ts";
+} from "../../../util/backend_constants.ts";
 import { createUser, getUser } from "../../../util/user.ts";
 
 export const handler = {
