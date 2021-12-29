@@ -13,7 +13,7 @@ export async function completionsAlias(): Promise<Response> {
     TableName: DYNAMO_ALIAS_TABLE,
   });
 
-  return json(items.map((item: { alias: { S: string } }) => item.alias.S));
+  return json(items!.map((item) => item!.alias!.S));
 }
 
 export async function completionsTags(
