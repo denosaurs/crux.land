@@ -50,5 +50,5 @@ export { Prism } from "https://jspm.dev/prism-react-renderer@1.2.0";
 export { default as theme } from "https://jspm.dev/prism-react-renderer@1.2.0/themes/github";
 
 // Router
-export { router } from "https://crux.land/router@0.0.1";
-export type { Match } from "https://crux.land/router@0.0.1";
+export { router } from "./router.ts";
+export type { Match } from "./router.ts";
