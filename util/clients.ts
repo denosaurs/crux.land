@@ -1,4 +1,4 @@
-import { DynamoDB, ApiFactory, S3Bucket } from "../deps.ts";
+import { ApiFactory, DynamoDB, S3Bucket } from "../deps.ts";
 import {
   DYNAMO_ACCESS_KEY_ID,
   DYNAMO_REGION,

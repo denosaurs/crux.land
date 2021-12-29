@@ -24,12 +24,12 @@ export function Index() {
             <br />
 
             To use crux.land simply upload a file with one of the supported file
-            extensions ({EXTENSIONS.map((ext, idx) =>
+            extensions ({EXTENSIONS.map((ext, idx) => (
               <span>
                 <CodeInline>{ext}</CodeInline>
                 {EXTENSIONS.length - 1 === idx ? "" : ", "}
               </span>
-            )}) and if successful you will recieve a permanent link to said
+            ))}) and if successful you will recieve a permanent link to said
             file. This link may be used in deno or browsers import and
             automatically serve the correct{" "}
             <CodeInline>Content-Type</CodeInline>{" "}
@@ -156,10 +156,8 @@ export function Index() {
               />
             </div>
             <div class="select-all cursor-text">
-              <ResultButton
-                // @ts-ignore TS2322
-                id="result"
-              />
+              <ResultButton // @ts-ignore TS2322
+              id="result" />
             </div>
           </div>
         </div>
