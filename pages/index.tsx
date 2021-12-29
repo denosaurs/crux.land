@@ -1,5 +1,5 @@
 /** @jsx h */
-import { h, PageConfig, tw } from "../deps.ts";
+import { encodeBase64, h, PageConfig, tw, useState } from "../deps.ts";
 import { Block } from "../components/block.tsx";
 import { EXTENSIONS } from "../util/constants.ts";
 import { CodeInline } from "../components/code_inline.tsx";
@@ -9,6 +9,9 @@ import { ResultButton } from "../components/result_button.tsx";
 import { Layout } from "../components/layout.tsx";
 
 export default function Home() {
+  const [file, setFile] = useState<null | File>(null);
+  const [id, setId] = useState(null);
+
   return (
     <Layout
       description
@@ -46,121 +49,70 @@ export default function Home() {
             and therefor not versioned. To request an alias a GitHub account
             login is required to prevent abuse.
           </div>
-          <div class={tw`flex flex-col inset-y-0 right-0 w(full lg:2/5)`}>
+          <form class={tw`flex flex-col inset-y-0 right-0 w(full lg:2/5)`}
+          onSubmit={async (e) => {
+            e.preventDefault();
+
+            if (file === null) {
+              return;
+            }
+
+            const data = await file.arrayBuffer();
+            const res = await fetch('/api/add', {
+              method: 'POST',
+              body: JSON.stringify({
+                name: file.name,
+                content: encodeBase64(data),
+              }),
+            });
+
+            if (res.ok) {
+              res.json().then(({ id }) => {
+                //result.style.color = 'rgba(55, 65, 81, var(--tw-text-opacity))';
+                setId(id);
+                console.log(id);
+              });
+            } else {
+              res.json().then(({ error }) => {
+                setId(error);
+                console.log(error);
+                //result.style.color = 'rgba(220, 38, 38, var(--tw-text-opacity))';
+                //result.innerText = error;
+              });
+            }
+          }}>
             <input
               type="file"
-              name="file"
               id="file"
               accept={EXTENSIONS.map((ext) => "." + ext).join(",")}
-              // @ts-ignore TS2322
-              onchange="
-                  const file = document.getElementById('file');
-                  const label = document.getElementById('label');
-
-                  if (file.files[0]) {
-                    label.innerText = file.files[0].name;
-                  } else {
-                    label.innerText = 'Choose a script';
-                  }
-                "
+              onChange={(e) => setFile(e.target.files[0])}
               required
               hidden
             />
             <div class={tw`mb-2 mt(4 lg:0)`}>
               <LabelButton
                 // @ts-ignore TS2322
-                id="label"
                 htmlFor="file"
               >
-                Choose a script
+                {file?.name ?? "Choose a script"}
               </LabelButton>
             </div>
             <div class={tw`mb-2 mt(2 lg:0)`}>
               <InputButton
                 // @ts-ignore TS2322
-                type="button"
+                type="submit"
                 name="submit"
                 id="submit"
                 value="Upload"
-                onclick="
-                  // Copyright 2018-2021 the Deno authors. All rights reserved. MIT license.
-                  function encode(data) {
-                    const base64abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
-                      'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a',
-                      'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
-                      'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4',
-                      '5', '6', '7', '8', '9', '+', '/'];
-                    const uint8 = new Uint8Array(data);
-                    let result = '',
-                      i;
-                    const l = uint8.length;
-                    for (i = 2; i < l; i += 3) {
-                      result += base64abc[uint8[i - 2] >> 2];
-                      result += base64abc[((uint8[i - 2] & 0x03) << 4) | (uint8[i - 1] >> 4)];
-                      result += base64abc[((uint8[i - 1] & 0x0f) << 2) | (uint8[i] >> 6)];
-                      result += base64abc[uint8[i] & 0x3f];
-                    }
-                    if (i === l + 1) {
-                      // 1 octet yet to write
-                      result += base64abc[uint8[i - 2] >> 2];
-                      result += base64abc[(uint8[i - 2] & 0x03) << 4];
-                      result += '==';
-                    }
-                    if (i === l) {
-                      // 2 octets yet to write
-                      result += base64abc[uint8[i - 2] >> 2];
-                      result += base64abc[((uint8[i - 2] & 0x03) << 4) | (uint8[i - 1] >> 4)];
-                      result += base64abc[(uint8[i - 1] & 0x0f) << 2];
-                      result += '=';
-                    }
-                    return result;
-                  }
-
-                  const file = document.getElementById('file');
-                  const submit = document.getElementById('submit');
-                  const result = document.getElementById('result');
-                  const label = document.getElementById('label');
-
-                  result.style.display = 'none';
-
-                  submit.disabled = true;
-                  submit.value = 'Uploading...';
-
-                  file.files[0].arrayBuffer().then((buf) => {
-                    fetch('/api/add', {
-                      method: 'POST',
-                      body: JSON.stringify({
-                        name: file.files[0].name,
-                        content: encode(buf)
-                      }),
-                    }).then(async (res) => {
-                      submit.disabled = false;
-                      submit.value = 'Upload';
-
-                      if (res.ok) {
-                        res.json().then(({ id }) => {
-                          result.style.color = 'rgba(55, 65, 81, var(--tw-text-opacity))';
-                          result.innerText = window.location.href + id;
-                        });
-                      } else {
-                        res.json().then(({ error }) => {
-                          result.style.color = 'rgba(220, 38, 38, var(--tw-text-opacity))';
-                          result.innerText = error;
-                        });
-                      }
-                      result.style.display = 'flex';
-
-                      label.innerText = 'Choose a script';
-                    });
-                  });
-                "
               />
             </div>
             <div class={tw`select-all cursor-text`}>
-              <ResultButton // @ts-ignore TS2322
-               id="result" />
+              {id && <ResultButton // @ts-ignore TS2322
+                id="result">
+                {window.location.href + id}
+              </ResultButton>}
             </div>
-          </div>
+          </form>
         </div>
       </Block>
     </Layout>

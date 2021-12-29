@@ -4,7 +4,7 @@
 /// <reference lib="deno.unstable" />
 /// <reference lib="deno.ns" />
 
-export * from "https://raw.githubusercontent.com/lucacasonato/fresh/aa1e1bcdb4693610feb3eb4ad7bba460c54cacaf/runtime.ts";
+export * from "https://raw.githubusercontent.com/lucacasonato/fresh/64da4005bb1cd5cf239ca8b2ebec2146987fecf1/runtime.ts";
 
 // twind
 export { setup, tw } from "https://esm.sh/twind@0.16.16";
@@ -27,3 +27,6 @@ import PrismExports from "https://jspm.dev/prism-react-renderer@1.2.0";
 export const Highlight = PrismExports.default;
 export { Prism } from "https://jspm.dev/prism-react-renderer@1.2.0";
 export { default as theme } from "https://jspm.dev/prism-react-renderer@1.2.0/themes/github";
+
+// Std
+export { encode as encodeBase64 } from "https://deno.land/std@0.113.0/encoding/base64.ts";
