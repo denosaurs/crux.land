@@ -1,5 +1,8 @@
 import { HandlerContext } from "../../server_deps.ts";
-import { GITHUB_CALLBACK_URL, GITHUB_CLIENT_ID } from "../../util/backend_constants.ts";
+import {
+  GITHUB_CALLBACK_URL,
+  GITHUB_CLIENT_ID,
+} from "../../util/backend_constants.ts";
 import { redirect } from "../../util/responses.ts";
 
 export const handler = {

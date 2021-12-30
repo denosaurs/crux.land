@@ -22,11 +22,11 @@ export {
 } from "https://esm.sh/@fortawesome/free-brands-svg-icons@5.15.4";
 
 // Prism
-import PrismExports from "https://jspm.dev/prism-react-renderer@1.2.0";
-// @ts-ignore TS2339
-export const Highlight = PrismExports.default;
-export { Prism } from "https://jspm.dev/prism-react-renderer@1.2.0";
-export { default as theme } from "https://jspm.dev/prism-react-renderer@1.2.0/themes/github";
+export {
+  default as Highlight,
+  Prism,
+} from "https://esm.sh/prism-react-renderer@1.2.1";
+export { default as theme } from "https://esm.sh/prism-react-renderer@1.2.1/themes/github";
 
 // Std
 export { encode as encodeBase64 } from "https://deno.land/std@0.119.0/encoding/base64.ts";

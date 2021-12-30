@@ -10,13 +10,20 @@ import { decodeUTF8, readToUint8Array } from "../util/util.ts";
 import { S3_CLIENT } from "../util/clients.ts";
 import { getIdFromAlias } from "../util/alias.ts";
 
-export default function Page(
-  { code, language }: { code: string; language: string },
-) { // TODO
+type RenderArgs = {
+  code: string;
+  language: string;
+};
+
+export default function Page({
+  renderArgs,
+}: {
+  renderArgs: RenderArgs;
+}) {
   return (
     <Layout>
       <Block>
-        <CodeBlock code={code} language={language} />
+        <CodeBlock code={renderArgs.code} language={renderArgs.language} />
       </Block>
     </Layout>
   );
@@ -47,8 +54,10 @@ export const handler = {
         file.contentType! as keyof typeof EXTENSION_FROM_CONTENT_TYPE
       ];
 
-      // TODO: pass file and lang to render
-      return ctx.render!();
+      return ctx.render!({
+        code,
+        language,
+      } as RenderArgs);
     } else {
       return redirect(`/api/get${ctx.req.url}`);
     }

@@ -49,38 +49,40 @@ export default function Home() {
             and therefor not versioned. To request an alias a GitHub account
             login is required to prevent abuse.
           </div>
-          <form class={tw`flex flex-col inset-y-0 right-0 w(full lg:2/5)`}
-          onSubmit={async (e) => {
-            e.preventDefault();
+          <form
+            class={tw`flex flex-col inset-y-0 right-0 w(full lg:2/5)`}
+            onSubmit={async (e) => {
+              e.preventDefault();
 
-            if (file === null) {
-              return;
-            }
+              if (file === null) {
+                return;
+              }
 
-            const data = await file.arrayBuffer();
-            const res = await fetch('/api/add', {
-              method: 'POST',
-              body: JSON.stringify({
-                name: file.name,
-                content: encodeBase64(data),
-              }),
-            });
-
-            if (res.ok) {
-              res.json().then(({ id }) => {
-                //result.style.color = 'rgba(55, 65, 81, var(--tw-text-opacity))';
-                setId(id);
-                console.log(id);
+              const data = await file.arrayBuffer();
+              const res = await fetch("/api/add", {
+                method: "POST",
+                body: JSON.stringify({
+                  name: file.name,
+                  content: encodeBase64(data),
+                }),
               });
-            } else {
-              res.json().then(({ error }) => {
-                setId(error);
-                console.log(error);
-                //result.style.color = 'rgba(220, 38, 38, var(--tw-text-opacity))';
-                //result.innerText = error;
-              });
-            }
-          }}>
+
+              if (res.ok) {
+                res.json().then(({ id }) => {
+                  //result.style.color = 'rgba(55, 65, 81, var(--tw-text-opacity))';
+                  setId(id);
+                  console.log(id);
+                });
+              } else {
+                res.json().then(({ error }) => {
+                  setId(error);
+                  console.log(error);
+                  //result.style.color = 'rgba(220, 38, 38, var(--tw-text-opacity))';
+                  //result.innerText = error;
+                });
+              }
+            }}
+          >
             <input
               type="file"
               id="file"
@@ -90,10 +92,8 @@ export default function Home() {
               hidden
             />
             <div class={tw`mb-2 mt(4 lg:0)`}>
-              <LabelButton
-                // @ts-ignore TS2322
-                htmlFor="file"
-              >
+              <LabelButton // @ts-ignore TS2322
+              htmlFor="file">
                 {file?.name ?? "Choose a script"}
               </LabelButton>
             </div>
@@ -107,10 +107,12 @@ export default function Home() {
               />
             </div>
             <div class={tw`select-all cursor-text`}>
-              {id && <ResultButton // @ts-ignore TS2322
-                id="result">
-                {window.location.href + id}
-              </ResultButton>}
+              {id && (
+                <ResultButton // @ts-ignore TS2322
+                 id="result">
+                  {window.location.href + id}
+                </ResultButton>
+              )}
             </div>
           </form>
         </div>
