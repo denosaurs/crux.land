@@ -15,11 +15,12 @@ export const handler = {
       return couldNotAuthenticate();
     }
 
-    const { $metadata: { httpStatusCode } } = await approveRequest(
-      owner,
-      alias,
-    );
-    if (httpStatusCode !== Status.OK) {
+    try {
+      await approveRequest(
+        owner,
+        alias,
+      );
+    } catch (_) {
       return error("Alias approval failed", Status.BadRequest);
     }
 

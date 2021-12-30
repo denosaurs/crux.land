@@ -27,12 +27,13 @@ export const handler = {
       return error("Alias already exists", Status.BadRequest);
     }
 
-    const { $metadata: { httpStatusCode } } = await pushRequest({
-      alias,
-      owner: user,
-      tags: {},
-    });
-    if (httpStatusCode !== Status.OK) {
+    try {
+      await pushRequest({
+        alias,
+        owner: user,
+        tags: {},
+      });
+    } catch (_) {
       return error("Alias request failed", Status.BadRequest);
     }
 

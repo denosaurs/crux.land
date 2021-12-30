@@ -6,7 +6,7 @@ import { Block } from "../components/block.tsx";
 import { TextButton } from "../components/text_button.tsx";
 import { ResultButton } from "../components/result_button.tsx";
 
-export function Alias() {
+export default function Alias() {
   return (
     <Layout
       script="

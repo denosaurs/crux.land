@@ -15,8 +15,9 @@ export const handler = {
       return couldNotAuthenticate();
     }
 
-    const { $metadata: { httpStatusCode } } = await denyRequest(owner, alias);
-    if (httpStatusCode !== Status.OK) {
+    try {
+      await denyRequest(owner, alias);
+    } catch (_) {
       return error("Alias denial failed", Status.BadRequest);
     }
 

@@ -52,9 +52,9 @@ export const handler = {
 
     item.tags[tag] = script;
 
-    const { $metadata: { httpStatusCode } } = await putAlias(item);
-
-    if (httpStatusCode !== Status.OK) {
+    try {
+      await putAlias(item);
+    } catch (_) {
       return error("Release failed", Status.BadRequest);
     }
 
