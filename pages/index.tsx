@@ -18,13 +18,13 @@ export default function Home() {
   const [result, setResult] = useState<null | Result>(null);
 
   function processResult() {
-    switch (result.status) {
+    switch (result!.status) {
       case 0:
         return "Uploading...";
       case 1:
-        return window.location.href + result.content!;
+        return window.location.href + result!.content!;
       case 2:
-        return <span className={tw`text-red-600`}>{result.content!}</span>;
+        return <span className={tw`text-red-600`}>{result!.content!}</span>;
     }
   }
 
@@ -101,7 +101,7 @@ export default function Home() {
               type="file"
               id="file"
               accept={EXTENSIONS.map((ext) => "." + ext).join(",")}
-              onChange={(e) => setFile(e.target.files[0])}
+              onChange={(e) => setFile(e.target!.files[0])}
               required
               hidden
             />
