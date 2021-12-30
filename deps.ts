@@ -11,7 +11,7 @@ export { decode } from "https://deno.land/std@0.94.0/encoding/base64.ts";
 // AWS
 export { S3Bucket } from "https://deno.land/x/s3@0.4.1/mod.ts";
 export type { GetObjectResponse } from "https://deno.land/x/s3@0.4.1/mod.ts";
-export { DynamoDB } from "https://aws-api.deno.dev/v0.2/services/dynamodb.ts?actions=GetItem,PutItem";
+export { DynamoDB } from "https://aws-api.deno.dev/v0.2/services/dynamodb.ts?actions=GetItem,PutItem,Scan";
 export { ApiFactory } from "https://deno.land/x/aws_api@v0.5.0/client/mod.ts";
 export {
   marshall,
@@ -51,7 +51,5 @@ export { Prism } from "https://jspm.dev/prism-react-renderer@1.2.0";
 export { default as theme } from "https://jspm.dev/prism-react-renderer@1.2.0/themes/github";
 
 // Router
-export { router } from "https://crux.land/router@0.0.1";
-export type { Match } from "https://crux.land/router@0.0.1";
-
-export * from "https://raw.githubusercontent.com/lucacasonato/fresh/aa1e1bcdb4693610feb3eb4ad7bba460c54cacaf/server.ts";
+export { router } from "./router.ts";
+export type { Match } from "./router.ts";
