@@ -5,8 +5,9 @@
 export {
   Status,
   STATUS_TEXT,
-} from "https://deno.land/std@0.94.0/http/http_status.ts";
-export { decode } from "https://deno.land/std@0.94.0/encoding/base64.ts";
+} from "https://deno.land/std@0.119.0/http/http_status.ts";
+export { decode } from "https://deno.land/std@0.119.0/encoding/base64.ts";
+export { serve } from "https://deno.land/std@0.119.0/http/server.ts";
 
 // AWS
 export { S3Bucket } from "https://deno.land/x/s3@0.4.1/mod.ts";
