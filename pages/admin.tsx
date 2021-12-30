@@ -1,60 +1,124 @@
 /** @jsx h */
-import { h, tw } from "../deps.ts";
-import { Layout } from "../components/layout.tsx";
+import { h, StateUpdater, tw, useData, useState } from "../deps.ts";
+import { Layout, User, useSignedIn } from "../components/layout.tsx";
 import { Block } from "../components/block.tsx";
+import { Alias, Requests } from "../util/shared_interfaces.ts";
+import { ResultButton } from "../components/result_button.tsx";
+import { InputButton } from "../components/input_button.tsx";
 
-export function Admin() {
+interface AliasWithOwnerData extends Alias {
+  ownerData: {
+    login: string;
+  };
+}
+
+interface Checked {
+  alias: string;
+  owner: number;
+}
+
+function RequestCard(
+  { alias, owner, ownerData }: AliasWithOwnerData,
+  checked: Checked[],
+  setChecked: StateUpdater<Checked[]>,
+) {
+  const isChecked = checked.some((checked) =>
+    checked.alias === alias && checked.owner === owner
+  );
   return (
-    <Layout
-      script="
-        const user = getUser();
+    <ResultButton>
+      <label
+        className={tw
+          `flex flex-row items-center space-x-3 text-gray-900 font-medium`}
+      >
+        <input
+          type="checkbox"
+          value={JSON.stringify({
+            alias,
+            owner,
+          })}
+          checked={isChecked}
+          onClick={() =>
+            setChecked((prev) => {
+              if (isChecked) {
+                return prev.filter((checked) =>
+                  !(checked.alias === alias && checked.owner === owner)
+                );
+              } else {
+                return [...prev, { alias, owner }];
+              }
+            })}
+          className={tw`appearance-none h-6 w-6 rounded-md cursor-pointer`}
+          name="request"
+        />
+        {/* TODO: min-width: 50% */}
+        <span>{alias}</span>
+        <a
+          href={new URL(owner.toString(), "https://api.github.com/user/").href}
+        >
+          {ownerData.login}
+        </a>
+      </label>
+    </ResultButton>
+  );
+}
 
-        if (user === null || user.admin === false) {
-          location.href = '/';
-        }
+interface ApproveStatus {
+  ok: boolean;
+  error?: string;
+}
 
-        const requestList = document.getElementById('requestList');
-        const usersCache = {};
+async function handleRequests(
+  user: User,
+  { owner, alias }: Checked,
+  deny: boolean,
+): Promise<ApproveStatus> {
+  const res = await fetch(deny ? "/api/alias/deny" : "/api/alias/approve", {
+    body: JSON.stringify({ user: user.id, secret: user.secret, owner, alias }),
+    method: "POST",
+  });
+  return {
+    ok: res.ok,
+    error: !res.ok ? (await res.json()).error : undefined,
+  };
+}
 
-        fetch('/api/alias/requests', {
-          body: JSON.stringify({ user: user.id, secret: user.secret }),
-          method: 'POST',
-        }).then(async (res) => {
-          const requests = await res.json();
+export default function Admin() {
+  const signedIn = useSignedIn();
+  const usersCache: Record<number, {
+    login: string;
+  }> = {};
+  let requests = useData<AliasWithOwnerData[]>("", async () => {
+    const res = await fetch("/api/alias/requests", {
+      method: "POST",
+      body: JSON.stringify(signedIn.user),
+    });
+    const reqs: Requests & { ownerData?: unknown }[] = await res.json();
+    for (const req of reqs) {
+      if (!usersCache[req.owner]) {
+        const ownerReq = await fetch(
+          new URL(req.owner.toString(), "https://api.github.com/user/"),
+        );
+        usersCache[req.owner] = await ownerReq.json();
+      }
+      req.ownerData = usersCache[req.owner];
+    }
+    return reqs as AliasWithOwnerData[];
+  });
+  let deny = false;
 
-          for (const { alias, owner, tags } of requests) {
-            const outer = document.createElement('div');
-            outer.className = 'w-full mb-2 justify-center py-2 px-4 border border-gray-300 rounded-md bg-gray-100 text-gray-900 font-medium';
+  /*
+TODO:
+  if (user === null || user.admin === false) {
+    location.href = '/';
+  }
+ */
 
-            const label = document.createElement('label');
-            label.className = 'flex flex-row items-center space-x-3 text-gray-900 font-medium';
+  const [checked, setChecked] = useState<Checked[]>([]);
+  const [results, setResults] = useState<Checked[] & ApproveStatus[]>([]);
 
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.value = JSON.stringify({ alias, owner });
-            checkbox.className = 'appearance-none h-6 w-6 rounded-md cursor-pointer';
-            checkbox.name = 'request';
-
-            const aliasText = document.createElement('span');
-            aliasText.style = 'min-width: 50%;';
-            aliasText.innerHTML = alias;
-
-            const ownerLink = document.createElement('a');
-
-            if (!usersCache[owner]) {
-              usersCache[owner] = await (await fetch(new URL(owner, 'https://api.github.com/user/'))).json();
-            }
-
-            ownerLink.href = new URL(owner, 'https://api.github.com/user/');
-            ownerLink.innerHTML = usersCache[owner].login;
-
-            label.append(checkbox, aliasText, ownerLink);
-            outer.appendChild(label);
-            requestList.appendChild(outer);
-          }
-        });
-      "
-      style="
+  return (
+    <Layout style="
         input[type=checkbox] {
           outline-color: rgba(209,213,219,var(--tw-border-opacity));
           outline-width: 1px;
@@ -66,10 +130,30 @@ export function Admin() {
           border-width: 4px;
           border-color: rgba(243,244,246,var(--tw-bg-opacity));
         }
-      "
-    >
+      ">
       <Block>
-        <div class={tw`flex flex-col`}>
+        <form
+          class={tw`flex flex-col`}
+          onSubmit={async (e) => {
+            e.preventDefault();
+            for (const data of checked) {
+              handleRequests(signedIn.user!, data, deny).then((res) => {
+                setResults((prev) => {
+                  return [...prev, {
+                    alias: data.alias,
+                    owner: data.owner,
+                    ok: res.ok,
+                    error: res.error,
+                  }];
+                });
+                requests = requests.filter((checked) =>
+                  !(checked.alias === data.alias &&
+                    checked.owner === data.owner)
+                );
+              });
+            }
+          }}
+        >
           <div
             class={tw
               `mt-4 h-80 w-full flex flex-row py-2 px-4 border border-gray-300 rounded-md bg-gray-50`}
@@ -77,91 +161,42 @@ export function Admin() {
             <div
               class={tw
                 `flex flex-col inset-y-0 left-0 mr-2 overflow-y-auto w-full`}
-              id="requestList"
             >
+              {requests.map((req) => RequestCard(req, checked, setChecked))}
             </div>
           </div>
           <div class={tw`w-full flex flex-row mt-2 space-x-2`}>
-            <input
-              className={tw
-                `w-full flex justify-center cursor-pointer py-2 px-4 border border-gray-300 text-md font-medium rounded-md text-green-700 bg-gray-100 hover:text-green-500 hover:bg-gray-50 active:bg-gray-100 active:text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:border-blue-300`}
-              type="button"
-              id="approve"
-              value="approve"
-              // @ts-ignore TS2322
-              onclick="
-                const result = document.getElementById('result');
-                const requests = [...document.getElementsByName('request')].filter((elem) => elem.checked).map((elem) => JSON.parse(elem.value));
-
-                for (const { owner, alias } of requests) {
-                  fetch('/api/alias/approve', {
-                    body: JSON.stringify({ user: user.id, secret: user.secret, owner, alias }),
-                    method: 'POST',
-                  }).then(async (res) => {
-                    const resultButton = document.createElement('div');
-                    resultButton.className = 'flex flex-row justify-around w-full mb-2 py-2 px-4 space-x-4 border border-gray-300 rounded-md bg-gray-100 font-medium';
-
-                    if (res.ok) {
-                      resultButton.className += ' text-green-700';
-                      resultButton.innerHTML = `Successfully approved ${alias} by ${usersCache[owner].login}`;
-                      [...document.getElementsByName('request')].find((elem) => {
-                        const e = JSON.parse(elem.value);
-                        return e.alias === alias && e.owner === owner;
-                      }).parentElement.parentElement.remove();
-                    } else {
-                      resultButton.className += ' text-red-700';
-                      resultButton.innerHTML = (await res.json()).error;
-                    }
-
-                    result.appendChild(resultButton);
-                  });
-                }
-              "
-            />
-            <input
-              className={tw
-                `w-full flex justify-center cursor-pointer py-2 px-4 border border-gray-300 text-md font-medium rounded-md text-red-700 bg-gray-100 hover:text-red-500 hover:bg-gray-50 active:bg-gray-100 active:text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:border-blue-300`}
-              type="button"
-              id="deny"
-              value="deny"
-              // @ts-ignore TS2322
-              onclick="
-                const result = document.getElementById('result');
-                const requests = [...document.getElementsByName('request')].filter((elem) => elem.checked).map((elem) => JSON.parse(elem.value));
-
-                for (const { owner, alias } of requests) {
-                  fetch('/api/alias/deny', {
-                    body: JSON.stringify({ user: user.id, secret: user.secret, owner, alias }),
-                    method: 'POST',
-                  }).then(async (res) => {
-                    const resultButton = document.createElement('div');
-                    resultButton.className = 'flex flex-row justify-around w-full mb-2 py-2 px-4 space-x-4 border border-gray-300 rounded-md bg-gray-100 font-medium';
-
-                    if (res.ok) {
-                      resultButton.className += ' text-green-700';
-                      resultButton.innerHTML = `Successfully denied ${alias} by ${usersCache[owner].login}`;
-                      [...document.getElementsByName('request')].find((elem) => {
-                        const e = JSON.parse(elem.value);
-                        return e.alias === alias && e.owner === owner;
-                      }).parentElement.parentElement.remove();
-                    } else {
-                      resultButton.className += ' text-red-700';
-                      resultButton.innerHTML = (await res.json()).error;
-                    }
-
-                    result.appendChild(resultButton);
-                  });
-                }
-              "
-            />
+            <InputButton type="submit">
+              <span class={tw`text-green-700 hover:text-green-500`}>
+                approve
+              </span>
+            </InputButton>
+            <InputButton type="submit" onClick={() => deny = true}>
+              <span class={tw`text-red-700 hover:text-red-500`}>deny</span>
+            </InputButton>
           </div>
           <div
             class={tw
               `flex flex-col-reverse h-48 mt-2 py-2 px-4 inset-y-0 right-0 border border-gray-300 rounded-md bg-gray-50 overflow-y-auto w-full`}
-            id="result"
           >
+            {results.map((res: Checked & ApproveStatus) => (
+              <div
+                class={tw
+                  `flex flex-row justify-around w-full mb-2 py-2 px-4 space-x-4 border border-gray-300 rounded-md bg-gray-100 font-medium`}
+              >
+                {res.ok
+                  ? (
+                    <span className={tw`text-green-700`}>
+                      Successfully {deny ? "denied" : "approved"} {res.alias} by
+                      {" "}
+                      {usersCache[res.owner].login}
+                    </span>
+                  )
+                  : <span className={tw`text-red-700`}>{res.error!}</span>}
+              </div>
+            ))}
           </div>
-        </div>
+        </form>
       </Block>
 
       <div

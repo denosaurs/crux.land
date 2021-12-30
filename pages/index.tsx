@@ -9,8 +9,8 @@ import { ResultButton } from "../components/result_button.tsx";
 import { Layout } from "../components/layout.tsx";
 
 interface Result {
-  status: 0 | 1 | 2, // pending, ok, error
-  content?: string,
+  status: 0 | 1 | 2; // pending, ok, error
+  content?: string;
 }
 
 export default function Home() {
@@ -29,9 +29,7 @@ export default function Home() {
   }
 
   return (
-    <Layout
-      description
-    >
+    <Layout description>
       <Block>
         <div class={tw`flex flex(col lg:row)`}>
           <div class={tw`inset-y-0 left-0 w(full lg:3/5)`}>
@@ -85,15 +83,19 @@ export default function Home() {
               });
 
               if (res.ok) {
-                res.json().then(({ id }) => setResult({
-                  status: 1,
-                  content: id,
-                }));
+                res.json().then(({ id }) =>
+                  setResult({
+                    status: 1,
+                    content: id,
+                  })
+                );
               } else {
-                res.json().then(({ error }) => setResult({
-                  status: 2,
-                  content: error,
-                }));
+                res.json().then(({ error }) =>
+                  setResult({
+                    status: 2,
+                    content: error,
+                  })
+                );
               }
             }}
           >
@@ -107,7 +109,7 @@ export default function Home() {
             />
             <div class={tw`mb-2 mt(4 lg:0)`}>
               <LabelButton // @ts-ignore TS2322
-              htmlFor="file">
+               htmlFor="file">
                 {file?.name ?? "Choose a script"}
               </LabelButton>
             </div>

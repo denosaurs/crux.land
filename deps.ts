@@ -4,7 +4,7 @@
 /// <reference lib="deno.unstable" />
 /// <reference lib="deno.ns" />
 
-export * from "https://raw.githubusercontent.com/lucacasonato/fresh/64da4005bb1cd5cf239ca8b2ebec2146987fecf1/runtime.ts";
+export * from "/Users/crowlkats/projects/fresh/runtime.ts";
 
 // twind
 export { setup, tw } from "https://esm.sh/twind@0.16.16";
