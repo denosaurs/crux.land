@@ -26,13 +26,14 @@ export async function createUser(
 ): Promise<User | undefined> {
   const secret = generate();
 
-  const { $metadata: { httpStatusCode } } = await DYNAMO_CLIENT.putItem({
-    TableName: DYNAMO_USER_TABLE,
-    Item: marshall({ id, secret, admin }),
-  });
-
-  if (httpStatusCode === Status.OK) {
+  try {
+    await DYNAMO_CLIENT.putItem({
+      TableName: DYNAMO_USER_TABLE,
+      Item: marshall({ id, secret, admin }),
+    });
     return { id, admin, secret };
+  } catch (e) {
+    // TODO
   }
 }
 

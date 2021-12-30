@@ -29,4 +29,4 @@ export { Prism } from "https://jspm.dev/prism-react-renderer@1.2.0";
 export { default as theme } from "https://jspm.dev/prism-react-renderer@1.2.0/themes/github";
 
 // Std
-export { encode as encodeBase64 } from "https://deno.land/std@0.113.0/encoding/base64.ts";
+export { encode as encodeBase64 } from "https://deno.land/std@0.119.0/encoding/base64.ts";
