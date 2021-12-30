@@ -102,9 +102,7 @@ export function Alias() {
               create a release for your alias which connects a script previously
               uploaded with your alias and provided tag.
             </div>
-            <div
-              class="flex flex-col inset-y-0 right-0 w-full lg:w-1/2 lg:ml-2"
-            >
+            <div class="flex flex-col inset-y-0 right-0 w-full lg:w-1/2 lg:ml-2">
               <div class="mb-2 mt-4 lg:mt-0">
                 <TextButton
                   // @ts-ignore TS2322
@@ -153,16 +151,12 @@ export function Alias() {
                 />
               </div>
               <div class="select-all cursor-text">
-                <ResultButton
-                  // @ts-ignore TS2322
-                  id="requestResult"
-                />
+                <ResultButton // @ts-ignore TS2322
+                id="requestResult" />
               </div>
             </div>
           </div>
-          <div
-            class="mt-4 h-96 w-full flex flex-row py-2 px-4 border border-gray-300 rounded-md bg-gray-50"
-          >
+          <div class="mt-4 h-96 w-full flex flex-row py-2 px-4 border border-gray-300 rounded-md bg-gray-50">
             <div
               class="flex flex-col inset-y-0 left-0 mr-2 overflow-y-auto w-1/2"
               id="aliasList"
@@ -247,10 +241,8 @@ export function Alias() {
           </div>
         </div>
         <div class="select-all cursor-text mt-2 w-full">
-          <ResultButton
-            // @ts-ignore TS2322
-            id="releaseResult"
-          />
+          <ResultButton // @ts-ignore TS2322
+          id="releaseResult" />
         </div>
       </Block>
 

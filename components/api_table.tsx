@@ -19,9 +19,7 @@ export function ApiTable(
         Content-Type: <span class="font-mono">{content_type}</span>
       </div>
       <div class="border border-gray-300 rounded-md w-full lg:w-9/12">
-        <table
-          class="table-fixed border-collapse text-left w-full"
-        >
+        <table class="table-fixed border-collapse text-left w-full">
           <thead>
             <tr class="bg-gray-200 font-mono border-b border-gray-400">
               <th class="w-2/12 pl-1 py-1.5">NAME</th>

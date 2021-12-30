@@ -75,13 +75,15 @@ export function CodeBlock(
               {tokens.map((line: Token[], i: number) => {
                 const lineProps = getLineProps({ line, key: i });
                 lineProps.className += " text-xs";
-                return line[0]?.empty && i === tokens.length - 1 ? null : (
-                  <div key={i} {...lineProps}>
-                    {line.map((token, key) => (
-                      <span key={key} {...getTokenProps({ token, key })} />
-                    ))}
-                  </div>
-                );
+                return line[0]?.empty && i === tokens.length - 1
+                  ? null
+                  : (
+                    <div key={i} {...lineProps}>
+                      {line.map((token, key) => (
+                        <span key={key} {...getTokenProps({ token, key })} />
+                      ))}
+                    </div>
+                  );
               })}
             </code>
           </pre>

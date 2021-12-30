@@ -70,18 +70,14 @@ export function Admin() {
     >
       <Block>
         <div class="flex flex-col">
-          <div
-            class="mt-4 h-80 w-full flex flex-row py-2 px-4 border border-gray-300 rounded-md bg-gray-50"
-          >
+          <div class="mt-4 h-80 w-full flex flex-row py-2 px-4 border border-gray-300 rounded-md bg-gray-50">
             <div
               class="flex flex-col inset-y-0 left-0 mr-2 overflow-y-auto w-full"
               id="requestList"
             >
             </div>
           </div>
-          <div
-            class="w-full flex flex-row mt-2 space-x-2"
-          >
+          <div class="w-full flex flex-row mt-2 space-x-2">
             <input
               className="w-full flex justify-center cursor-pointer py-2 px-4 border border-gray-300 text-md font-medium rounded-md text-green-700 bg-gray-100 hover:text-green-500 hover:bg-gray-50 active:bg-gray-100 active:text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:border-blue-300"
               type="button"

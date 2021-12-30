@@ -24,12 +24,12 @@ export function Index() {
             <br />
 
             To use crux.land simply upload a file with one of the supported file
-            extensions ({EXTENSIONS.map((ext, idx) =>
+            extensions ({EXTENSIONS.map((ext, idx) => (
               <span>
                 <CodeInline>{ext}</CodeInline>
                 {EXTENSIONS.length - 1 === idx ? "" : ", "}
               </span>
-            )}) and if successful you will recieve a permanent link to said
+            ))}) and if successful you will recieve a permanent link to said
             file. This link may be used in deno or browsers import and
             automatically serve the correct{" "}
             <CodeInline>Content-Type</CodeInline>{" "}
@@ -82,12 +82,16 @@ export function Index() {
                 id="submit"
                 value="Upload"
                 onclick="
-                  // Copyright 2018-2021 the Deno authors. All rights reserved. MIT license.
+                  const file = document.getElementById('file');
+                  const submit = document.getElementById('submit');
+                  const result = document.getElementById('result');
+                  const label = document.getElementById('label');
+
                   function encode(data) {
-                    const base64abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 
-                      'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 
-                      'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 
-                      'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', 
+                    const base64abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+                      'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a',
+                      'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+                      'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4',
                       '5', '6', '7', '8', '9', '+', '/'];
                     const uint8 = new Uint8Array(data);
                     let result = '',
@@ -100,13 +104,11 @@ export function Index() {
                       result += base64abc[uint8[i] & 0x3f];
                     }
                     if (i === l + 1) {
-                      // 1 octet yet to write
                       result += base64abc[uint8[i - 2] >> 2];
                       result += base64abc[(uint8[i - 2] & 0x03) << 4];
                       result += '==';
                     }
                     if (i === l) {
-                      // 2 octets yet to write
                       result += base64abc[uint8[i - 2] >> 2];
                       result += base64abc[((uint8[i - 2] & 0x03) << 4) | (uint8[i - 1] >> 4)];
                       result += base64abc[(uint8[i - 1] & 0x0f) << 2];
@@ -114,11 +116,6 @@ export function Index() {
                     }
                     return result;
                   }
-
-                  const file = document.getElementById('file');
-                  const submit = document.getElementById('submit');
-                  const result = document.getElementById('result');
-                  const label = document.getElementById('label');
 
                   result.style.display = 'none';
 
@@ -156,10 +153,8 @@ export function Index() {
               />
             </div>
             <div class="select-all cursor-text">
-              <ResultButton
-                // @ts-ignore TS2322
-                id="result"
-              />
+              <ResultButton // @ts-ignore TS2322
+              id="result" />
             </div>
           </div>
         </div>
