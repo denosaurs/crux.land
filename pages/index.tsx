@@ -8,9 +8,25 @@ import { InputButton } from "../components/input_button.tsx";
 import { ResultButton } from "../components/result_button.tsx";
 import { Layout } from "../components/layout.tsx";
 
+interface Result {
+  status: 0 | 1 | 2, // pending, ok, error
+  content?: string,
+}
+
 export default function Home() {
   const [file, setFile] = useState<null | File>(null);
-  const [id, setId] = useState(null);
+  const [result, setResult] = useState<null | Result>(null);
+
+  function processResult() {
+    switch (result.status) {
+      case 0:
+        return "Uploading...";
+      case 1:
+        return window.location.href + result.content!;
+      case 2:
+        return <span className={tw`text-red-600`}>{result.content!}</span>;
+    }
+  }
 
   return (
     <Layout
@@ -59,6 +75,7 @@ export default function Home() {
               }
 
               const data = await file.arrayBuffer();
+              setResult({ status: 0 });
               const res = await fetch("/api/add", {
                 method: "POST",
                 body: JSON.stringify({
@@ -68,18 +85,15 @@ export default function Home() {
               });
 
               if (res.ok) {
-                res.json().then(({ id }) => {
-                  //result.style.color = 'rgba(55, 65, 81, var(--tw-text-opacity))';
-                  setId(id);
-                  console.log(id);
-                });
+                res.json().then(({ id }) => setResult({
+                  status: 1,
+                  content: id,
+                }));
               } else {
-                res.json().then(({ error }) => {
-                  setId(error);
-                  console.log(error);
-                  //result.style.color = 'rgba(220, 38, 38, var(--tw-text-opacity))';
-                  //result.innerText = error;
-                });
+                res.json().then(({ error }) => setResult({
+                  status: 2,
+                  content: error,
+                }));
               }
             }}
           >
@@ -107,10 +121,10 @@ export default function Home() {
               />
             </div>
             <div class={tw`select-all cursor-text`}>
-              {id && (
+              {result && (
                 <ResultButton // @ts-ignore TS2322
                  id="result">
-                  {window.location.href + id}
+                  {processResult()}
                 </ResultButton>
               )}
             </div>

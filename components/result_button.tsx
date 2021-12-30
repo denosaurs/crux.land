@@ -12,7 +12,7 @@ export function ResultButton(
       {...props}
       class={tw`
         w-full
-        hidden
+        flex
         justify-center
         py-2
         px-4
