@@ -5,7 +5,7 @@ import { Block } from "../components/block.tsx";
 import { CodeInline } from "../components/code_inline.tsx";
 import { Endpoint } from "../components/endpoint.tsx";
 
-export function Api() {
+export default function Api() {
   return (
     <Layout description>
       <Block>
