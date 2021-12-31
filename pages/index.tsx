@@ -100,7 +100,6 @@ export default function Home() {
               <LabelBox>
                 <input
                   type="file"
-                  id="file"
                   accept={EXTENSIONS.map((ext) => "." + ext).join(",")}
                   onChange={(e) => setFile(e.target!.files[0])}
                   required

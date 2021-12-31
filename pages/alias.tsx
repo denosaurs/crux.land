@@ -55,7 +55,8 @@ function CreateAlias() {
           <TextInputBox
             placeholder="alias"
             value={alias}
-            onInput={(e) => setAlias(e.target.value)}
+            onInput={(e) =>
+              setAlias(e.target.value)}
             required
           />
         </div>
