@@ -1,7 +1,7 @@
 /** @jsx h */
 import { h, JSX, tw } from "../deps.ts";
 
-export function TextInputBox(
+export function InputTextBox(
   { ...props }: {
     props: JSX.HTMLAttributes<HTMLLabelElement>;
   },

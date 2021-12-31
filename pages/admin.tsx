@@ -48,7 +48,8 @@ function RequestCard(
                 return [...prev, { alias, owner }];
               }
             })}
-          className={tw`appearance-none h-6 w-6 rounded-md cursor-pointer`}
+          className={tw
+            `appearance-none h-6 w-6 rounded-md cursor-pointer  outline-gray-300 outline outline-1 checked:(bg-blue-600 border-4 border-gray-100)`}
           name="request"
         />
         {/* TODO: min-width: 50% */}
@@ -118,19 +119,7 @@ TODO:
   const [results, setResults] = useState<Checked[] & ApproveStatus[]>([]);
 
   return (
-    <Layout style="
-        input[type=checkbox] {
-          outline-color: rgba(209,213,219,var(--tw-border-opacity));
-          outline-width: 1px;
-          outline-style: solid;
-        }
-
-        input[type=checkbox]:checked {
-          background-color: rgba(37,99,235,var(--tw-bg-opacity));
-          border-width: 4px;
-          border-color: rgba(243,244,246,var(--tw-bg-opacity));
-        }
-      ">
+    <Layout>
       <Block>
         <form
           class={tw`flex flex-col`}

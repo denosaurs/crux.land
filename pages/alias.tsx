@@ -3,7 +3,7 @@ import { h, PageConfig, tw, useData, useState } from "../deps.ts";
 import { Layout, useSignedIn } from "../components/layout.tsx";
 import { InputBox } from "../components/input_box.tsx";
 import { Block } from "../components/block.tsx";
-import { TextInputBox } from "../components/text_input_box.tsx";
+import { InputTextBox } from "../components/input_text_box.tsx";
 import { ResultBox } from "../components/result_box.tsx";
 import { Alias as AliasInterface, Tags } from "../util/shared_interfaces.ts";
 import { Result } from "./index.tsx";
@@ -52,7 +52,7 @@ function CreateAlias() {
         }}
       >
         <div class={tw`mb-2 mt-4 lg:mt-0`}>
-          <TextInputBox
+          <InputTextBox
             placeholder="alias"
             value={alias}
             onInput={(e) =>
@@ -126,7 +126,7 @@ function ReleaseAlias({
         }}
       >
         <div className={tw`w-1/3`}>
-          <TextInputBox
+          <InputTextBox
             placeholder="tag"
             value={tag}
             onInput={(e) => setTag(e.target.value)}
@@ -134,7 +134,7 @@ function ReleaseAlias({
           />
         </div>
         <div className={tw`ml-2 mr-2 w-1/3`}>
-          <TextInputBox
+          <InputTextBox
             placeholder="script"
             value={script}
             onInput={(e) => setScript(e.target.value)}
@@ -176,19 +176,7 @@ export default function Alias() {
       }
   */
   return (
-    <Layout style="
-        input[type=radio] {
-          outline-color: rgba(209,213,219,var(--tw-border-opacity));
-          outline-width: 1px;
-          outline-style: solid;
-        }
-
-        input[type=radio]:checked {
-          background-color: rgba(37,99,235,var(--tw-bg-opacity));
-          border-width: 4px;
-          border-color: rgba(243,244,246,var(--tw-bg-opacity));
-        }
-      ">
+    <Layout>
       <Block>
         <div class={tw`flex flex-col`}>
           <div class={tw`inset-y-0 left-0 w-full flex flex-col lg:flex-row`}>
@@ -223,7 +211,7 @@ export default function Alias() {
                       name="alias"
                       value={alias}
                       class={tw
-                        `appearance-none h-6 w-6 rounded-full cursor-pointer`}
+                        `appearance-none h-6 w-6 rounded-full cursor-pointer outline-gray-300 outline outline-1 checked:(bg-blue-600 border-4 border-gray-100)`}
                       onClick={() => {
                         setSelectedAlias(alias);
                         setTags(tags);

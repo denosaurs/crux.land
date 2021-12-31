@@ -34,11 +34,9 @@ export function useSignedIn(): AuthState {
 }
 
 export function Layout(
-  { children, description, script, style }: {
+  { children, description }: {
     children: ComponentChildren;
     description?: boolean;
-    script?: string;
-    style?: string;
   },
 ) {
   const storedUser = typeof Deno !== "undefined"
@@ -98,12 +96,6 @@ export function Layout(
       {children}
 
       <Footer />
-
-      {script
-        ? <script dangerouslySetInnerHTML={{ __html: script }}></script>
-        : null}
-      {style ? <style dangerouslySetInnerHTML={{ __html: style }}></style>
-      : null}
     </AuthContext.Provider>
   );
 }
