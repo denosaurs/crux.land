@@ -3,8 +3,8 @@ import { h, PageConfig, StateUpdater, tw, useData, useState } from "../deps.ts";
 import { Layout, User, useSignedIn } from "../components/layout.tsx";
 import { Block } from "../components/block.tsx";
 import { Alias, Requests } from "../util/shared_interfaces.ts";
-import { ResultButton } from "../components/result_button.tsx";
-import { InputButton } from "../components/input_button.tsx";
+import { ResultBox } from "../components/result_box.tsx";
+import { InputBox } from "../components/input_box.tsx";
 
 interface AliasWithOwnerData extends Alias {
   ownerData: {
@@ -26,7 +26,7 @@ function RequestCard(
     checked.alias === alias && checked.owner === owner
   );
   return (
-    <ResultButton>
+    <ResultBox>
       <label
         className={tw
           `flex flex-row items-center space-x-3 text-gray-900 font-medium`}
@@ -59,7 +59,7 @@ function RequestCard(
           {ownerData.login}
         </a>
       </label>
-    </ResultButton>
+    </ResultBox>
   );
 }
 
@@ -164,14 +164,14 @@ TODO:
             </div>
           </div>
           <div class={tw`w-full flex flex-row mt-2 space-x-2`}>
-            <InputButton type="submit">
+            <InputBox type="submit">
               <span class={tw`text-green-700 hover:text-green-500`}>
                 approve
               </span>
-            </InputButton>
-            <InputButton type="submit" onClick={() => deny = true}>
+            </InputBox>
+            <InputBox type="submit" onClick={() => deny = true}>
               <span class={tw`text-red-700 hover:text-red-500`}>deny</span>
-            </InputButton>
+            </InputBox>
           </div>
           <div
             class={tw

@@ -3,9 +3,9 @@ import { encodeBase64, h, PageConfig, tw, useState } from "../deps.ts";
 import { Block } from "../components/block.tsx";
 import { EXTENSIONS } from "../util/constants.ts";
 import { CodeInline } from "../components/code_inline.tsx";
-import { LabelButton } from "../components/label_button.tsx";
-import { InputButton } from "../components/input_button.tsx";
-import { ResultButton } from "../components/result_button.tsx";
+import { LabelBox } from "../components/label_box.tsx";
+import { InputBox } from "../components/input_box.tsx";
+import { ResultBox } from "../components/result_box.tsx";
 import { Layout } from "../components/layout.tsx";
 
 export interface Result {
@@ -96,31 +96,24 @@ export default function Home() {
               }
             }}
           >
-            <input
-              type="file"
-              id="file"
-              accept={EXTENSIONS.map((ext) => "." + ext).join(",")}
-              onChange={(e) => setFile(e.target!.files[0])}
-              required
-              hidden
-            />
             <div class={tw`mb-2 mt(4 lg:0)`}>
-              <LabelButton // @ts-ignore TS2322
-               htmlFor="file">
+              <LabelBox>
+                <input
+                  type="file"
+                  id="file"
+                  accept={EXTENSIONS.map((ext) => "." + ext).join(",")}
+                  onChange={(e) => setFile(e.target!.files[0])}
+                  required
+                  hidden
+                />
                 {file?.name ?? "Choose a script"}
-              </LabelButton>
+              </LabelBox>
             </div>
             <div class={tw`mb-2 mt(2 lg:0)`}>
-              <InputButton
-                // @ts-ignore TS2322
-                type="submit"
-                name="submit"
-                id="submit"
-                value="Upload"
-              />
+              <InputBox type="submit" value="Upload" />
             </div>
             <div class={tw`select-all cursor-text`}>
-              {result && <ResultButton>{processResult()}</ResultButton>}
+              {result && <ResultBox>{processResult()}</ResultBox>}
             </div>
           </form>
         </div>

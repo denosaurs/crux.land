@@ -1,10 +1,10 @@
 /** @jsx h */
 import { h, PageConfig, tw, useData, useState } from "../deps.ts";
 import { Layout, useSignedIn } from "../components/layout.tsx";
-import { InputButton } from "../components/input_button.tsx";
+import { InputBox } from "../components/input_box.tsx";
 import { Block } from "../components/block.tsx";
-import { TextButton } from "../components/text_button.tsx";
-import { ResultButton } from "../components/result_button.tsx";
+import { TextInputBox } from "../components/text_input_box.tsx";
+import { ResultBox } from "../components/result_box.tsx";
 import { Alias as AliasInterface, Tags } from "../util/shared_interfaces.ts";
 import { Result } from "./index.tsx";
 
@@ -50,20 +50,14 @@ function CreateAlias() {
         }
       }}>
         <div class={tw`mb-2 mt-4 lg:mt-0`}>
-          <TextButton
-            // @ts-ignore TS2322
-            placeholder="alias"
-            value={alias}
-            onInput={(e) => setAlias(e.target.value)}
-            required
-          />
+          <TextInputBox placeholder="alias" value={alias} onInput={(e) => setAlias(e.target.value)} required />
         </div>
         <div class={tw`mb-2 mt-2 lg:mt-0`}>
-          <InputButton type="submit" disabled={result?.status === 0} value="Request" />
+          <InputBox type="submit" disabled={result?.status === 0} value="Request" />
         </div>
       </form>
       <div class={tw`select-all cursor-text`}>
-        {result && <ResultButton>{processResult()}</ResultButton>}
+        {result && <ResultBox>{processResult()}</ResultBox>}
       </div>
     </div>
   );
@@ -117,17 +111,17 @@ function ReleaseAlias({
         }
       }}>
         <div className={tw`w-1/3`}>
-          <TextButton placeholder="tag" value={tag} onInput={e => setTag(e.target.value)} required />
+          <TextInputBox placeholder="tag" value={tag} onInput={e => setTag(e.target.value)} required />
         </div>
         <div className={tw`ml-2 mr-2 w-1/3`}>
-          <TextButton placeholder="script" value={script} onInput={e => setScript(e.target.value)} required />
+          <TextInputBox placeholder="script" value={script} onInput={e => setScript(e.target.value)} required />
         </div>
         <div className={tw`w-1/3`}>
-          <InputButton type="submit" value="release" disabled={result?.status === 0} />
+          <InputBox type="submit" value="release" disabled={result?.status === 0} />
         </div>
       </form>
       <div className={tw`select-all cursor-text mt-2 w-full`}>
-        {result && <ResultButton>{processResult()}</ResultButton>}
+        {result && <ResultBox>{processResult()}</ResultBox>}
       </div>
     </div>
   );

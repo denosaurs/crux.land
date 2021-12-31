@@ -1,20 +1,21 @@
 /** @jsx h */
 import { ComponentChildren, h, JSX, tw } from "../deps.ts";
 
-export function LabelButton(
+export function ResultBox(
   { children, ...props }: {
     children: ComponentChildren;
-    props?: JSX.HTMLAttributes<HTMLLabelElement>;
+    props?: JSX.HTMLAttributes<HTMLDivElement>;
   },
 ) {
   return (
-    <label
+    <div
       {...props}
       class={tw`
         w-full
-        flex 
+        flex
         justify-center
-        py-2 px-4
+        py-2
+        px-4
         border
         border-gray-300
         font-medium
@@ -23,13 +24,9 @@ export function LabelButton(
         bg-gray-100
         transition
         duration-150
-        ease-in-out
-        select-none
-        hover:(text-gray-500 bg-gray-50)
-        active:(bg-gray-100 text-gray-700)
-        focus:(outline-none shadow border-blue-300)`}
+        ease-in-out`}
     >
       {children}
-    </label>
+    </div>
   );
 }
