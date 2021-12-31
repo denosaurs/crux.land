@@ -1,5 +1,5 @@
 /** @jsx h */
-import { h, StateUpdater, tw, useData, useState } from "../deps.ts";
+import { h, PageConfig, StateUpdater, tw, useData, useState } from "../deps.ts";
 import { Layout, User, useSignedIn } from "../components/layout.tsx";
 import { Block } from "../components/block.tsx";
 import { Alias, Requests } from "../util/shared_interfaces.ts";
@@ -140,10 +140,8 @@ TODO:
               handleRequests(signedIn.user!, data, deny).then((res) => {
                 setResults((prev) => {
                   return [...prev, {
-                    alias: data.alias,
-                    owner: data.owner,
-                    ok: res.ok,
-                    error: res.error,
+                    ...data,
+                    ...res,
                   }];
                 });
                 requests = requests.filter((checked) =>
@@ -209,3 +207,5 @@ TODO:
     </Layout>
   );
 }
+
+export const config: PageConfig = { runtimeJS: true };

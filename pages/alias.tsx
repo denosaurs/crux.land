@@ -1,84 +1,33 @@
 /** @jsx h */
-import { h, tw } from "../deps.ts";
-import { Layout } from "../components/layout.tsx";
+import { h, PageConfig, tw, useData, useState } from "../deps.ts";
+import { Layout, useSignedIn } from "../components/layout.tsx";
 import { InputButton } from "../components/input_button.tsx";
 import { Block } from "../components/block.tsx";
 import { TextButton } from "../components/text_button.tsx";
 import { ResultButton } from "../components/result_button.tsx";
+import { Alias as AliasInterface, Tags } from "../util/shared_interfaces.ts";
 
 export default function Alias() {
+  const signedIn = useSignedIn();
+
+  const aliases = useData<AliasInterface[]>("", async () => {
+    const res = await fetch("/api/alias/list", {
+      method: "POST",
+      body: JSON.stringify(signedIn.user ?? {}),
+    });
+    return res.json();
+  });
+
+  const [alias, setAlias] = useState<string>("");
+  const [tags, setTags] = useState<Tags>({});
+
+  /*TODO
+      if (user === null) {
+        location.href = '/';
+      }
+  */
   return (
     <Layout
-      script="
-        const user = getUser();
-
-        if (user === null) {
-          location.href = '/';
-        }
-
-        async function listAliases() {
-          const aliasList = document.getElementById('aliasList');
-          const tagList = document.getElementById('tagList');
-
-          const res = await fetch('/api/alias/list', {
-            body: JSON.stringify({ user: user.id }),
-            method: 'POST',
-          });
-
-          aliasList.innerHTML = '';
-
-          const aliases = await res.json();
-          let first = true;
-
-          for (const { alias, owner, tags } of aliases) {
-            const outer = document.createElement('div');
-            outer.className = 'w-full mb-2 justify-center py-2 px-4 border border-gray-300 rounded-md bg-gray-100';
-
-            const label = document.createElement('label');
-            label.className = 'flex items-center space-x-3 text-gray-900 font-medium';
-
-            const radio = document.createElement('input');
-            radio.type = 'radio';
-            radio.value = alias;
-            radio.className = 'appearance-none h-6 w-6 rounded-full cursor-pointer';
-            radio.name = 'alias';
-            radio.onclick = () => {
-              tagList.innerHTML = '';
-
-              for (const tag in tags) {
-                const script = tags[tag];
-                const tagButton = document.createElement('div');
-                tagButton.className = 'flex flex-row justify-around w-full mb-2 py-2 px-4 space-x-4 border border-gray-300 rounded-md bg-gray-100 text-gray-900 font-medium';
-
-                const tagLink = document.createElement('a');
-                tagLink.href = new URL(`${alias}@${tag}`, new URL(document.URL).origin);
-                tagLink.innerHTML = tag;
-
-                const scriptLink = document.createElement('a');
-                scriptLink.href = new URL(script, new URL(document.URL).origin);
-                scriptLink.innerHTML = script;
-
-                tagButton.append(tagLink, scriptLink);
-                tagList.appendChild(tagButton);
-              }
-            };
-
-            if (first) {
-              radio.click();
-              first = false;
-            }
-
-            const text = document.createElement('span');
-            text.innerHTML = alias;
-
-            label.append(radio, text);
-            outer.appendChild(label);
-            aliasList.appendChild(outer);
-          }
-        }
-
-        listAliases();
-      "
       style="
         input[type=radio] {
           outline-color: rgba(209,213,219,var(--tw-border-opacity));
@@ -161,20 +110,27 @@ export default function Alias() {
             </div>
           </div>
           <div
-            class={tw
-              `mt-4 h-96 w-full flex flex-row py-2 px-4 border border-gray-300 rounded-md bg-gray-50`}
-          >
-            <div
-              class={tw
-                `flex flex-col inset-y-0 left-0 mr-2 overflow-y-auto w-1/2`}
-              id="aliasList"
-            >
+            class={tw`mt-4 h-96 w-full flex flex-row py-2 px-4 border border-gray-300 rounded-md bg-gray-50`}>
+            <div class={tw`flex flex-col inset-y-0 left-0 mr-2 overflow-y-auto w-1/2`}>
+              {aliases.map(({alias, tags}, i) => (
+                <div class={tw`w-full mb-2 justify-center py-2 px-4 border border-gray-300 rounded-md bg-gray-100`}>
+                  <label class={tw`flex items-center space-x-3 text-gray-900 font-medium`}>
+                    <input type="radio" name="alias" value={alias} class={tw`appearance-none h-6 w-6 rounded-full cursor-pointer`} onClick={() => {
+                      setAlias(alias);
+                      setTags(tags);
+                    }} checked={i === 0} />
+                    <span>{alias}</span>
+                  </label>
+                </div>
+              ))}
             </div>
-            <div
-              class={tw
-                `flex flex-col py-2 px-4 inset-y-0 right-0 border border-gray-300 rounded-md bg-gray-100 overflow-y-auto w-1/2`}
-              id="tagList"
-            >
+            <div class={tw`flex flex-col py-2 px-4 inset-y-0 right-0 border border-gray-300 rounded-md bg-gray-100 overflow-y-auto w-1/2`}>
+              {Object.entries(tags).map(([tag, script]: [string, string]) => (
+                <div class={tw`flex flex-row justify-around w-full mb-2 py-2 px-4 space-x-4 border border-gray-300 rounded-md bg-gray-100 text-gray-900 font-medium`}>
+                  <a href={new URL(`${alias}@${tag}`, location.origin).href}>{tag}</a>
+                  <a href={new URL(script, location.origin).href}>{script}</a>
+                </div>
+              ))}
             </div>
           </div>
           <div class={tw`flex flex-row mt-2`}>
@@ -265,3 +221,5 @@ export default function Alias() {
     </Layout>
   );
 }
+
+export const config: PageConfig = { runtimeJS: true };

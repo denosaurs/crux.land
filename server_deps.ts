@@ -1,4 +1,4 @@
-export * from "/Users/crowlkats/projects/fresh/server.ts";
+export * from "https://raw.githubusercontent.com/lucacasonato/fresh/d967088bbcea93b5537db4e98e34e78c34a63b2c/server.ts";
 
 // Std
 export {

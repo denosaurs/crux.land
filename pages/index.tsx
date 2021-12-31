@@ -22,7 +22,7 @@ export default function Home() {
       case 0:
         return "Uploading...";
       case 1:
-        return window.location.href + result!.content!;
+        return location.href + result!.content!;
       case 2:
         return <span className={tw`text-red-600`}>{result!.content!}</span>;
     }
