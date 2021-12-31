@@ -8,7 +8,7 @@ import { InputButton } from "../components/input_button.tsx";
 import { ResultButton } from "../components/result_button.tsx";
 import { Layout } from "../components/layout.tsx";
 
-interface Result {
+export interface Result {
   status: 0 | 1 | 2; // pending, ok, error
   content?: string;
 }
@@ -72,30 +72,27 @@ export default function Home() {
                 return;
               }
 
-              const data = await file.arrayBuffer();
               setResult({ status: 0 });
               const res = await fetch("/api/add", {
                 method: "POST",
                 body: JSON.stringify({
                   name: file.name,
-                  content: encodeBase64(data),
+                  content: encodeBase64(await file.arrayBuffer()),
                 }),
               });
 
+              const data = await res.json();
+
               if (res.ok) {
-                res.json().then(({ id }) =>
-                  setResult({
-                    status: 1,
-                    content: id,
-                  })
-                );
+                setResult({
+                  status: 1,
+                  content: data.id,
+                });
               } else {
-                res.json().then(({ error }) =>
-                  setResult({
-                    status: 2,
-                    content: error,
-                  })
-                );
+                setResult({
+                  status: 2,
+                  content: data.error,
+                });
               }
             }}
           >
@@ -123,12 +120,7 @@ export default function Home() {
               />
             </div>
             <div class={tw`select-all cursor-text`}>
-              {result && (
-                <ResultButton // @ts-ignore TS2322
-                 id="result">
-                  {processResult()}
-                </ResultButton>
-              )}
+              {result && <ResultButton>{processResult()}</ResultButton>}
             </div>
           </form>
         </div>

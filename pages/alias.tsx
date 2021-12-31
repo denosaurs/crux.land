@@ -6,6 +6,132 @@ import { Block } from "../components/block.tsx";
 import { TextButton } from "../components/text_button.tsx";
 import { ResultButton } from "../components/result_button.tsx";
 import { Alias as AliasInterface, Tags } from "../util/shared_interfaces.ts";
+import { Result } from "./index.tsx";
+
+function CreateAlias() {
+  const signedIn = useSignedIn();
+
+  const [alias, setAlias] = useState("");
+  const [result, setResult] = useState<null | Result>(null);
+
+  function processResult() {
+    switch (result!.status) {
+      case 0:
+        return "Requesting...";
+      case 1:
+        return "Successfully requested!";
+      case 2:
+        return <span className={tw`text-red-600`}>{result!.content!}</span>;
+    }
+  }
+
+  return (
+    <div class={tw`flex flex-col inset-y-0 right-0 w-full lg:w-1/2 lg:ml-2`}>
+      <form onSubmit={async () => {
+        setResult({status: 0});
+        const res = await fetch('/api/alias/request', {
+          method: 'POST',
+          body: JSON.stringify({
+            alias,
+            ...signedIn.user,
+          }),
+        });
+
+        if (res.ok) {
+          setResult({
+            status: 1,
+          });
+        } else {
+          const data = await res.json();
+          setResult({
+            status: 2,
+            content: data.error,
+          });
+        }
+      }}>
+        <div class={tw`mb-2 mt-4 lg:mt-0`}>
+          <TextButton
+            // @ts-ignore TS2322
+            placeholder="alias"
+            value={alias}
+            onInput={(e) => setAlias(e.target.value)}
+            required
+          />
+        </div>
+        <div class={tw`mb-2 mt-2 lg:mt-0`}>
+          <InputButton type="submit" disabled={result?.status === 0} value="Request" />
+        </div>
+      </form>
+      <div class={tw`select-all cursor-text`}>
+        {result && <ResultButton>{processResult()}</ResultButton>}
+      </div>
+    </div>
+  );
+}
+
+function ReleaseAlias({
+  alias,
+}: {
+  alias: string,
+}) {
+  const signedIn = useSignedIn();
+
+  const [tag, setTag] = useState("");
+  const [script, setScript] = useState("");
+  const [result, setResult] = useState<null | Result>(null);
+
+  function processResult() {
+    switch (result!.status) {
+      case 0:
+        return "Releasing...";
+      case 1:
+        return "Successfully released!";
+      case 2:
+        return <span className={tw`text-red-600`}>{result!.content!}</span>;
+    }
+  }
+
+  return (
+    <div>
+      <form className={tw`flex flex-row mt-2`} onSubmit={async () => {
+        const res = await fetch('/api/alias/release', {
+          method: 'POST',
+          body: JSON.stringify({
+            alias,
+            tag,
+            script,
+            ...signedIn.user,
+          }),
+        });
+
+        if (res.ok) {
+          setResult({
+            status: 1,
+          });
+        } else {
+          const data = await res.json();
+          setResult({
+            status: 2,
+            content: data.error,
+          });
+        }
+      }}>
+        <div className={tw`w-1/3`}>
+          <TextButton placeholder="tag" value={tag} onInput={e => setTag(e.target.value)} required />
+        </div>
+        <div className={tw`ml-2 mr-2 w-1/3`}>
+          <TextButton placeholder="script" value={script} onInput={e => setScript(e.target.value)} required />
+        </div>
+        <div className={tw`w-1/3`}>
+          <InputButton type="submit" value="release" disabled={result?.status === 0} />
+        </div>
+      </form>
+      <div className={tw`select-all cursor-text mt-2 w-full`}>
+        {result && <ResultButton>{processResult()}</ResultButton>}
+      </div>
+    </div>
+  );
+}
 
 export default function Alias() {
   const signedIn = useSignedIn();
@@ -18,7 +144,7 @@ export default function Alias() {
     return res.json();
   });
 
-  const [alias, setAlias] = useState<string>("");
+  const [selectedAlias, setSelectedAlias] = useState<string>("");
   const [tags, setTags] = useState<Tags>({});
 
   /*TODO
@@ -52,62 +178,7 @@ export default function Alias() {
               create a release for your alias which connects a script previously
               uploaded with your alias and provided tag.
             </div>
-            <div
-              class={tw
-                `flex flex-col inset-y-0 right-0 w-full lg:w-1/2 lg:ml-2`}
-            >
-              <div class={tw`mb-2 mt-4 lg:mt-0`}>
-                <TextButton
-                  // @ts-ignore TS2322
-                  id="aliasInput"
-                  placeholder="alias"
-                  required
-                />
-              </div>
-              <div class={tw`mb-2 mt-2 lg:mt-0`}>
-                <InputButton
-                  // @ts-ignore TS2322
-                  type="button"
-                  id="request"
-                  value="Request"
-                  onclick="
-                    const request = document.getElementById('request');
-                    const alias = document.getElementById('aliasInput').value;
-                    const result = document.getElementById('requestResult');
-                    const user = getUser();
-
-                    result.style.display = 'none';
-
-                    request.disabled = true;
-
-                    fetch('/api/alias/request', {
-                      method: 'POST',
-                      body: JSON.stringify({
-                        alias, user: user.id, secret: user.secret
-                      }),
-                    }).then((res) => {
-                      if (res.ok) {
-                        result.style.color = 'rgba(52, 211, 153, var(--tw-text-opacity))';
-                        result.innerText = 'Successfully requested!';
-                      } else {
-                        res.json().then(({ error }) => {
-                          result.style.color = 'rgba(220, 38, 38, var(--tw-text-opacity))';
-                          result.innerText = error;
-                        });
-                      }
-                      result.style.display = 'flex';
-
-                      alias.innerText = '';
-                      request.disabled = false;
-                    });
-                    "
-                />
-              </div>
-              <div class={tw`select-all cursor-text`}>
-                <ResultButton // @ts-ignore TS2322
-                 id="requestResult" />
-              </div>
-            </div>
+            <CreateAlias/>
           </div>
           <div
             class={tw`mt-4 h-96 w-full flex flex-row py-2 px-4 border border-gray-300 rounded-md bg-gray-50`}>
@@ -116,7 +187,7 @@ export default function Alias() {
                 <div class={tw`w-full mb-2 justify-center py-2 px-4 border border-gray-300 rounded-md bg-gray-100`}>
                   <label class={tw`flex items-center space-x-3 text-gray-900 font-medium`}>
                     <input type="radio" name="alias" value={alias} class={tw`appearance-none h-6 w-6 rounded-full cursor-pointer`} onClick={() => {
-                      setAlias(alias);
+                      setSelectedAlias(alias);
                       setTags(tags);
                     }} checked={i === 0} />
                     <span>{alias}</span>
@@ -127,87 +198,13 @@ export default function Alias() {
             <div class={tw`flex flex-col py-2 px-4 inset-y-0 right-0 border border-gray-300 rounded-md bg-gray-100 overflow-y-auto w-1/2`}>
               {Object.entries(tags).map(([tag, script]: [string, string]) => (
                 <div class={tw`flex flex-row justify-around w-full mb-2 py-2 px-4 space-x-4 border border-gray-300 rounded-md bg-gray-100 text-gray-900 font-medium`}>
-                  <a href={new URL(`${alias}@${tag}`, location.origin).href}>{tag}</a>
+                  <a href={new URL(`${selectedAlias}@${tag}`, location.origin).href}>{tag}</a>
                   <a href={new URL(script, location.origin).href}>{script}</a>
                 </div>
               ))}
             </div>
           </div>
-          <div class={tw`flex flex-row mt-2`}>
-            <div class={tw`w-1/3`}>
-              <TextButton
-                // @ts-ignore TS2322
-                id="tag"
-                placeholder="tag"
-                required
-              />
-            </div>
-            <div class={tw`ml-2 mr-2 w-1/3`}>
-              <TextButton
-                // @ts-ignore TS2322
-                id="script"
-                placeholder="script"
-                required
-              />
-            </div>
-            <div class={tw`w-1/3`}>
-              <InputButton
-                // @ts-ignore TS2322
-                type="button"
-                id="release"
-                value="release"
-                onclick="
-                  const release = document.getElementById('release');
-                  const tag = document.getElementById('tag').value;
-                  const script = document.getElementById('script').value;
-                  const result = document.getElementById('releaseResult');
-                  const alias = [...document.getElementsByName('alias')].find((elem) => elem.checked).value;
-                  const user = getUser();
-
-                  if (tag === '' || script === '') {
-                    result.style.color = 'rgba(220, 38, 38, var(--tw-text-opacity))';
-                    result.innerText = 'Must have both script and tag';
-                    result.style.display = 'flex';
-
-                    return;
-                  }
-
-                  release.disabled = true;
-
-                  fetch('/api/alias/release', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                      alias,
-                      user: user.id,
-                      secret: user.secret,
-                      tag,
-                      script
-                    }),
-                  }).then((res) => {
-                    if (res.ok) {
-                      result.style.color = 'rgba(52, 211, 153, var(--tw-text-opacity))';
-                      result.innerText = 'Successfully released!';
-                    } else {
-                      res.json().then(({ error }) => {
-                        result.style.color = 'rgba(220, 38, 38, var(--tw-text-opacity))';
-                        result.innerText = error;
-                      });
-                    }
-                    result.style.display = 'flex';
-
-                    release.disabled = false;
-
-                    listAliases();
-                  });
-                "
-              >
-              </InputButton>
-            </div>
-          </div>
-        </div>
-        <div class={tw`select-all cursor-text mt-2 w-full`}>
-          <ResultButton // @ts-ignore TS2322
-           id="releaseResult" />
+          <ReleaseAlias alias={selectedAlias} />
         </div>
       </Block>
 

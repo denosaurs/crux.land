@@ -1,9 +1,8 @@
 /** @jsx h */
-import { ComponentChildren, h, JSX, tw } from "../deps.ts";
+import { h, JSX, tw } from "../deps.ts";
 
 export function TextButton(
-  { children, ...props }: {
-    children: ComponentChildren;
+  { ...props }: {
     props: JSX.HTMLAttributes<HTMLLabelElement>;
   },
 ) {
