@@ -27,52 +27,47 @@ function CreateAlias() {
   }
 
   return (
-    <div class={tw`flex flex-col inset-y-0 right-0 w-full lg:w-1/2 lg:ml-2`}>
-      <form
-        onSubmit={async () => {
-          setResult({ status: 0 });
-          const res = await fetch("/api/alias/request", {
-            method: "POST",
-            body: JSON.stringify({
-              alias,
-              ...signedIn.user,
-            }),
-          });
+    <form
+      onSubmit={async () => {
+        setResult({ status: 0 });
+        const res = await fetch("/api/alias/request", {
+          method: "POST",
+          body: JSON.stringify({
+            alias,
+            ...signedIn.user,
+          }),
+        });
 
-          if (res.ok) {
-            setResult({
-              status: 1,
-            });
-          } else {
-            const data = await res.json();
-            setResult({
-              status: 2,
-              content: data.error,
-            });
-          }
-        }}
-      >
-        <div class={tw`mb-2 mt-4 lg:mt-0`}>
-          <InputTextBox
-            placeholder="alias"
-            value={alias}
-            onInput={(e) =>
-              setAlias(e.target.value)}
-            required
-          />
-        </div>
-        <div class={tw`mb-2 mt-2 lg:mt-0`}>
-          <InputBox
-            type="submit"
-            disabled={result?.status === 0}
-            value="Request"
-          />
-        </div>
-      </form>
-      <div class={tw`select-all cursor-text`}>
+        if (res.ok) {
+          setResult({
+            status: 1,
+          });
+        } else {
+          const data = await res.json();
+          setResult({
+            status: 2,
+            content: data.error,
+          });
+        }
+      }}
+      className={tw
+        `grid gap-2 grid-cols-1 mt-4 inset-y-0 right-0 w-full lg:w-1/2 lg:ml-2 lg:mt-0`}
+    >
+      <InputTextBox
+        placeholder="alias"
+        value={alias}
+        onInput={(e) => setAlias(e.target.value)}
+        required
+      />
+      <InputBox
+        type="submit"
+        disabled={result?.status === 0}
+        value="Request"
+      />
+      <div className={tw`select-all cursor-text`}>
         {result && <ResultBox>{processResult()}</ResultBox>}
       </div>
-    </div>
+    </form>
   );
 }
 
