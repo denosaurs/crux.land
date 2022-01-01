@@ -1,5 +1,5 @@
 /** @jsx h */
-import { h, PageConfig, tw, useData, useState } from "../deps.ts";
+import { h, PageConfig, tw, useState } from "../deps.ts";
 import { Layout, useSignedIn } from "../components/layout.tsx";
 import { InputBox } from "../components/input_box.tsx";
 import { Block } from "../components/block.tsx";
@@ -7,6 +7,7 @@ import { InputTextBox } from "../components/input_text_box.tsx";
 import { ResultBox } from "../components/result_box.tsx";
 import { Alias as AliasInterface, Tags } from "../util/shared_interfaces.ts";
 import { Result } from "./index.tsx";
+import { useFetch } from "../util/use_fetch.ts";
 
 function CreateAlias() {
   const signedIn = useSignedIn();
@@ -159,10 +160,10 @@ function ReleaseAlias({
 export default function Alias() {
   const signedIn = useSignedIn();
 
-  const aliases = useData<AliasInterface[]>("", async () => {
+  const aliases = useFetch<AliasInterface[]>([], async () => {
     const res = await fetch("/api/alias/list", {
       method: "POST",
-      body: JSON.stringify(signedIn.user ?? {}),
+      body: JSON.stringify(signedIn.user),
     });
     return res.json();
   });

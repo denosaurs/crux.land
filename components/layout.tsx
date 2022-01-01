@@ -40,7 +40,7 @@ export function Layout(
   },
 ) {
   const storedUser = typeof Deno !== "undefined"
-    ? undefined
+    ? null
     : localStorage.getItem("user");
 
   const [user, setUser] = useState<User | undefined>(undefined);
@@ -75,21 +75,18 @@ export function Layout(
             crux.land
           </h1>
         </a>
-        {description
-          ? (
-            <h2
-              class={tw
-                `mt-2 font-light text-xl lg:text-2xl text-center leading-tight text-gray-900`}
-            >
-              A{" "}
-              <strong class={tw`font-semibold`}>
-                free open-source registry
-              </strong>{" "}
-              for <strong class={tw`font-semibold`}>permanently</strong>{" "}
-              hosting small scripts
-            </h2>
-          )
-          : null}
+        {description && (
+          <h2
+            class={tw
+              `mt-2 font-light text-xl lg:text-2xl text-center leading-tight text-gray-900`}
+          >
+            A{" "}
+            <strong class={tw`font-semibold`}>free open-source registry</strong>
+            {" "}
+            for <strong class={tw`font-semibold`}>permanently</strong>{" "}
+            hosting small scripts
+          </h2>
+        )}
         <Menu />
       </div>
 

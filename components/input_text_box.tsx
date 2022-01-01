@@ -26,7 +26,7 @@ export function InputTextBox(
         transition
         duration-150
         ease-in-out
-        hover:(text-gray-500 bg-gray-5)
+        hover:(text-gray-500 bg-gray-50)
         active:(bg-gray-100 text-gray-700)
         focus:(outline-none shadow border-blue-300)`}
     />

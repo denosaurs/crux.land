@@ -1,10 +1,11 @@
 /** @jsx h */
-import { h, PageConfig, StateUpdater, tw, useData, useState } from "../deps.ts";
+import { h, PageConfig, StateUpdater, tw, useState } from "../deps.ts";
 import { Layout, User, useSignedIn } from "../components/layout.tsx";
 import { Block } from "../components/block.tsx";
 import { Alias, Requests } from "../util/shared_interfaces.ts";
 import { ResultBox } from "../components/result_box.tsx";
 import { InputBox } from "../components/input_box.tsx";
+import { useFetch } from "../util/use_fetch.ts";
 
 interface AliasWithOwnerData extends Alias {
   ownerData: {
@@ -89,7 +90,8 @@ export default function Admin() {
   const usersCache: Record<number, {
     login: string;
   }> = {};
-  let requests = useData<AliasWithOwnerData[]>("", async () => {
+  let requests = useFetch<AliasWithOwnerData[]>([], async () => {
+    console.log(signedIn);
     const res = await fetch("/api/alias/requests", {
       method: "POST",
       body: JSON.stringify(signedIn.user),
@@ -123,7 +125,7 @@ TODO:
       <Block>
         <form
           class={tw`flex flex-col`}
-          onSubmit={async (e) => {
+          onSubmit={(e) => {
             e.preventDefault();
             for (const data of checked) {
               handleRequests(signedIn.user!, data, deny).then((res) => {
@@ -153,7 +155,7 @@ TODO:
             </div>
           </div>
           <div class={tw`w-full flex flex-row mt-2 space-x-2`}>
-            <InputBox type="submit">
+            <InputBox type="button">
               <span class={tw`text-green-700 hover:text-green-500`}>
                 approve
               </span>
