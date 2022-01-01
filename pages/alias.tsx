@@ -99,61 +99,53 @@ function ReleaseAlias({
   }
 
   return (
-    <div>
-      <form
-        className={tw`flex flex-row mt-2`}
-        onSubmit={async () => {
-          const res = await fetch("/api/alias/release", {
-            method: "POST",
-            body: JSON.stringify({
-              alias,
-              tag,
-              script,
-              ...signedIn.user,
-            }),
-          });
+    <form
+      className={tw`grid gap-2 grid-cols-3 mt-2`}
+      onSubmit={async () => {
+        const res = await fetch("/api/alias/release", {
+          method: "POST",
+          body: JSON.stringify({
+            alias,
+            tag,
+            script,
+            ...signedIn.user,
+          }),
+        });
 
-          if (res.ok) {
-            setResult({
-              status: 1,
-            });
-          } else {
-            const data = await res.json();
-            setResult({
-              status: 2,
-              content: data.error,
-            });
-          }
-        }}
-      >
-        <div className={tw`w-1/3`}>
-          <InputTextBox
-            placeholder="tag"
-            value={tag}
-            onInput={(e) => setTag(e.target.value)}
-            required
-          />
-        </div>
-        <div className={tw`ml-2 mr-2 w-1/3`}>
-          <InputTextBox
-            placeholder="script"
-            value={script}
-            onInput={(e) => setScript(e.target.value)}
-            required
-          />
-        </div>
-        <div className={tw`w-1/3`}>
-          <InputBox
-            type="submit"
-            value="release"
-            disabled={result?.status === 0}
-          />
-        </div>
-      </form>
-      <div className={tw`select-all cursor-text mt-2 w-full`}>
+        if (res.ok) {
+          setResult({
+            status: 1,
+          });
+        } else {
+          const data = await res.json();
+          setResult({
+            status: 2,
+            content: data.error,
+          });
+        }
+      }}
+    >
+      <InputTextBox
+        placeholder="tag"
+        value={tag}
+        onInput={(e) => setTag(e.target.value)}
+        required
+      />
+      <InputTextBox
+        placeholder="script"
+        value={script}
+        onInput={(e) => setScript(e.target.value)}
+        required
+      />
+      <InputBox
+        type="submit"
+        value="release"
+        disabled={result?.status === 0}
+      />
+      <div className={tw`select-all cursor-text col-span-full`}>
         {result && <ResultBox>{processResult()}</ResultBox>}
       </div>
-    </div>
+    </form>
   );
 }
 
