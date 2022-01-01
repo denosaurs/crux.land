@@ -111,9 +111,11 @@ export default function Home() {
             <div class={tw`mb-2 mt(2 lg:0)`}>
               <InputBox type="submit" value="Upload" />
             </div>
-            <div class={tw`select-all cursor-text`}>
-              {result && <ResultBox>{processResult()}</ResultBox>}
-            </div>
+            {result && (
+              <div class={tw`select-all cursor-text`}>
+                <ResultBox>{processResult()}</ResultBox>
+              </div>
+            )}
           </form>
         </div>
       </Block>

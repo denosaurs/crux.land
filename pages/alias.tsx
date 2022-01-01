@@ -50,8 +50,7 @@ function CreateAlias() {
           });
         }
       }}
-      className={tw
-        `grid gap-2 grid-cols-1 mt-4 inset-y-0 right-0 w-full lg:w-1/2 lg:ml-2 lg:mt-0`}
+      className={tw`grid gap-2 mt-4 w-full lg:(w-1/2 ml-2 mt-0 auto-rows-fr)`}
     >
       <InputTextBox
         placeholder="alias"
@@ -64,9 +63,13 @@ function CreateAlias() {
         disabled={result?.status === 0}
         value="Request"
       />
-      <div className={tw`select-all cursor-text`}>
-        {result && <ResultBox>{processResult()}</ResultBox>}
-      </div>
+      {result
+        ? (
+          <div className={tw`select-all cursor-text`}>
+            <ResultBox>{processResult()}</ResultBox>
+          </div>
+        )
+        : <div />}
     </form>
   );
 }
@@ -137,9 +140,11 @@ function ReleaseAlias({
         value="release"
         disabled={result?.status === 0}
       />
-      <div className={tw`select-all cursor-text col-span-full`}>
-        {result && <ResultBox>{processResult()}</ResultBox>}
-      </div>
+      {result && (
+        <div className={tw`select-all cursor-text col-span-full`}>
+          <ResultBox>{processResult()}</ResultBox>
+        </div>
+      )}
     </form>
   );
 }
