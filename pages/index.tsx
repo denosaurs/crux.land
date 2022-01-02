@@ -24,7 +24,7 @@ export default function Home() {
       case 1:
         return location.href + result!.content!;
       case 2:
-        return <span className={tw`text-red-600`}>{result!.content!}</span>;
+        return <span class={tw`text-red-600`}>{result!.content!}</span>;
     }
   }
 

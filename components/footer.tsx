@@ -25,21 +25,21 @@ export function Footer() {
           class={tw`text-gray-400 hover:text-gray-500`}
         >
           <span class={tw`sr-only`}>GitHub</span>
-          <FontAwesomeIcon className={tw`h-6 w-6`} icon={faGithub} />
+          <FontAwesomeIcon class={tw`h-6 w-6`} icon={faGithub} />
         </a>
         <a
           href="https://discord.gg/BwjyWsSUDf"
           class={tw`ml-6 text-gray-400 hover:text-gray-500`}
         >
           <span class={tw`sr-only`}>Discord</span>
-          <FontAwesomeIcon className={tw`h-6 w-6`} icon={faDiscord} />
+          <FontAwesomeIcon class={tw`h-6 w-6`} icon={faDiscord} />
         </a>
         <a
           href="https://twitter.com/denosaurs"
           class={tw`ml-6 text-gray-400 hover:text-gray-500`}
         >
           <span class={tw`sr-only`}>Twitter</span>
-          <FontAwesomeIcon className={tw`h-6 w-6`} icon={faTwitter} />
+          <FontAwesomeIcon class={tw`h-6 w-6`} icon={faTwitter} />
         </a>
       </div>
     </div>

@@ -1,5 +1,6 @@
 /** @jsx h */
 import { ComponentChildren, h, JSX, tw } from "../deps.ts";
+import { BORDER_CLASSES } from "./layout.tsx";
 
 export function InputBox(
   { children, ...props }: {
@@ -16,10 +17,8 @@ export function InputBox(
         justify-center
         cursor-pointer
         py-2 px-4
-        border
-        border-gray-300
+        ${BORDER_CLASSES}
         font-medium
-        rounded-md
         text-gray-700
         bg-gray-100
         transition

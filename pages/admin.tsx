@@ -1,6 +1,11 @@
 /** @jsx h */
 import { h, PageConfig, StateUpdater, tw, useState } from "../deps.ts";
-import { Layout, User, useSignedIn } from "../components/layout.tsx";
+import {
+  BORDER_CLASSES,
+  Layout,
+  User,
+  useSignedIn,
+} from "../components/layout.tsx";
 import { Block } from "../components/block.tsx";
 import { Alias, Requests } from "../util/shared_interfaces.ts";
 import { ResultBox } from "../components/result_box.tsx";
@@ -29,7 +34,7 @@ function RequestCard(
   return (
     <ResultBox>
       <label
-        className={tw
+        class={tw
           `flex flex-row items-center space-x-3 text-gray-900 font-medium`}
       >
         <input
@@ -49,7 +54,7 @@ function RequestCard(
                 return [...prev, { alias, owner }];
               }
             })}
-          className={tw
+          class={tw
             `appearance-none h-6 w-6 rounded-md cursor-pointer  outline-gray-300 outline outline-1 checked:(bg-blue-600 border-4 border-gray-100)`}
           name="request"
         />
@@ -145,7 +150,7 @@ TODO:
         >
           <div
             class={tw
-              `mt-4 h-80 w-full flex flex-row py-2 px-4 border border-gray-300 rounded-md bg-gray-50`}
+              `mt-4 h-80 w-full flex flex-row py-2 px-4 ${BORDER_CLASSES} bg-gray-50`}
           >
             <div
               class={tw
@@ -166,22 +171,22 @@ TODO:
           </div>
           <div
             class={tw
-              `flex flex-col-reverse h-48 mt-2 py-2 px-4 inset-y-0 right-0 border border-gray-300 rounded-md bg-gray-50 overflow-y-auto w-full`}
+              `flex flex-col-reverse h-48 mt-2 py-2 px-4 inset-y-0 right-0 ${BORDER_CLASSES} bg-gray-50 overflow-y-auto w-full`}
           >
             {results.map((res: Checked & ApproveStatus) => (
               <div
                 class={tw
-                  `flex flex-row justify-around w-full mb-2 py-2 px-4 space-x-4 border border-gray-300 rounded-md bg-gray-100 font-medium`}
+                  `flex flex-row justify-around w-full mb-2 py-2 px-4 space-x-4 ${BORDER_CLASSES} bg-gray-100 font-medium`}
               >
                 {res.ok
                   ? (
-                    <span className={tw`text-green-700`}>
+                    <span class={tw`text-green-700`}>
                       Successfully {deny ? "denied" : "approved"} {res.alias} by
                       {" "}
                       {usersCache[res.owner].login}
                     </span>
                   )
-                  : <span className={tw`text-red-700`}>{res.error!}</span>}
+                  : <span class={tw`text-red-700`}>{res.error!}</span>}
               </div>
             ))}
           </div>
@@ -191,7 +196,7 @@ TODO:
       <div
         style="display: none"
         class={tw
-          `w-full mb-2 justify-center py-2 px-4 border border-gray-300 rounded-md bg-gray-100 text-gray-900 font-medium flex flex-row items-center space-x-3 appearance-none h-6 w-6 justify-around space-x-4 text-green-700 text-red-700 cursor-pointer`}
+          `w-full mb-2 justify-center py-2 px-4 ${BORDER_CLASSES} bg-gray-100 text-gray-900 font-medium flex flex-row items-center space-x-3 appearance-none h-6 w-6 justify-around space-x-4 text-green-700 text-red-700 cursor-pointer`}
       >
         UGLY HACK!
       </div>

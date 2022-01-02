@@ -11,6 +11,8 @@ import {
 import { Footer } from "./footer.tsx";
 import { Menu } from "./menu.tsx";
 
+export const BORDER_CLASSES = "border border-gray-300 rounded-md";
+
 export interface User {
   secret: string;
   admin: boolean;

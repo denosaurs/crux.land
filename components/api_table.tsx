@@ -1,5 +1,6 @@
 /** @jsx h */
 import { h, tw } from "../deps.ts";
+import { BORDER_CLASSES } from "./layout.tsx";
 
 export interface Item {
   type: string | Record<string, Item>;
@@ -21,7 +22,7 @@ export function ApiTable(
       <div class={tw`font-semibold text-gray-700 mb-1`}>
         Content-Type: <span class={tw`font-mono`}>{content_type}</span>
       </div>
-      <div class={tw`border border-gray-300 rounded-md w-full lg:w-9/12`}>
+      <div class={tw`${BORDER_CLASSES} w-full lg:w-9/12`}>
         <table class={tw`table-fixed border-collapse text-left w-full`}>
           <thead>
             <tr class={tw`bg-gray-200 font-mono border-b border-gray-400`}>
