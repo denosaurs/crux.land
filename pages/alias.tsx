@@ -187,29 +187,28 @@ export default function Alias() {
         <CreateAlias />
         <div
           class={tw
-            `mt-4 py-2 px-4 h-96 grid gap-2 grid-cols-2 grid ${BORDER_CLASSES} bg-gray-50 
+            `mt-4 py-2 px-4 h-96 grid gap-2 grid-cols-2 ${BORDER_CLASSES} bg-gray-50 
             children:(grid gap-2 auto-rows-min overflow-y-auto)`}
         >
           <div>
             {aliases.map(({ alias, tags }, i) => (
-              <label class={tw`py-2 px-4 ${BORDER_CLASSES} bg-gray-100`}>
-                <div class={tw`flex items-center space-x-3 text-gray-900 font-medium`}>
-                  <input
-                    type="radio"
-                    name="alias"
-                    value={alias}
-                    class={tw
-                      `appearance-none h-6 w-6 rounded-full cursor-pointer outline-gray-300 outline outline-1 checked:(bg-blue-600 border-4 border-gray-100)`}
-                    onClick={() => {
-                      setSelectedAlias(alias);
-                      setTags(tags);
-                    }}
-                    checked={selectedAlias
-                      ? selectedAlias === alias
-                      : i === 0}
-                  />
-                  <span>{alias}</span>
-                </div>
+              <label
+                class={tw
+                  `py-2 px-4 flex items-center space-x-3 text-gray-900 font-medium ${BORDER_CLASSES} bg-gray-100`}
+              >
+                <input
+                  type="radio"
+                  name="alias"
+                  value={alias}
+                  class={tw
+                    `appearance-none h-6 w-6 rounded-full cursor-pointer outline-gray-300 outline outline-1 checked:(bg-blue-600 border-4 border-gray-100)`}
+                  onClick={() => {
+                    setSelectedAlias(alias);
+                    setTags(tags);
+                  }}
+                  checked={selectedAlias ? selectedAlias === alias : i === 0}
+                />
+                <span>{alias}</span>
               </label>
             ))}
           </div>
