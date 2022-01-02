@@ -57,7 +57,6 @@ function RequestCard(
             `appearance-none h-6 w-6 rounded-md cursor-pointer outline-gray-300 outline outline-1 checked:(bg-blue-600 border-4 border-gray-100)`}
           name="request"
         />
-        {/* TODO: min-width: 50% */}
         <span>{alias}</span>
         <a
           href={new URL(owner.toString(), "https://api.github.com/user/").href}
@@ -112,7 +111,7 @@ export default function Admin() {
     }
     return reqs as AliasWithOwnerData[];
   });
-  let deny = false;
+  const [deny, setDeny] = useState(false);
 
   /*
 TODO:
@@ -161,7 +160,7 @@ TODO:
               approve
             </span>
           </InputBox>
-          <InputBox type="submit" onClick={() => deny = true}>
+          <InputBox type="submit" onClick={() => setDeny(true)}>
             <span class={tw`text-red-700 hover:text-red-500`}>deny</span>
           </InputBox>
         </div>
