@@ -22,9 +22,7 @@ export default function Page({
 }) {
   return (
     <Layout>
-      <Block>
-        <CodeBlock code={renderArgs.code} language={renderArgs.language} />
-      </Block>
+      <CodeBlock code={renderArgs.code} language={renderArgs.language} />
     </Layout>
   );
 }

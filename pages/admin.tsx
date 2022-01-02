@@ -127,79 +127,72 @@ TODO:
 
   return (
     <Layout>
-      <Block>
-        <form
-          class={tw`flex flex-col`}
-          onSubmit={(e) => {
-            e.preventDefault();
-            for (const data of checked) {
-              handleRequests(signedIn.user!, data, deny).then((res) => {
-                setResults((prev) => {
-                  return [...prev, {
+      <form
+        class={tw`flex flex-col`}
+        onSubmit={(e) => {
+          e.preventDefault();
+          for (const data of checked) {
+            handleRequests(signedIn.user!, data, deny).then((res) => {
+              setResults((prev) => {
+                return [
+                  ...prev,
+                  {
                     ...data,
                     ...res,
-                  }];
-                });
-                requests = requests.filter((checked) =>
-                  !(checked.alias === data.alias &&
-                    checked.owner === data.owner)
-                );
+                  },
+                ];
               });
-            }
-          }}
+              requests = requests.filter((checked) =>
+                !(checked.alias === data.alias &&
+                  checked.owner === data.owner)
+              );
+            });
+          }
+        }}
+      >
+        <div
+          class={tw
+            `mt-4 h-80 w-full flex flex-row py-2 px-4 ${BORDER_CLASSES} bg-gray-50`}
         >
           <div
             class={tw
-              `mt-4 h-80 w-full flex flex-row py-2 px-4 ${BORDER_CLASSES} bg-gray-50`}
+              `flex flex-col inset-y-0 left-0 mr-2 overflow-y-auto w-full`}
           >
+            {requests.map((req) => RequestCard(req, checked, setChecked))}
+          </div>
+        </div>
+        <div class={tw`w-full flex flex-row mt-2 space-x-2`}>
+          <InputBox type="button">
+            <span class={tw`text-green-700 hover:text-green-500`}>
+              approve
+            </span>
+          </InputBox>
+          <InputBox type="submit" onClick={() => deny = true}>
+            <span class={tw`text-red-700 hover:text-red-500`}>deny</span>
+          </InputBox>
+        </div>
+        <div
+          class={tw
+            `flex flex-col-reverse h-48 mt-2 py-2 px-4 inset-y-0 right-0 ${BORDER_CLASSES} bg-gray-50 overflow-y-auto w-full`}
+        >
+          {results.map((res: Checked & ApproveStatus) => (
             <div
               class={tw
-                `flex flex-col inset-y-0 left-0 mr-2 overflow-y-auto w-full`}
+                `flex flex-row justify-around w-full mb-2 py-2 px-4 space-x-4 ${BORDER_CLASSES} bg-gray-100 font-medium`}
             >
-              {requests.map((req) => RequestCard(req, checked, setChecked))}
+              {res.ok
+                ? (
+                  <span class={tw`text-green-700`}>
+                    Successfully {deny ? "denied" : "approved"} {res.alias} by
+                    {" "}
+                    {usersCache[res.owner].login}
+                  </span>
+                )
+                : <span class={tw`text-red-700`}>{res.error!}</span>}
             </div>
-          </div>
-          <div class={tw`w-full flex flex-row mt-2 space-x-2`}>
-            <InputBox type="button">
-              <span class={tw`text-green-700 hover:text-green-500`}>
-                approve
-              </span>
-            </InputBox>
-            <InputBox type="submit" onClick={() => deny = true}>
-              <span class={tw`text-red-700 hover:text-red-500`}>deny</span>
-            </InputBox>
-          </div>
-          <div
-            class={tw
-              `flex flex-col-reverse h-48 mt-2 py-2 px-4 inset-y-0 right-0 ${BORDER_CLASSES} bg-gray-50 overflow-y-auto w-full`}
-          >
-            {results.map((res: Checked & ApproveStatus) => (
-              <div
-                class={tw
-                  `flex flex-row justify-around w-full mb-2 py-2 px-4 space-x-4 ${BORDER_CLASSES} bg-gray-100 font-medium`}
-              >
-                {res.ok
-                  ? (
-                    <span class={tw`text-green-700`}>
-                      Successfully {deny ? "denied" : "approved"} {res.alias} by
-                      {" "}
-                      {usersCache[res.owner].login}
-                    </span>
-                  )
-                  : <span class={tw`text-red-700`}>{res.error!}</span>}
-              </div>
-            ))}
-          </div>
-        </form>
-      </Block>
-
-      <div
-        style="display: none"
-        class={tw
-          `w-full mb-2 justify-center py-2 px-4 ${BORDER_CLASSES} bg-gray-100 text-gray-900 font-medium flex flex-row items-center space-x-3 appearance-none h-6 w-6 justify-around space-x-4 text-green-700 text-red-700 cursor-pointer`}
-      >
-        UGLY HACK!
-      </div>
+          ))}
+        </div>
+      </form>
     </Layout>
   );
 }

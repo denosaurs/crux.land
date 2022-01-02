@@ -37,6 +37,7 @@ function CreateAlias() {
       </div>
       <form
         onSubmit={async () => {
+          e.preventDefault();
           setResult({ status: 0 });
           const res = await fetch("/api/alias/request", {
             method: "POST",
@@ -109,6 +110,7 @@ function ReleaseAlias({
     <form
       class={tw`grid gap-2 grid-cols-3 mt-2`}
       onSubmit={async () => {
+        e.preventDefault();
         const res = await fetch("/api/alias/release", {
           method: "POST",
           body: JSON.stringify({

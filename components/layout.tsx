@@ -92,7 +92,9 @@ export function Layout(
         <Menu />
       </div>
 
-      {children}
+      <div class={tw`max-w-screen-sm lg:max-w-screen-lg mx-auto px-4 mt-4`}>
+        {children}
+      </div>
 
       <Footer />
     </AuthContext.Provider>
