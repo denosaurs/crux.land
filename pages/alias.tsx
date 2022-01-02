@@ -162,11 +162,7 @@ function ReleaseAlias({
 export default function Alias() {
   const signedIn = useSignedIn();
 
-  const aliases = useFetch<AliasInterface[]>([{
-    alias: "foo",
-    owner: 1,
-    tags: { "a": "b", "c": "d" },
-  }, { alias: "bar", owner: 1, tags: { "e": "f", "g": "h" } }], async () => {
+  const aliases = useFetch<AliasInterface[]>([], async () => {
     const res = await fetch("/api/alias/list", {
       method: "POST",
       body: JSON.stringify(signedIn.user),
