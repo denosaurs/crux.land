@@ -4,7 +4,6 @@ import { HandlerContext } from "../server_deps.ts";
 import { notFound, redirect } from "../util/responses.ts";
 import { EXTENSION_FROM_CONTENT_TYPE, ID_PATH } from "../util/constants.ts";
 import { Layout } from "../components/layout.tsx";
-import { Block } from "../components/block.tsx";
 import { CodeBlock } from "../components/code_block.tsx";
 import { decodeUTF8, readToUint8Array } from "../util/util.ts";
 import { S3_CLIENT } from "../util/clients.ts";

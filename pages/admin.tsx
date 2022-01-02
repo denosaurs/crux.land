@@ -6,7 +6,6 @@ import {
   User,
   useSignedIn,
 } from "../components/layout.tsx";
-import { Block } from "../components/block.tsx";
 import { Alias, Requests } from "../util/shared_interfaces.ts";
 import { ResultBox } from "../components/result_box.tsx";
 import { InputBox } from "../components/input_box.tsx";

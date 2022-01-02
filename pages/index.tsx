@@ -1,6 +1,5 @@
 /** @jsx h */
 import { encodeBase64, h, PageConfig, tw, useState } from "../deps.ts";
-import { Block } from "../components/block.tsx";
 import { EXTENSIONS } from "../util/constants.ts";
 import { CodeInline } from "../components/code_inline.tsx";
 import { LabelBox } from "../components/label_box.tsx";

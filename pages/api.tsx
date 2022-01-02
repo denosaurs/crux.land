@@ -1,7 +1,6 @@
 /** @jsx h */
 import { h, tw } from "../deps.ts";
 import { Layout } from "../components/layout.tsx";
-import { Block } from "../components/block.tsx";
 import { CodeInline } from "../components/code_inline.tsx";
 import { Endpoint } from "../components/endpoint.tsx";
 
