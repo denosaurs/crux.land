@@ -1,4 +1,5 @@
-import { ComponentChildren, h } from "../deps.ts";
+/** @jsx h */
+import { ComponentChildren, h, tw } from "../deps.ts";
 import { ApiBody, ApiTable } from "./api_table.tsx";
 
 export function Endpoint(
@@ -11,10 +12,10 @@ export function Endpoint(
   },
 ) {
   return (
-    <div class="mb-7">
-      <span class="text-lg font-semibold font-mono">
-        <span class="text-yellow-600">{method}</span>{" "}
-        <span class="text-gray-700">{path}</span>
+    <div class={tw`mb-7`}>
+      <span class={tw`text-lg font-semibold font-mono`}>
+        <span class={tw`text-yellow-600`}>{method}</span>{" "}
+        <span class={tw`text-gray-700`}>{path}</span>
       </span>
       <br />
       {requestBody && <ApiTable {...requestBody} />}

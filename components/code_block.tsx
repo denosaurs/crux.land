@@ -1,4 +1,5 @@
-import { h, Highlight, Prism, theme } from "../deps.ts";
+/** @jsx h */
+import { h, Highlight, Prism, theme, tw } from "../deps.ts";
 
 type Token = {
   types: string[];
@@ -42,7 +43,8 @@ export function CodeBlock(
 ): h.JSX.Element {
   return (
     <div
-      class="shadow-sm rounded-lg border border-gray-200 overflow-hidden p-2 sm:px-3 md:px-4"
+      class={tw
+        `shadow-sm rounded-lg border border-gray-200 overflow-hidden p-2 sm:px-3 md:px-4`}
       style="background-color: rgb(246, 248, 250);"
     >
       <Highlight
@@ -56,15 +58,16 @@ export function CodeBlock(
             RenderProps,
         ) => (
           <pre
-            class={`${className} flex overflow-y-auto`}
+            class={tw`${className} flex overflow-y-auto`}
             style={{ ...style }}
           >
-            <code class="pr-2 sm:pr-3">
+            <code class={tw`pr-2 sm:pr-3`}>
               {tokens.map((line: Token[], i: number) =>
                 line[0]?.empty && i === tokens.length - 1 ? null : (
                   <div
                     key={i + "l"}
-                    class="text-gray-300 token-line text-right select-none text-xs"
+                    class={tw
+                      `text-gray-300 token-line text-right select-none text-xs`}
                   >
                     {i + 1}
                   </div>

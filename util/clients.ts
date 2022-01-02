@@ -1,4 +1,4 @@
-import { ApiFactory, DynamoDB, S3Bucket } from "../deps.ts";
+import { ApiFactory, DynamoDB, S3Bucket } from "../server_deps.ts";
 import {
   DYNAMO_ACCESS_KEY_ID,
   DYNAMO_REGION,
@@ -7,7 +7,7 @@ import {
   S3_BUCKET,
   S3_REGION,
   S3_SECRET_ACCESS_KEY,
-} from "./constants.ts";
+} from "./backend_constants.ts";
 
 export const DYNAMO_CLIENT = new ApiFactory({
   region: DYNAMO_REGION,

@@ -1,16 +1,7 @@
-import { marshall, unmarshall } from "../deps.ts";
+import { marshall, unmarshall } from "../server_deps.ts";
 import { DYNAMO_CLIENT } from "./clients.ts";
-import { DYNAMO_ALIAS_TABLE } from "./constants.ts";
-
-export type Tags = Record<string, string>;
-
-export interface Alias {
-  alias: string;
-  owner: number;
-  tags: Tags;
-}
-
-export type Requests = Alias[];
+import { DYNAMO_ALIAS_TABLE } from "./backend_constants.ts";
+import { Alias, Requests } from "./shared_interfaces.ts";
 
 export async function getRequests(): Promise<Requests> {
   const { Item: item } = await DYNAMO_CLIENT.getItem({

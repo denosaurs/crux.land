@@ -4,9 +4,9 @@ import {
   DYNAMO_REGION,
   DYNAMO_SECRET_ACCESS_KEY,
   DYNAMO_USER_TABLE,
-} from "../util/constants.ts";
+} from "../util/backend_constants.ts";
 
-export const client = new ApiFactory({
+const client = new ApiFactory({
   region: DYNAMO_REGION,
   credentials: {
     awsAccessKeyId: DYNAMO_ACCESS_KEY_ID,

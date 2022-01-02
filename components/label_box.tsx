@@ -1,34 +1,34 @@
-import { ComponentChildren, h, JSX } from "../deps.ts";
+/** @jsx h */
+import { ComponentChildren, h, JSX, tw } from "../deps.ts";
+import { BORDER_CLASSES } from "./layout.tsx";
 
-export function InputButton(
+export function LabelBox(
   { children, ...props }: {
     children: ComponentChildren;
-    props: JSX.HTMLAttributes<HTMLInputElement>;
+    props?: JSX.HTMLAttributes<HTMLLabelElement>;
   },
 ) {
   return (
-    <input
+    <label
       {...props}
-      class="
+      class={tw`
         w-full
-        flex
+        flex 
         justify-center
-        cursor-pointer
         py-2 px-4
-        border
-        border-gray-300
+        ${BORDER_CLASSES}
         font-medium
-        rounded-md
         text-gray-700
         bg-gray-100
         transition
         duration-150
         ease-in-out
+        select-none
         hover:(text-gray-500 bg-gray-50)
         active:(bg-gray-100 text-gray-700)
-        focus:(outline-none shadow border-blue-300)"
+        focus:(outline-none shadow border-blue-300)`}
     >
       {children}
-    </input>
+    </label>
   );
 }

@@ -1,3 +1,4 @@
+/** @jsx h */
 import { Fragment, h } from "../deps.ts";
 
 export function Head({ title }: { title: string } = { title: "crux.land" }) {

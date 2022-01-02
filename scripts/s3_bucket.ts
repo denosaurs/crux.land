@@ -4,7 +4,7 @@ import {
   S3_BUCKET,
   S3_REGION,
   S3_SECRET_ACCESS_KEY,
-} from "../util/constants.ts";
+} from "../util/backend_constants.ts";
 
 const client = new ApiFactory({
   region: S3_REGION,

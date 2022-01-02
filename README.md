@@ -34,7 +34,7 @@ enviornment variables are:
 Once the enviornment variables are set you can start it locally using:
 
 ```bash
-> deployctl run --libs ns,fetchevent --config ./tsconfig.json ./main.ts
+> deployctl run --libs ns,fetchevent --config ./tsconfig.json ./old_main.ts
 Listening on http://0.0.0.0:8080
 ```
 
