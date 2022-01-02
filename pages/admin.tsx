@@ -54,7 +54,7 @@ function RequestCard(
               }
             })}
           class={tw
-            `appearance-none h-6 w-6 rounded-md cursor-pointer  outline-gray-300 outline outline-1 checked:(bg-blue-600 border-4 border-gray-100)`}
+            `appearance-none h-6 w-6 rounded-md cursor-pointer outline-gray-300 outline outline-1 checked:(bg-blue-600 border-4 border-gray-100)`}
           name="request"
         />
         {/* TODO: min-width: 50% */}
@@ -151,17 +151,12 @@ TODO:
       >
         <div
           class={tw
-            `mt-4 h-80 w-full flex flex-row py-2 px-4 ${BORDER_CLASSES} bg-gray-50`}
+            `mt-4 h-80 grid gap-2 auto-rows-min overflow-y-auto py-2 px-4 ${BORDER_CLASSES} bg-gray-50`}
         >
-          <div
-            class={tw
-              `flex flex-col inset-y-0 left-0 mr-2 overflow-y-auto w-full`}
-          >
-            {requests.map((req) => RequestCard(req, checked, setChecked))}
-          </div>
+          {requests.map((req) => RequestCard(req, checked, setChecked))}
         </div>
-        <div class={tw`w-full flex flex-row mt-2 space-x-2`}>
-          <InputBox type="button">
+        <div class={tw`grid gap-2 grid-cols-2 mt-2`}>
+          <InputBox type="submit">
             <span class={tw`text-green-700 hover:text-green-500`}>
               approve
             </span>
@@ -172,7 +167,7 @@ TODO:
         </div>
         <div
           class={tw
-            `flex flex-col-reverse h-48 mt-2 py-2 px-4 inset-y-0 right-0 ${BORDER_CLASSES} bg-gray-50 overflow-y-auto w-full`}
+            `flex flex-col-reverse h-48 mt-2 py-2 px-4 ${BORDER_CLASSES} bg-gray-50 overflow-y-auto w-full`}
         >
           {results.map((res: Checked & ApproveStatus) => (
             <div
