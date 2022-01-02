@@ -111,7 +111,7 @@ export default function Admin() {
     }
     return reqs as AliasWithOwnerData[];
   });
-  const [deny, setDeny] = useState(false);
+  let deny = false;
 
   /*
 TODO:
@@ -160,7 +160,7 @@ TODO:
               approve
             </span>
           </InputBox>
-          <InputBox type="submit" onClick={() => setDeny(true)}>
+          <InputBox type="submit" onClick={() => deny = true}>
             <span class={tw`text-red-700 hover:text-red-500`}>deny</span>
           </InputBox>
         </div>
