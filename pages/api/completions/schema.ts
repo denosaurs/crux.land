@@ -23,6 +23,10 @@ export const handler = {
           ],
         },
       ],
+    }, {
+      headers: {
+        "cache-control": "max-age=86400",
+      }
     });
   },
 };
