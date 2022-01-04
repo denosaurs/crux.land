@@ -48,5 +48,9 @@ export function completionsSchema(): Response {
         ],
       },
     ],
+  }, {
+    headers: {
+      "cache-control": "max-age=86400",
+    }
   });
 }
