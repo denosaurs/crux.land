@@ -152,7 +152,7 @@ export function Alias() {
               </div>
               <div class="select-all cursor-text">
                 <ResultButton // @ts-ignore TS2322
-                id="requestResult" />
+                 id="requestResult" />
               </div>
             </div>
           </div>
@@ -242,7 +242,7 @@ export function Alias() {
         </div>
         <div class="select-all cursor-text mt-2 w-full">
           <ResultButton // @ts-ignore TS2322
-          id="releaseResult" />
+           id="releaseResult" />
         </div>
       </Block>
 

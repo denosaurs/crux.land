@@ -83,8 +83,7 @@ serve(router({
   "/api/alias/deny": deny,
   "/api/alias/list": list,
   "/api/completions": completionsAlias,
-  [`/api/completions/:alias(${ALIAS_NAME_REGEX.source})/tags`]:
-  completionsTags,
+  [`/api/completions/:alias(${ALIAS_NAME_REGEX.source})/tags`]: completionsTags,
   [`/api/get/${ID_PATH}`]: getId,
   [`/api/get/${ALIAS_PATH}`]: getAlias,
   [`/${ID_PATH}`]: unknownHandler,
