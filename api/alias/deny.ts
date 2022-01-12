@@ -21,7 +21,7 @@ export async function deny(
   if (!await authenticate(user, secret, true)) {
     return couldNotAuthenticate();
   }
-
+  
   try {
     await denyRequest(owner, alias);
   } catch (err) {

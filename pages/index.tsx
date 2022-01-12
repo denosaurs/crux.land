@@ -154,7 +154,7 @@ export function Index() {
             </div>
             <div class="select-all cursor-text">
               <ResultButton // @ts-ignore TS2322
-               id="result" />
+              id="result" />
             </div>
           </div>
         </div>

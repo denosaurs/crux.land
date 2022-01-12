@@ -34,13 +34,11 @@ export async function request(
     return error("Alias already exists", Status.BadRequest);
   }
 
-  try {
-    await pushRequest({
-      alias,
-      owner: user,
-      tags: {},
-    });
-  } catch (err) {
+  try {await pushRequest({
+    alias,
+    owner: user,
+    tags: {},
+  });} catch (err) {
     console.log(err);
     return error("Alias request failed", Status.BadRequest);
   }
