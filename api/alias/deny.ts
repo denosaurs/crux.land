@@ -21,9 +21,11 @@ export async function deny(
   if (!await authenticate(user, secret, true)) {
     return couldNotAuthenticate();
   }
-
-  const { $metadata: { httpStatusCode } } = await denyRequest(owner, alias);
-  if (httpStatusCode !== Status.OK) {
+  
+  try {
+    await denyRequest(owner, alias);
+  } catch (err) {
+    console.log(err);
     return error("Alias denial failed", Status.BadRequest);
   }
 

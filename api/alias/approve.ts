@@ -22,8 +22,10 @@ export async function approve(
     return couldNotAuthenticate();
   }
 
-  const { $metadata: { httpStatusCode } } = await approveRequest(owner, alias);
-  if (httpStatusCode !== Status.OK) {
+  try {
+    await approveRequest(owner, alias);
+  } catch (err) {
+    console.log(err);
     return error("Alias approval failed", Status.BadRequest);
   }
 

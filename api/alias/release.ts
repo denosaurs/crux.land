@@ -59,9 +59,10 @@ export async function release(
 
   item.tags[tag] = script;
 
-  const { $metadata: { httpStatusCode } } = await putAlias(item);
-
-  if (httpStatusCode !== Status.OK) {
+  try {
+    await putAlias(item);
+  } catch (err) {
+    console.log(err);
     return error("Release failed", Status.BadRequest);
   }
 

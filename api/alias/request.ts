@@ -34,12 +34,12 @@ export async function request(
     return error("Alias already exists", Status.BadRequest);
   }
 
-  const { $metadata: { httpStatusCode } } = await pushRequest({
+  try {await pushRequest({
     alias,
     owner: user,
     tags: {},
-  });
-  if (httpStatusCode !== Status.OK) {
+  });} catch (err) {
+    console.log(err);
     return error("Alias request failed", Status.BadRequest);
   }
 
