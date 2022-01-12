@@ -36,14 +36,14 @@ export async function getRequests(): Promise<Requests> {
 }
 
 export async function pushRequest(alias: Alias) {
-  const requests = await getRequests();
-  requests.push(alias);
+  const requests = new Set(await getRequests());
+  requests.add(alias);
 
   return await DYNAMO_CLIENT.putItem({
     TableName: DYNAMO_ALIAS_TABLE,
     Item: marshall({
       alias: "$requests",
-      requests,
+      requests: [...requests],
     }),
   });
 }
