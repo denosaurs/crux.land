@@ -4,9 +4,10 @@ export const MAX_SIZE = 2000 * 10;
 export const EXTENSIONS = [
   "ts",
   "tsx",
+  "mts",
   "js",
   "jsx",
-  // "mjs",
+  "mjs",
   // "cjs",
   // "json",
   // "wasm",
