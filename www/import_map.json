@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "fresh/": "https://raw.githubusercontent.com/lucacasonato/fresh/main/",
+    "doauth": "https://deno.land/x/doauth@v1.0.5/src/index.ts"
+  }
+}

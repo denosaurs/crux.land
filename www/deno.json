@@ -1,0 +1,7 @@
+{
+  "tasks": {
+    "start": "deno run -A --unstable main.ts",
+    "dev": "deno run -A --unstable --watch=static/,routes/,islands/ dev.ts"
+  },
+  "importMap": "./import_map.json"
+}
