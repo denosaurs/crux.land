@@ -1,4 +1,4 @@
-import { ComponentChildren, h } from "../deps.ts";
+import { ComponentChildren } from "preact";
 
 export function Block({ children }: { children: ComponentChildren }) {
   return (

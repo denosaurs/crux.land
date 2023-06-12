@@ -1,15 +1,19 @@
-import { ComponentChildren, h } from "../deps.ts";
-import { ApiBody, ApiTable } from "./api_table.tsx";
+import { ComponentChildren } from "preact";
+import { ApiBody, ApiTable } from "./ApiTable.tsx";
 
-export function Endpoint(
-  { children, method, path, requestBody, responseBody }: {
-    children: ComponentChildren;
-    method: string;
-    path: string;
-    requestBody?: ApiBody;
-    responseBody?: ApiBody;
-  },
-) {
+export function Endpoint({
+  children,
+  method,
+  path,
+  requestBody,
+  responseBody,
+}: {
+  children: ComponentChildren;
+  method: string;
+  path: string;
+  requestBody?: ApiBody;
+  responseBody?: ApiBody;
+}) {
   return (
     <div class="mb-7">
       <span class="text-lg font-semibold font-mono">
