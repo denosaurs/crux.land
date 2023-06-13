@@ -33,9 +33,10 @@ export default function Home() {
     <Head>
       <meta charSet="UTF-8" />
       <title>crux.land</title>
+      <link rel="stylesheet" href="styles.css" />
     </Head>
     <Layout description>
-      <div class="flex flex(col lg:row)">
+      <div class="pt-5 flex flex(col lg:row)">
         <div class="inset-y-0 left-0 w(full lg:3/5)">
           crux.land is a free registry service meant for hosting small (≤ 20kB)
           single deno scripts. All uploaded scripts are immutable and will not
