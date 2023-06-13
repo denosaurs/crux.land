@@ -1,4 +1,4 @@
-import { useSignedIn } from "./Layout.tsx";
+import { useSignedIn } from "~/components/Layout.tsx";
 
 export function Menu() {
     const signedIn = useSignedIn();

@@ -1,7 +1,7 @@
 import { CodeBlock } from "~/components/CodeBlock.tsx";
 import { Layout } from "~/components/Layout.tsx";
-import { EXTENSION_FROM_CONTENT_TYPE, ID_PATH } from "../utils/constants.ts";
-import { decodeUTF8, readToUint8Array } from "../utils/util.ts";
+import { EXTENSION_FROM_CONTENT_TYPE, ID_PATH } from "~/utils/constants.ts";
+import { decodeUTF8, readToUint8Array } from "~/utils/util.ts";
 
 type RenderArgs = {
   code: string;

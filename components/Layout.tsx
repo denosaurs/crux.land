@@ -1,7 +1,7 @@
 import { ComponentChildren, createContext } from "preact";
 import { useContext, useEffect, useState } from "preact/hooks";
-import { Footer } from "./Footer.tsx";
-import { Menu } from "./Menu.tsx";
+import { Footer } from "~/components/Footer.tsx";
+import { Menu } from "~/components/Menu.tsx";
 
 export const BORDER_CLASSES = "border border-gray-300 rounded-md";
 
@@ -57,9 +57,9 @@ export function Layout(
         },
       }}
     >
-      <div class="max-w-screen-xl mx-auto px-4 pt-6 lg:pt-10 pb-3 lg:pb-6 flex flex-col items-center">
+      <div class="w-full-xl mx-auto px-4 pt-6 lg:pt-10 pb-3 lg:pb-6 flex flex-col items-center bg-coral-400">
         <a href="/">
-          <h1 class="font-bold text-4xl lg:text-5xl leading-10 tracking-tight text-gray-900">
+          <h1 class="font-bold text-4xl lg:text-5xl leading-10 tracking-tight text-island-100">
             crux.land
           </h1>
         </a>

@@ -1,5 +1,5 @@
 import { ComponentChildren, JSX } from "preact";
-import { BORDER_CLASSES } from "./Layout.tsx";
+import { BORDER_CLASSES } from "~/components/Layout.tsx";
 
 export function InputBox(
   { children, ...props }: {

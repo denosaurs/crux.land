@@ -4,8 +4,9 @@ import { InputBox } from "~/components/InputBox.tsx";
 import { LabelBox } from "~/components/LabelBox.tsx";
 import { Layout } from "~/components/Layout.tsx";
 import { ResultBox } from "~/components/ResultBox.tsx";
-import { encodeBase64 } from "~/deps.ts";
 import { EXTENSIONS } from "~/utils/constants.ts";
+import { encode as encodeBase64 } from "$std/encoding/base64.ts";
+import { Head } from "$fresh/runtime.ts";
 
 export interface Result {
   status: 0 | 1 | 2; // pending, ok, error
@@ -28,6 +29,11 @@ export default function Home() {
   }
 
   return (
+    <>
+    <Head>
+      <meta charSet="UTF-8" />
+      <title>crux.land</title>
+    </Head>
     <Layout description>
       <div class="flex flex(col lg:row)">
         <div class="inset-y-0 left-0 w(full lg:3/5)">
@@ -117,6 +123,7 @@ export default function Home() {
         </form>
       </div>
     </Layout>
+    </>
   );
 }
 

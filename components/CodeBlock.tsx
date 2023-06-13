@@ -1,5 +1,6 @@
 import { JSX } from "preact";
-import { Highlight, Prism, theme } from "../deps.ts";
+import Highlight, { Prism } from "prism";
+import theme from "prism/theme";
 
 type Token = {
   types: string[];

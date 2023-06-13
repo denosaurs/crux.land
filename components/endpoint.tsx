@@ -1,5 +1,5 @@
 import { ComponentChildren } from "preact";
-import { ApiBody, ApiTable } from "./ApiTable.tsx";
+import { ApiBody, ApiTable } from "~/components/ApiTable.tsx";
 
 export function Endpoint({
   children,
