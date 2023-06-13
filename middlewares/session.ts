@@ -1,7 +1,7 @@
 import { getCookies } from "$std/http/cookie.ts";
 import { MiddlewareHandlerContext } from "$fresh/server.ts";
 
-import { deleteSession, readSession, Session } from "~/models/session.ts";
+import { deleteSession, getSession, Session } from "~/models/session.ts";
 
 export interface SessionState {
   session?: Session & {
@@ -18,7 +18,7 @@ export function session() {
 
     if ("session" in cookies || bearer != null) {
       const id = cookies["session"] ?? bearer;
-      const session = await readSession(id);
+      const session = await getSession(id);
 
       if (session != null) {
         ctx.state.session = {

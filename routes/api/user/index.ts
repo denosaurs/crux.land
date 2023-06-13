@@ -1,11 +1,11 @@
 import { Handlers, Status } from "$fresh/server.ts";
 
 import { AuthenticatedState } from "~/middlewares/authenticated.ts";
-import { readUser } from "~/models/user.ts";
+import { getUser } from "~/models/user.ts";
 
 export const handler: Handlers<unknown, AuthenticatedState> = {
   async GET(_req: Request, ctx) {
-    const user = await readUser(ctx.state.session.user);
+    const user = await getUser(ctx.state.session.user);
 
     if (user == null) {
       await ctx.state.session.delete();

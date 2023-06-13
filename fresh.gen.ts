@@ -3,24 +3,24 @@
 // This file is automatically updated during development when running `dev.ts`.
 
 import config from "./deno.json" assert { type: "json" };
-import * as $0 from "./routes/[id].tsx";
-import * as $1 from "./routes/api/_middleware.ts";
-import * as $2 from "./routes/api/auth/github/callback.ts";
-import * as $3 from "./routes/api/auth/github/login.ts";
-import * as $4 from "./routes/api/auth/logout/_middleware.ts";
-import * as $5 from "./routes/api/auth/logout/index.ts";
+import * as $0 from "./routes/api/_middleware.ts";
+import * as $1 from "./routes/api/auth/github/callback.ts";
+import * as $2 from "./routes/api/auth/github/login.ts";
+import * as $3 from "./routes/api/auth/logout/_middleware.ts";
+import * as $4 from "./routes/api/auth/logout/index.ts";
+import * as $5 from "./routes/api/script/index.ts";
 import * as $6 from "./routes/api/user/_middleware.ts";
 import * as $7 from "./routes/api/user/index.ts";
 import * as $8 from "./routes/index.tsx";
 
 const manifest = {
   routes: {
-    "./routes/[id].tsx": $0,
-    "./routes/api/_middleware.ts": $1,
-    "./routes/api/auth/github/callback.ts": $2,
-    "./routes/api/auth/github/login.ts": $3,
-    "./routes/api/auth/logout/_middleware.ts": $4,
-    "./routes/api/auth/logout/index.ts": $5,
+    "./routes/api/_middleware.ts": $0,
+    "./routes/api/auth/github/callback.ts": $1,
+    "./routes/api/auth/github/login.ts": $2,
+    "./routes/api/auth/logout/_middleware.ts": $3,
+    "./routes/api/auth/logout/index.ts": $4,
+    "./routes/api/script/index.ts": $5,
     "./routes/api/user/_middleware.ts": $6,
     "./routes/api/user/index.ts": $7,
     "./routes/index.tsx": $8,

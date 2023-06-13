@@ -2,7 +2,7 @@ import { HandlerContext, Handlers, Status } from "$fresh/server.ts";
 
 import { loginState } from "~/utils/auth.ts";
 import { fetchAccessToken, fetchUserData } from "~/utils/github.ts";
-import { createUser, readUser } from "~/models/user.ts";
+import { createUser, getUser } from "~/models/user.ts";
 import { createSession } from "~/models/session.ts";
 import { setSessionCookie } from "~/utils/session.ts";
 
@@ -27,7 +27,7 @@ export const handler: Handlers = {
     const userData = await fetchUserData(accessToken);
 
     let created = false;
-    let user = await readUser(userData.id.toString());
+    let user = await getUser(userData.id.toString());
     if (user == null) {
       user = await createUser({
         id: userData.id.toString(),

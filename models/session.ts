@@ -11,7 +11,7 @@ export async function upsertSession(session: Session): Promise<void> {
   const res = await kv
     .atomic()
     .set(["session", session.id], session)
-    .set(["user", session.user, "session", session.id], session)
+    .set(["session_by_user", session.user, session.id], session)
     .commit();
 
   if (!res.ok) {
@@ -39,7 +39,7 @@ export async function createSession(
   return session;
 }
 
-export async function readSession(id: string): Promise<Session | null> {
+export async function getSession(id: string): Promise<Session | null> {
   const key = ["session", id];
   return (
     (await kv.get<Session>(key, { consistency: "eventual" })).value ??
@@ -52,7 +52,7 @@ export async function listUserSessions(user: string): Promise<Session[]> {
 
   for await (
     const session of kv.list<Session>({
-      prefix: ["user", user, "sessions"],
+      prefix: ["session_by_user", user],
     })
   ) {
     sessions.push(session.value);
@@ -73,7 +73,7 @@ export async function pruneSessions(): Promise<boolean> {
     if (session.expires && session.expires <= now) {
       operations
         .delete(["session", session.id])
-        .delete(["user", session.user, "session", session.id]);
+        .delete(["session_by_user", session.user, session.id]);
     }
   }
 
@@ -86,13 +86,13 @@ export async function pruneUserSessions(user: string): Promise<boolean> {
 
   for await (
     const { value: session } of kv.list<Session>({
-      prefix: ["user", user, "sessions"],
+      prefix: ["session_by_user", user],
     })
   ) {
     if (session.expires && session.expires <= now) {
       operations
         .delete(["session", session.id])
-        .delete(["user", session.user, "session", session.id]);
+        .delete(["session_by_user", session.user, session.id]);
     }
   }
 
@@ -104,7 +104,7 @@ export async function deleteSession(session: Session): Promise<boolean> {
     await kv
       .atomic()
       .delete(["session", session.id])
-      .delete(["user", session.user, "session", session.id])
+      .delete(["session_by_user", session.user, session.id])
       .commit()
   ).ok;
 }

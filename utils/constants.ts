@@ -6,10 +6,10 @@ export const EXTENSIONS = [
   "tsx",
   "js",
   "jsx",
-  // "mjs",
-  // "cjs",
-  // "json",
-  // "wasm",
+  "mjs",
+  "cjs",
+  "json",
+  "wasm",
 ] as const;
 
 export const CONTENT_TYPE_FROM_EXTENSION = {

@@ -1,17 +1,3 @@
-@keyframes float {
-    0% {
-        transform: translatey(0px);
-    }
-
-    50% {
-        transform: translatey(-15px);
-    }
-
-    100% {
-        transform: translatey(0px);
-    }
+.will-change-transform {
+  will-change: transform;
 }
-
-#title {
-    animation: float 16s ease-in-out infinite;
-  }
