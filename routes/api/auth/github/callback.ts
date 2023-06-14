@@ -1,9 +1,10 @@
 import { HandlerContext, Handlers, Status } from "$fresh/server.ts";
 
-import { loginState } from "~/utils/auth.ts";
-import { fetchAccessToken, fetchUserData } from "~/utils/github.ts";
 import { createUser, getUser } from "~/models/user.ts";
 import { createSession } from "~/models/session.ts";
+
+import { loginState } from "~/utils/auth.ts";
+import { fetchAccessToken, fetchUserData } from "~/utils/github.ts";
 import { setSessionCookie } from "~/utils/session.ts";
 
 export const handler: Handlers = {

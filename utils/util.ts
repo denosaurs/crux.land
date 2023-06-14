@@ -16,22 +16,22 @@ export function escapeHTML(unsafe: string): string {
 /**
  * Encodes a string to an Uint8Array
  */
-export function encodeUTF8(text: string): Uint8Array {
+export function encode(text: string): Uint8Array {
   return encoder.encode(text);
 }
 
 /**
  * Encodes an Uint8Array to a string
  */
-export function decodeUTF8(arr: Uint8Array): string {
+export function decode(arr: Uint8Array): string {
   return decoder.decode(arr);
 }
 
 /**
  * Prepends a string encoded as UTF8 to an Uint8Array
  */
-export function prependUTF8(arr: Uint8Array, text: string): Uint8Array {
-  return new Uint8Array([...encodeUTF8(text), ...arr]);
+export function prepend(arr: Uint8Array, text: string): Uint8Array {
+  return new Uint8Array([...encode(text), ...arr]);
 }
 
 /**

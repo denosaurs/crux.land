@@ -31,7 +31,7 @@ export async function getUser(id: string): Promise<User | null> {
 
 export async function getUserByName(name: string): Promise<User | null> {
   const id = (await kv.get<string>(["user_by_name", name])).value;
-  
+
   if (id == null) {
     return null;
   }

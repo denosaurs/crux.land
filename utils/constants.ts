@@ -1,5 +1,5 @@
-// Max file size (20000 bytes / 20 kB)
-export const MAX_SIZE = 2000 * 10;
+// Max file size (32000 bytes / 32 kB)
+export const MAX_SCRIPT_SIZE = 32000;
 
 export const EXTENSIONS = [
   "ts",
@@ -9,10 +9,10 @@ export const EXTENSIONS = [
   "mjs",
   "cjs",
   "json",
-  "wasm",
-] as const;
+  // "wasm",
+];
 
-export const CONTENT_TYPE_FROM_EXTENSION = {
+export const CONTENT_TYPE_FROM_EXTENSION: Record<string, string> = {
   "ts": "application/typescript",
   "tsx": "text/tsx",
   "js": "application/javascript",
@@ -21,16 +21,17 @@ export const CONTENT_TYPE_FROM_EXTENSION = {
   "cjs": "application/javascript",
   "json": "application/json",
   "wasm": "application/wasm",
-} as const;
+};
 
-export const EXTENSION_FROM_CONTENT_TYPE = {
+export const EXTENSION_FROM_CONTENT_TYPE: Record<string, string> = {
   "application/typescript": "ts",
+  "video/vnd.dlna.mpeg-tts": "ts",
   "text/tsx": "tsx",
   "application/javascript": "js",
   "text/jsx": "jsx",
   "application/json": "json",
   "application/wasm": "wasm",
-} as const;
+};
 
 export const BASE58_ALPHABET =
   "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";

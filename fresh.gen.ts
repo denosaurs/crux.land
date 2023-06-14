@@ -3,29 +3,42 @@
 // This file is automatically updated during development when running `dev.ts`.
 
 import config from "./deno.json" assert { type: "json" };
-import * as $0 from "./routes/api/_middleware.ts";
-import * as $1 from "./routes/api/auth/github/callback.ts";
-import * as $2 from "./routes/api/auth/github/login.ts";
-import * as $3 from "./routes/api/auth/logout/_middleware.ts";
-import * as $4 from "./routes/api/auth/logout/index.ts";
-import * as $5 from "./routes/api/script/index.ts";
-import * as $6 from "./routes/api/user/_middleware.ts";
-import * as $7 from "./routes/api/user/index.ts";
-import * as $8 from "./routes/index.tsx";
+import * as $0 from "./routes/.well-known/deno-import-intellisense.json.ts";
+import * as $1 from "./routes/[alias]@[version].tsx";
+import * as $2 from "./routes/[id].tsx";
+import * as $3 from "./routes/_middleware.ts";
+import * as $4 from "./routes/api/auth/github/callback.ts";
+import * as $5 from "./routes/api/auth/github/login.ts";
+import * as $6 from "./routes/api/auth/logout/_middleware.ts";
+import * as $7 from "./routes/api/auth/logout/index.ts";
+import * as $8 from "./routes/api/script/[id].ts";
+import * as $9 from "./routes/api/script/index.ts";
+import * as $10 from "./routes/api/scripts.ts";
+import * as $11 from "./routes/api/user/_middleware.ts";
+import * as $12 from "./routes/api/user/index.ts";
+import * as $13 from "./routes/index.tsx";
+import * as $$0 from "./islands/Button.tsx";
 
 const manifest = {
   routes: {
-    "./routes/api/_middleware.ts": $0,
-    "./routes/api/auth/github/callback.ts": $1,
-    "./routes/api/auth/github/login.ts": $2,
-    "./routes/api/auth/logout/_middleware.ts": $3,
-    "./routes/api/auth/logout/index.ts": $4,
-    "./routes/api/script/index.ts": $5,
-    "./routes/api/user/_middleware.ts": $6,
-    "./routes/api/user/index.ts": $7,
-    "./routes/index.tsx": $8,
+    "./routes/.well-known/deno-import-intellisense.json.ts": $0,
+    "./routes/[alias]@[version].tsx": $1,
+    "./routes/[id].tsx": $2,
+    "./routes/_middleware.ts": $3,
+    "./routes/api/auth/github/callback.ts": $4,
+    "./routes/api/auth/github/login.ts": $5,
+    "./routes/api/auth/logout/_middleware.ts": $6,
+    "./routes/api/auth/logout/index.ts": $7,
+    "./routes/api/script/[id].ts": $8,
+    "./routes/api/script/index.ts": $9,
+    "./routes/api/scripts.ts": $10,
+    "./routes/api/user/_middleware.ts": $11,
+    "./routes/api/user/index.ts": $12,
+    "./routes/index.tsx": $13,
   },
-  islands: {},
+  islands: {
+    "./islands/Button.tsx": $$0,
+  },
   baseUrl: import.meta.url,
   config,
 };
