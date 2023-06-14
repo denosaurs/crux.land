@@ -22,7 +22,7 @@ export function Upload() {
 
 export function Header() {
   return (
-    <header class="flex flex-col sticky top-0 w-full bg-secondary pb-4 gap-4 border-b-2 border-primary">
+    <header class="flex flex-col sticky top-0 w-full bg-secondary z-50 pb-4 gap-4 border-b-2 border-primary">
       <div class="flex justify-center uppercase tracking-tighter font-bold text-4xl lg:text-8xl animate-jump">crux.land</div>
       <Navigation />
       <Upload />
