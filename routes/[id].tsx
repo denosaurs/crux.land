@@ -25,7 +25,10 @@ export const handler: Handlers<ScriptPageProps, SessionState> = {
       if (script == null) {
         return ctx.renderNotFound();
       }
-      return ctx.render({ session: ctx.state.session, script });
+      return ctx.render({
+        session: ctx.state.session,
+        script,
+      });
     }
 
     if (script == null) {
@@ -49,9 +52,15 @@ export const handler: Handlers<ScriptPageProps, SessionState> = {
 };
 
 export default function Script({
-  data: { script },
+  data: { script, session },
 }: {
-  data: { script: Script };
+  data: {
+    script: Script;
+    session?: Session & {
+      get valid(): boolean;
+      delete(): Promise<void>;
+    };
+  };
 }) {
   return (
     <>
@@ -70,7 +79,7 @@ export default function Script({
         <link rel="stylesheet" href="styles.css" />
       </Head>
       <Layout>
-        <Header authenticated={false} />
+        <Header authenticated={session?.valid ?? false} />
         <CodeBlock code={script.content} language="typescript" />
         <Footer />
       </Layout>

@@ -1,6 +1,6 @@
 import { ComponentChildren } from "preact";
 import Button from "~/islands/Button.tsx";
-import { EXTENSIONS } from "../utils/constants.ts";
+import { EXTENSIONS } from "~/utils/constants.ts";
 
 export interface NavigationProps {
   // role: UserRole;
@@ -44,7 +44,7 @@ export function Header({ authenticated }: HeaderProps) {
         crux.land
       </div>
       <Navigation authenticated={authenticated} />
-      <Upload authenticated={authenticated}/>
+      <Upload authenticated={authenticated} />
     </header>
   );
 }
