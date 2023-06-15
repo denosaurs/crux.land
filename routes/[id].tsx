@@ -9,6 +9,7 @@ import { Session } from "~/models/session.ts";
 import { Footer } from "~/components/Footer.tsx";
 import { Header } from "~/components/Header.tsx";
 import { Layout } from "~/components/Layout.tsx";
+import { CodeBlock } from "~/components/CodeBlock.tsx";
 
 export interface ScriptPageProps {
   session?: Session;
@@ -70,9 +71,7 @@ export default function Script({
       </Head>
       <Layout>
         <Header authenticated={false} />
-        <div class="mt-4 pb-8 flex rounded-lg text-black text-1xl lg:text-1xl bg-primary">
-          <code>{script.content}</code>
-        </div>
+        <CodeBlock code={script.content} language="typescript" />
         <Footer />
       </Layout>
     </>

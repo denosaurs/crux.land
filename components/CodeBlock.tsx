@@ -43,10 +43,7 @@ export function CodeBlock(
   { code, language }: { code: string; language: string },
 ): JSX.Element {
   return (
-    <div
-      class="shadow-sm rounded-lg border border-gray-200 overflow-hidden p-2 sm:px-3 md:px-4"
-      style="background-color: rgb(246, 248, 250);"
-    >
+    <div class="bg-primary mt-4 pb-8 flex rounded-lgshadow-sm rounded-lg border border-gray-200 overflow-hidden p-2 sm:px-3 md:px-4">
       <Highlight
         Prism={Prism}
         theme={theme}
