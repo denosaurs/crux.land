@@ -15,13 +15,14 @@ async function onChange() {
         method: "POST",
         body: formData,
       });
+      const json = await response.json();
       if (!response.ok) {
-        throw new Error("Failed to upload file");
+        alert((json as { message: string }).message);
+        throw new Error((json as { message: string }).message);
       }
-      const res = (await response.json() as { id : string}).id;
-      window.location.href = `/${res}`;
+      window.location.href = `/${(json as { id: string }).id}`;
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   }
 }
@@ -29,17 +30,22 @@ async function onChange() {
 export default function Button() {
   return (
     <>
-    <form id="form" action="/api/script" method="post" encType="multipart/form-data">
-      <input
-        type="file"
-        name="file"
-        id="file"
-        accept={EXTENSIONS.map((ext) => "." + ext).join(",")}
-        // @ts-ignore TS2322
-        onchange={onChange}
-        required
-        hidden
-      />
+      <form
+        id="form"
+        action="/api/script"
+        method="post"
+        encType="multipart/form-data"
+      >
+        <input
+          type="file"
+          name="file"
+          id="file"
+          accept={EXTENSIONS.map((ext) => "." + ext).join(",")}
+          // @ts-ignore TS2322
+          onchange={onChange}
+          required
+          hidden
+        />
       </form>
       <label
         id="label"
