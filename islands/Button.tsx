@@ -9,11 +9,7 @@ async function onChange(authenticated: boolean) {
   const file: HTMLInputElement = document.getElementById(
     "file",
   )! as HTMLInputElement;
-  const label: HTMLLabelElement = document.getElementById(
-    "label",
-  )! as HTMLLabelElement;
 
-  label.innerText = file.files![0] ? file.files![0].name : "UPLOAD";
   if (file.files![0]) {
     const formData = new FormData();
     formData.append("file", file.files![0]);
@@ -28,9 +24,8 @@ async function onChange(authenticated: boolean) {
         throw new Error((json as { message: string }).message);
       }
       window.location.href = `/${(json as { id: string }).id}`;
-    } catch (error) {
-      alert(error.message);
-    }
+      // deno-lint-ignore no-empty
+    } catch {}
   }
 }
 
