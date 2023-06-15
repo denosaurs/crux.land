@@ -29,7 +29,7 @@ async function onChange() {
 export default function Button() {
   return (
     <>
-    <form id="form" action="/api/script" method="post" enctype="multipart/form-data">
+    <form id="form" action="/api/script" method="post" encType="multipart/form-data">
       <input
         type="file"
         name="file"
