@@ -22,8 +22,7 @@ export const handler: Handlers<ScriptPageProps, SessionState> = {
 
     if (isHtml) {
       if (script == null) {
-        // return ctx.renderNotFound();
-        return ctx.render("hi");
+        return ctx.renderNotFound();
       }
       return ctx.render({ session: ctx.state.session, script });
     }
