@@ -1,5 +1,5 @@
 import { EXTENSIONS } from "~/utils/constants.ts";
-function onChange() {
+async function onChange() {
   const file: HTMLInputElement = document.getElementById(
     "file",
   )! as HTMLInputElement;
@@ -8,7 +8,21 @@ function onChange() {
   )! as HTMLLabelElement;
   label.innerText = file.files![0] ? file.files![0].name : "Choose a script";
   if (file.files![0]) {
-    (document.getElementById("form")! as HTMLFormElement).submit();
+    const formData = new FormData();
+    formData.append("file", file.files![0]);
+    try {
+      const response = await fetch("/api/script", {
+        method: "POST",
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error("Failed to upload file");
+      }
+      const res = (await response.json() as { id : string}).id;
+      window.location.href = `/${res}`;
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
 
