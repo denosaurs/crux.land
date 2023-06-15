@@ -21,7 +21,7 @@ export default function Features() {
           title="Open Source"
           content="Made by the Community for the Community."
         />
-        <Feature title="Something Else!" />
+        <Feature title="Easy To Use!" />
         <div class="col-span-full text-xl text-secondary">
           Crux.land is built with the aim of providing a simple and easy-to-use
           platform for developers to share their scripts with others. The
