@@ -24,10 +24,10 @@ export function Navigation({ authenticated }: NavigationProps) {
 }
 
 // This should be an island
-export function Upload() {
+export function Upload({ authenticated }: HeaderProps) {
   return (
     <div class="flex items-center justify-center">
-      <Button/>
+      <Button authenticated={authenticated} />
     </div>
   );
 }
@@ -44,7 +44,7 @@ export function Header({ authenticated }: HeaderProps) {
         crux.land
       </div>
       <Navigation authenticated={authenticated} />
-      <Upload />
+      <Upload authenticated={authenticated}/>
     </header>
   );
 }

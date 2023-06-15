@@ -1,12 +1,19 @@
 import { EXTENSIONS } from "~/utils/constants.ts";
-async function onChange() {
+import { HeaderProps } from "../components/Header.tsx";
+async function onChange(authenticated: boolean) {
+  if (!authenticated) {
+    alert("You must be logged in to upload a script");
+    return;
+  }
+
   const file: HTMLInputElement = document.getElementById(
     "file",
   )! as HTMLInputElement;
   const label: HTMLLabelElement = document.getElementById(
     "label",
   )! as HTMLLabelElement;
-  label.innerText = file.files![0] ? file.files![0].name : "Choose a script";
+
+  label.innerText = file.files![0] ? file.files![0].name : "UPLOAD";
   if (file.files![0]) {
     const formData = new FormData();
     formData.append("file", file.files![0]);
@@ -22,12 +29,12 @@ async function onChange() {
       }
       window.location.href = `/${(json as { id: string }).id}`;
     } catch (error) {
-      console.log(error);
+      alert(error.message);
     }
   }
 }
 
-export default function Button() {
+export default function Button({ authenticated }: HeaderProps) {
   return (
     <>
       <form
@@ -42,7 +49,7 @@ export default function Button() {
           id="file"
           accept={EXTENSIONS.map((ext) => "." + ext).join(",")}
           // @ts-ignore TS2322
-          onchange={onChange}
+          onchange={() => onChange(authenticated)}
           required
           hidden
         />
