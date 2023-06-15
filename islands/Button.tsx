@@ -1,5 +1,4 @@
 import { EXTENSIONS } from "~/utils/constants.ts";
-import { decode, encode } from "https://deno.land/std/encoding/base64.ts";
 function onChange() {
   const file: HTMLInputElement = document.getElementById(
     "file",
@@ -9,17 +8,14 @@ function onChange() {
   )! as HTMLLabelElement;
   label.innerText = file.files![0] ? file.files![0].name : "Choose a script";
   if (file.files![0]) {
-    file.files![0].arrayBuffer().then((buf) => {
-      const encodedFile = new File([buf], file.files![0].name, {
-        type: file.files![0].type,
-      });
-    });
+    (document.getElementById("form")! as HTMLFormElement).submit();
   }
 }
 
 export default function Button() {
   return (
     <>
+    <form id="form" action="/api/script" method="post" enctype="multipart/form-data">
       <input
         type="file"
         name="file"
@@ -30,6 +26,7 @@ export default function Button() {
         required
         hidden
       />
+      </form>
       <label
         id="label"
         htmlFor="file"
