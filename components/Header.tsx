@@ -1,5 +1,6 @@
 import { ComponentChildren } from "preact";
 import Button from "~/islands/Button.tsx";
+import { EXTENSIONS } from "../utils/constants.ts";
 
 export interface NavigationProps {
   // role: UserRole;
@@ -26,7 +27,7 @@ export function Navigation({ authenticated }: NavigationProps) {
 export function Upload() {
   return (
     <div class="flex items-center justify-center">
-      <Button />
+      <Button/>
     </div>
   );
 }
