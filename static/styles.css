@@ -1,0 +1,22 @@
+.will-change-transform {
+  will-change: transform;
+}
+
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #ffffff #3f72a0;
+}
+
+*::-webkit-scrollbar {
+  width: 16px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #3f72a0;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: 3px solid #3f72a0;
+}

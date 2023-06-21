@@ -1,14 +1,6 @@
-# node and vercel
-dist
-node_modules
-.next
-.vercel
+# dotenv environment variable files
 .env
-
-# ide
-.idea
-.vscode
-workspace.code-workspace
-
-# macOS files
-.DS_Store
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
